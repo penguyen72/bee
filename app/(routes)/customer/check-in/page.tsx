@@ -25,7 +25,7 @@ export default function Home() {
   }
 
   return (
-    <main className="bg-amber-200 flex min-h-screen flex-col items-center justify-center gap-8">
+    <main className="bg-amber-300 flex min-h-screen flex-col items-center justify-center gap-8">
       <p className="text-xl font-semibold">Thank you (Name) for Checking In!</p>
       <p className="text-xl">
         You will earn points for Today&apos;s Visit after Check Out!
