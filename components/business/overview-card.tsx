@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
@@ -32,7 +30,7 @@ export function OverviewCard() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>
-          Today&apos;s Overview - {format(Date.now(), 'mm/dd/yyyy')}
+          Today&apos;s Overview - {format(Date.now(), 'MM/dd/yyyy')}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-4 gap-8">

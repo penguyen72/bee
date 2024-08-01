@@ -1,5 +1,3 @@
-'use client';
-
 import { SignUpForm } from '@/components/customer/sign-up-form';
 
 export default function Home() {

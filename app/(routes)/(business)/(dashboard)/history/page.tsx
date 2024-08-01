@@ -1,5 +1,3 @@
-'use client';
-
 import { MemberHistoryCard } from '@/components/business/member-history-card';
 
 export default function Home() {
