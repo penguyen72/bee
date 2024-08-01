@@ -27,7 +27,7 @@ export function MemberHistoryCard() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>
-          Today's Overview - {format(Date.now(), 'mm/dd/yyyy')}
+          Today&apos;s Overview - {format(Date.now(), 'mm/dd/yyyy')}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-3 gap-8">
