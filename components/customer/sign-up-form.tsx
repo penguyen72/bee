@@ -18,12 +18,18 @@ import { useRouter } from 'next/navigation';
 import { useSessionStorage } from 'usehooks-ts';
 
 const formSchema = z.object({
-  firstName: z.string(),
-  phoneNumber: z.string(),
-  birthday: z.string(),
+  firstName: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  phoneNumber: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  birthday: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
 });
 
-export function SignInForm() {
+export function SignUpForm() {
   const [user, setUser] = useSessionStorage<{
     firstName: string;
     visits: number;
@@ -37,7 +43,6 @@ export function SignInForm() {
     defaultValues: {
       firstName: '',
       phoneNumber: '',
-      birthday: '',
     },
   });
 
@@ -46,7 +51,7 @@ export function SignInForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setUser({ firstName: values.firstName, visits: 1 });
-    router.push('/check-in');
+    router.push('/customer/check-in');
   }
 
   return (
@@ -75,6 +80,17 @@ export function SignInForm() {
             <FormItem className="w-full">
               <FormControl>
                 <Input placeholder="Phone Number" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl>
+                <Input placeholder="Date of Birth" {...field} />
               </FormControl>
             </FormItem>
           )}
