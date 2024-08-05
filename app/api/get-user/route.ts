@@ -8,10 +8,10 @@ import { formatISO } from 'date-fns';
 import { type NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  try {
-    const searchParams = req.nextUrl.searchParams;
-    const id = searchParams.get('id');
+  const searchParams = req.nextUrl.searchParams;
 
+  try {
+    const id = searchParams.get('id');
     if (!id) {
       return new NextResponse('Invalid User', { status: 400 });
     }
