@@ -16,3 +16,14 @@ export type SettingsNavItem = {
   >;
   label: string;
 };
+
+export type CustomerType = {
+  birthday: string;
+  createdAt: string;
+  firstName: string;
+  id: string;
+  phoneNumber: string;
+  points: number;
+  updatedAt: string;
+  visits: number;
+};
