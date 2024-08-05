@@ -13,12 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Customer {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  firstName   String
   phoneNumber String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  birthday    DateTime
   points      Int
   visits      Int
 }
