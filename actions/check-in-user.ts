@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
 import { SignInSchema } from '@/schemas';
 import { Status } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 import { isMobilePhone } from 'validator';
 import { z } from 'zod';
 
@@ -40,6 +41,7 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       },
     });
 
+    revalidatePath('/');
     return { success: 'User Checked In', userId: user.id };
   } catch (error) {
     console.error(error);

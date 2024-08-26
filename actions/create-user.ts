@@ -5,6 +5,7 @@ import { formatPhoneNumber } from '@/lib/utils';
 import { SignUpSchema } from '@/schemas';
 import { Status } from '@prisma/client';
 import { formatISO } from 'date-fns';
+import { revalidatePath } from 'next/cache';
 import { isDate, isMobilePhone } from 'validator';
 import { z } from 'zod';
 
@@ -46,6 +47,7 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
       },
     });
 
+    revalidatePath('/');
     return { success: 'User Checked In', userId: user.id };
   } catch (error) {
     console.error(error);
