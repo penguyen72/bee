@@ -15,7 +15,7 @@ export const updateOrganizationProfile = async (
       data: values,
     });
 
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: 'Profile Updated!' };
   } catch (error) {
     console.error(error);

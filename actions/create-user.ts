@@ -47,7 +47,7 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
       },
     });
 
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: 'User Checked In', userId: user.id };
   } catch (error) {
     console.error(error);

@@ -41,7 +41,7 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       },
     });
 
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: 'User Checked In', userId: user.id };
   } catch (error) {
     console.error(error);
