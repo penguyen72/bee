@@ -3,7 +3,7 @@ import { OverviewCard } from '@/components/business/overview-card';
 import { OverviewTable } from '@/components/overview-table';
 
 export default async function Home() {
-  const data = await getCheckInUsers();
+  const data = await getCheckInUsers(process.env.BUSINESS_EMAIL);
 
   if (data.error) return null;
 

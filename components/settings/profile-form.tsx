@@ -1,5 +1,8 @@
 'use client';
 
+import { updateOrganizationProfile } from '@/actions/update-organization-profile';
+import { FormError } from '@/components/form-error';
+import { FormSuccess } from '@/components/form-success';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -9,39 +12,39 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { TIMEZONES } from '@/lib/utils';
+import { ProfileSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { Organizations } from '@prisma/client';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const formSchema = z.object({
-  businessName: z.string(),
-  address: z.string(),
-  city: z.string(),
-  state: z.string(),
-  zipCode: z.string(),
-  phoneNumber: z.string(),
-  emailAddress: z.string(),
-});
+interface Props {
+  organizationInfo: Organizations;
+}
 
-export function ProfileForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      businessName: '',
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      phoneNumber: '',
-      emailAddress: '',
-    },
+export function ProfileForm({ organizationInfo }: Props) {
+  const { id, ...defaultValues } = organizationInfo;
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+  const form = useForm<z.infer<typeof ProfileSchema>>({
+    resolver: zodResolver(ProfileSchema),
+    defaultValues,
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  function onSubmit(values: z.infer<typeof ProfileSchema>) {
+    updateOrganizationProfile(id, values).then((data) => {
+      setSuccess(data.success);
+      setError(data.error);
+    });
   }
 
   return (
@@ -59,7 +62,7 @@ export function ProfileForm() {
                       Business Name
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input placeholder="Business Name" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -73,7 +76,7 @@ export function ProfileForm() {
                       Address
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input placeholder="Address" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -87,7 +90,7 @@ export function ProfileForm() {
                       City
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input placeholder="City" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -102,7 +105,7 @@ export function ProfileForm() {
                         State
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="First Name" {...field} />
+                        <Input placeholder="State" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -116,12 +119,40 @@ export function ProfileForm() {
                         Zip Code
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="First Name" {...field} />
+                        <Input placeholder="Zip Code" {...field} />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="timezone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Time Zone</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a timezone" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {TIMEZONES.map((item, index) => {
+                          return (
+                            <SelectItem key={index} value={item.value}>
+                              {item.label}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="flex flex-col gap-6 w-[450px]">
               <FormField
@@ -133,7 +164,7 @@ export function ProfileForm() {
                       Phone Number
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input placeholder="Phone Number" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -147,13 +178,15 @@ export function ProfileForm() {
                       Email Address
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="First Name" {...field} />
+                      <Input placeholder="Email Address" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
               />
             </div>
           </div>
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button className="ml-auto mt-auto" type="submit">
             Save
           </Button>

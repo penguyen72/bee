@@ -43,3 +43,17 @@ model Transactions {
   pointsEarned   Int
   pointsRedeemed Int?
 }
+
+model Organizations {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  businessName String
+  address      String
+  city         String
+  state        String
+  zipCode      String
+  timezone     String
+  phoneNumber  String
+  emailAddress String   @unique
+}

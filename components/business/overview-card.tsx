@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn, convertToUSD } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import { formatInTimeZone, getTimezoneOffset } from 'date-fns-tz';
 
 interface Props {
   overview:
@@ -9,39 +10,48 @@ interface Props {
         checkOutUserCount: number;
         netRevenue: number;
         rewardsRedeemed: number;
+        timezone: string;
       }
     | undefined;
 }
 
 export function OverviewCard({ overview }: Props) {
+  if (!overview) return null;
+
   const items = [
     {
       title: 'Checked-In Clients',
-      content: overview?.checkInUserCount,
+      content: overview.checkInUserCount,
       color: 'bg-blue-300',
     },
     {
       title: 'Checked-Out Clients',
-      content: overview?.checkOutUserCount,
+      content: overview.checkOutUserCount,
       color: 'bg-green-200',
     },
     {
       title: 'Net Revenue',
-      content: convertToUSD(overview?.netRevenue),
+      content: convertToUSD(overview.netRevenue),
       color: 'bg-yellow-100',
     },
     {
       title: 'Rewards Redeemed',
-      content: convertToUSD(overview?.rewardsRedeemed),
+      content: convertToUSD(overview.rewardsRedeemed),
       color: 'bg-violet-300',
     },
   ];
+
+  const currentDateBasedOnTimeZone = formatInTimeZone(
+    Date.now(),
+    overview.timezone,
+    'MM/dd/yyyy'
+  );
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>
-          Today&apos;s Overview - {format(Date.now(), 'MM/dd/yyyy')}
+          Today&apos;s Overview - {currentDateBasedOnTimeZone}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-4 gap-8">

@@ -1,15 +1,26 @@
+import { getOrganizationProfile } from '@/actions/get-organization-profile';
 import { ChangePasswordForm } from '@/components/settings/change-password-form';
 import { ProfileForm } from '@/components/settings/profile-form';
 import SettingsHeader from '@/components/settings/settings-header';
-import { HomeIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default async function Home() {
+  const data = await getOrganizationProfile(process.env.BUSINESS_EMAIL);
+
+  if (data.error) {
+    return (
+      <div className="flex flex-col p-12 gap-8 h-full overflow-y-scroll items-center justify-center">
+        {data.error}
+      </div>
+    );
+  }
+
+  if (!data.organization) return null;
+
   return (
-    <div className="flex flex-col p-12 gap-8">
+    <div className="flex flex-col p-12 gap-8 h-full overflow-y-scroll">
       <SettingsHeader title="Profile" />
       <div className="flex flex-col gap-8">
-        <ProfileForm />
+        <ProfileForm organizationInfo={data.organization} />
         <ChangePasswordForm />
       </div>
     </div>

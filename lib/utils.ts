@@ -1,6 +1,12 @@
-import { type ClassValue, clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
+import {
+  formatInTimeZone,
+  fromZonedTime,
+  getTimezoneOffset,
+} from 'date-fns-tz';
 import { twMerge } from 'tailwind-merge';
 import { REDEPEMTIONS } from './constants';
+import { endOfDay, startOfDay } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -61,4 +67,52 @@ export function convertToUSD(value: number | undefined | null) {
   });
 
   return formatter.format(value);
+}
+
+function formatOffset(offset: number) {
+  const sign = offset >= 0 ? '+' : '-';
+  const absOffset = Math.abs(offset);
+  const hours = String(Math.floor(absOffset / 60000)).padStart(2, '0');
+  const minutes = String(absOffset % 60).padStart(2, '0');
+  return `UTC${sign}${hours}:${minutes}`;
+}
+
+function getTimezones() {
+  return Intl.supportedValuesOf('timeZone')
+    .map((timezone: string) => {
+      const offset = getTimezoneOffset(timezone);
+      return {
+        offset,
+        timezone,
+      };
+    })
+    .filter((item) => item.timezone.includes('America'))
+    .sort((a, b) => a.offset - b.offset)
+    .map((item) => {
+      const offset = getTimezoneOffset(item.timezone);
+      const formattedOffset = formatOffset(offset / 60);
+
+      return {
+        label: `(${formattedOffset}) ${item.timezone}`,
+        value: item.timezone,
+      };
+    });
+}
+
+export const TIMEZONES = getTimezones();
+
+export function getStartAndEndDate(today: Date, timezone: string) {
+  const currentDateBasedOnTimeZone = formatInTimeZone(
+    today,
+    timezone,
+    "yyyy-MM-dd'T'HH:mm:ss"
+  );
+
+  const startDate = fromZonedTime(
+    startOfDay(currentDateBasedOnTimeZone),
+    timezone
+  );
+  const endDate = fromZonedTime(endOfDay(currentDateBasedOnTimeZone), timezone);
+
+  return { startDate, endDate };
 }
