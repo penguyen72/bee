@@ -1,5 +1,6 @@
 'use client';
 
+import { createUser } from '@/actions/create-user';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -13,7 +14,6 @@ import { Input } from '@/components/ui/input';
 import { formatDateOfBirth, formatPhoneNumber } from '@/lib/utils';
 import { SignUpSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -35,15 +35,12 @@ export function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    try {
-      const response = await axios.post('/api/create-user', values);
-
-      if (response.status === 200) {
-        router.push(`/customer/${response.data.id}`);
+    createUser(values).then((data) => {
+      if (data.success) {
+        router.push(`/customer/${data.userId}`);
       }
-    } catch (error: any) {
-      setError(error.response.data);
-    }
+      setError(data.error);
+    });
   }
 
   return (

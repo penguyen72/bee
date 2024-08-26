@@ -1,31 +1,42 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn, convertToUSD } from '@/lib/utils';
 import { format } from 'date-fns';
 
-const items = [
-  {
-    title: 'Checked-In Clients',
-    content: '12',
-    color: 'bg-blue-300',
-  },
-  {
-    title: 'Checked-Out Clients',
-    content: '12',
-    color: 'bg-green-200',
-  },
-  {
-    title: 'Net Revenue',
-    content: '12',
-    color: 'bg-yellow-100',
-  },
-  {
-    title: 'Rewards Redeemed',
-    content: '12',
-    color: 'bg-violet-300',
-  },
-];
+interface Props {
+  overview:
+    | {
+        checkInUserCount: number;
+        checkOutUserCount: number;
+        netRevenue: number;
+        rewardsRedeemed: number;
+      }
+    | undefined;
+}
 
-export function OverviewCard() {
+export function OverviewCard({ overview }: Props) {
+  const items = [
+    {
+      title: 'Checked-In Clients',
+      content: overview?.checkInUserCount,
+      color: 'bg-blue-300',
+    },
+    {
+      title: 'Checked-Out Clients',
+      content: overview?.checkOutUserCount,
+      color: 'bg-green-200',
+    },
+    {
+      title: 'Net Revenue',
+      content: convertToUSD(overview?.netRevenue),
+      color: 'bg-yellow-100',
+    },
+    {
+      title: 'Rewards Redeemed',
+      content: convertToUSD(overview?.rewardsRedeemed),
+      color: 'bg-violet-300',
+    },
+  ];
+
   return (
     <Card className="w-full">
       <CardHeader>
