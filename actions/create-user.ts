@@ -47,7 +47,8 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
     });
 
     return { success: 'User Checked In', userId: user.id };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

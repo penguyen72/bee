@@ -28,7 +28,8 @@ export const getHistoricalData = async () => {
       overview: { totalMembers, netRevenue, rewardsRedeemed },
       transactions,
     };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

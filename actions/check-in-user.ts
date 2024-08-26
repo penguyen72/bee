@@ -41,7 +41,8 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
     });
 
     return { success: 'User Checked In', userId: user.id };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

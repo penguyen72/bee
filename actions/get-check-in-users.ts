@@ -77,7 +77,7 @@ export const getCheckInUsers = async (emailAddress: string | undefined) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

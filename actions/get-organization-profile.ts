@@ -15,7 +15,7 @@ export const getOrganizationProfile = async (
 
     return { success: 'Success!', organization };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };
