@@ -13,19 +13,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName   String
-  phoneNumber String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  birthday    DateTime
-  points      Int
-  visits      Int
+enum Status {
+  CHECK_IN
+  CHECK_OUT
 }
 
-model Event {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  status String
+model Customer {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  firstName      String
+  phoneNumber    String         @unique
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  birthday       DateTime?
+  visitCount     Int
+  currentPoints  Int
+  lifetimePoints Int
+  status         Status?
+  Transactions   Transactions[] @relation("CustomerEvents")
+}
+
+model Transactions {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         String   @db.ObjectId
+  customer       Customer @relation("CustomerEvents", fields: [userId], references: [id])
+  profit         Float
+  expense        Float?
+  pointsEarned   Int
+  pointsRedeemed Int?
 }
