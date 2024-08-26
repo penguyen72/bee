@@ -13,6 +13,8 @@ export const getHistoricalData = async () => {
       }),
     ]);
 
+    console.log(transactions);
+
     const totalMembers = users.length;
     const netRevenue = transactions.reduce(
       (acc, transaction) => acc + (transaction.profit ?? 0),
