@@ -41,7 +41,7 @@ export function OverviewCard({ overview }: Props) {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>
-          Today&apos;s Overview - {format(Date.now(), 'MM/dd/yyyy')}
+          Today&apos;s Overview - {format(Date.now(), 'MM/dd/yyyy h:mm a')}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-4 gap-8">
