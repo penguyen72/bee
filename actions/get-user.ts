@@ -11,7 +11,8 @@ export const getUser = async (id: string) => {
     });
 
     return { success: 'Success', user };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

@@ -7,8 +7,6 @@ export default async function Home() {
 
   if (data.error) return null;
 
-  console.log(data);
-
   return (
     <div className="flex flex-col gap-6 w-full h-full">
       <MemberHistoryCard overview={data.overview} />

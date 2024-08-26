@@ -13,8 +13,6 @@ export const getHistoricalData = async () => {
       }),
     ]);
 
-    console.log(transactions);
-
     const totalMembers = users.length;
     const netRevenue = transactions.reduce(
       (acc, transaction) => acc + (transaction.profit ?? 0),
@@ -30,7 +28,8 @@ export const getHistoricalData = async () => {
       overview: { totalMembers, netRevenue, rewardsRedeemed },
       transactions,
     };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

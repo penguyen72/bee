@@ -16,7 +16,7 @@ export const updateOrganizationProfile = async (
 
     return { success: 'Profile Updated!' };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };

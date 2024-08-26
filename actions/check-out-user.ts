@@ -38,8 +38,6 @@ export const checkOutUser = async (
       return { error: 'Insufficient Points!' };
     }
 
-    console.log(totalCharge);
-
     await prisma.$transaction([
       prisma.customer.update({
         where: {
@@ -66,7 +64,7 @@ export const checkOutUser = async (
     revalidatePath('/overview');
     return { success: 'User Checked Out!' };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { error: 'Internal Server Error!' };
   }
 };
