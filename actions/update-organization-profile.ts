@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { ProfileSchema } from '@/schemas';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 export const updateOrganizationProfile = async (
@@ -14,6 +15,7 @@ export const updateOrganizationProfile = async (
       data: values,
     });
 
+    revalidatePath('/');
     return { success: 'Profile Updated!' };
   } catch (error) {
     console.error(error);

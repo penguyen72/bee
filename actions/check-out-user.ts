@@ -61,7 +61,7 @@ export const checkOutUser = async (
       }),
     ]);
 
-    revalidatePath('/overview');
+    revalidatePath('/');
     return { success: 'User Checked Out!' };
   } catch (error) {
     console.error(error);
