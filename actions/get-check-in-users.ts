@@ -1,14 +1,29 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { getStartAndEndDate } from '@/lib/utils';
 import { Status } from '@prisma/client';
-import { endOfDay, startOfDay } from 'date-fns';
 
-export const getCheckInUsers = async () => {
-  const today = new Date();
-  const startDate = startOfDay(today);
-  const endDate = endOfDay(today);
+export const getCheckInUsers = async (emailAddress: string | undefined) => {
   try {
+    if (!emailAddress) {
+      return { error: 'Email Environment Variable Not Set!' };
+    }
+
+    const organization = await prisma.organizations.findUnique({
+      where: {
+        emailAddress,
+      },
+    });
+
+    if (!organization || !organization.timezone) {
+      return { error: 'Time Zone Not Set!' };
+    }
+
+    const today = new Date();
+    const timezone = organization.timezone;
+    const { startDate, endDate } = getStartAndEndDate(today, timezone);
+
     const [users, transactions] = await prisma.$transaction([
       prisma.customer.findMany({
         where: {
@@ -58,6 +73,7 @@ export const getCheckInUsers = async () => {
         checkOutUserCount,
         netRevenue,
         rewardsRedeemed,
+        timezone,
       },
     };
   } catch (error) {
