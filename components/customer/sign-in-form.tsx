@@ -19,11 +19,17 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 export function SignInForm() {
   const [error, setError] = useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const router = useRouter();
 
+  const form = useForm<z.infer<typeof SignInSchema>>({
+    resolver: zodResolver(SignInSchema),
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -61,6 +67,7 @@ export function SignInForm() {
           )}
         />
         <Controller
+        <Controller
           control={form.control}
           name="phoneNumber"
           render={({ field }) => (
@@ -76,10 +83,21 @@ export function SignInForm() {
                     field.onChange(event);
                   }}
                 />
+                <Input
+                  placeholder="Phone Number"
+                  type="text"
+                  {...field}
+                  value={formatPhoneNumber(field.value)}
+                  onChange={(event) => {
+                    event.target.value = event.target.value.slice(0, 12);
+                    field.onChange(event);
+                  }}
+                />
               </FormControl>
             </FormItem>
           )}
         />
+        <FormError message={error} />
         <FormError message={error} />
         <Button className="w-[100px] mt-2 mx-auto" type="submit">
           Continue
