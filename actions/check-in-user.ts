@@ -1,20 +1,21 @@
+'use server';
+
 import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
-import { NextResponse } from 'next/server';
+import { SignInSchema } from '@/schemas';
+import { Status } from '@prisma/client';
 import { isMobilePhone } from 'validator';
+import { z } from 'zod';
 
-export async function POST(req: Request) {
+export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
   try {
-    const body = await req.json();
-
-    const { firstName, phoneNumber } = body;
-
+    const { firstName, phoneNumber } = values;
     if (!firstName || !phoneNumber) {
-      return new NextResponse('All Fields Required!', { status: 400 });
+      return { error: 'All Fields Required!' };
     }
 
     if (!isMobilePhone(formatPhoneNumber(phoneNumber), 'en-US')) {
-      return new NextResponse('Invalid Phone Number!', { status: 400 });
+      return { error: 'Invalid Phone Number!' };
     }
 
     const existingUser = await prisma.customer.findUnique({
@@ -25,9 +26,7 @@ export async function POST(req: Request) {
     });
 
     if (!existingUser) {
-      return new NextResponse('User not found!', {
-        status: 400,
-      });
+      return { error: 'User Not Found!' };
     }
 
     const user = await prisma.customer.update({
@@ -36,12 +35,13 @@ export async function POST(req: Request) {
         phoneNumber: existingUser.phoneNumber,
       },
       data: {
-        visits: existingUser.visits + 1,
+        visitCount: existingUser.visitCount + 1,
+        status: Status.CHECK_IN,
       },
     });
 
-    return Response.json({ id: user.id }, { status: 200 });
-  } catch (error) {
-    return new NextResponse('Internal Server Error', { status: 500 });
+    return { success: 'User Checked In', userId: user.id };
+  } catch {
+    return { error: 'Internal Server Error!' };
   }
-}
+};

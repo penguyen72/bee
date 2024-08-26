@@ -15,7 +15,10 @@ export function CheckOutSummaryItem({ label, value, handleDelete }: Props) {
   return (
     <div className="flex gap-2 items-center justify-between">
       <div className="flex gap-2 items-center">
-        <CircleMinus className="hover:cursor-pointer" onClick={handleDelete} />
+        <CircleMinus
+          className="hover:cursor-pointer"
+          onClick={() => handleDelete()}
+        />
         <p className="font-semibold">{label}</p>
       </div>
       <p className="font-semibold">{formatter.format(value)}</p>

@@ -1,5 +1,6 @@
 'use client';
 
+import { checkInUser } from '@/actions/check-in-user';
 import { FormError } from '@/components/form-error';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +15,6 @@ import { Input } from '@/components/ui/input';
 import { formatPhoneNumber } from '@/lib/utils';
 import { SignInSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -33,15 +33,12 @@ export function SignInForm() {
   });
 
   async function onSubmit(values: z.infer<typeof SignInSchema>) {
-    try {
-      const response = await axios.post('/api/check-in-user', values);
-
-      if (response.status === 200) {
-        router.push(`/customer/${response.data.id}`);
+    checkInUser(values).then((data) => {
+      if (data.success) {
+        router.push(`/customer/${data.userId}`);
       }
-    } catch (error: any) {
-      setError(error.response.data);
-    }
+      setError(data.error);
+    });
   }
 
   return (

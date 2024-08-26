@@ -1,32 +1,39 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { cn, convertToUSD } from '@/lib/utils';
 
-const items = [
-  {
-    title: 'Total Members',
-    content: '12',
-    color: 'bg-green-200',
-  },
-  {
-    title: 'Net Revenue',
-    content: '12',
-    color: 'bg-yellow-100',
-  },
-  {
-    title: 'Rewards Redeemed',
-    content: '12',
-    color: 'bg-violet-300',
-  },
-];
+interface Props {
+  overview:
+    | {
+        totalMembers: number;
+        netRevenue: number;
+        rewardsRedeemed: number;
+      }
+    | undefined;
+}
 
-export function MemberHistoryCard() {
+export async function MemberHistoryCard({ overview }: Props) {
+  const items = [
+    {
+      title: 'Total Members',
+      content: overview?.totalMembers,
+      color: 'bg-green-200',
+    },
+    {
+      title: 'Net Revenue',
+      content: convertToUSD(overview?.netRevenue),
+      color: 'bg-yellow-100',
+    },
+    {
+      title: 'Rewards Redeemed',
+      content: convertToUSD(overview?.rewardsRedeemed),
+      color: 'bg-violet-300',
+    },
+  ];
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>
-          Today&apos;s Overview - {format(Date.now(), 'mm/dd/yyyy')}
-        </CardTitle>
+        <CardTitle>Member History</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-3 gap-8">
         {items.map((item, index) => {

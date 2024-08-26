@@ -1,25 +1,27 @@
+'use server';
+
 import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
+import { SignUpSchema } from '@/schemas';
+import { Status } from '@prisma/client';
 import { formatISO } from 'date-fns';
-import { NextResponse } from 'next/server';
 import { isDate, isMobilePhone } from 'validator';
+import { z } from 'zod';
 
-export async function POST(req: Request) {
+export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
   try {
-    const body = await req.json();
-
-    const { firstName, phoneNumber, birthday } = body;
+    const { firstName, phoneNumber, birthday } = values;
 
     if (!firstName || !phoneNumber || !birthday) {
-      return new NextResponse('All Fields Required!', { status: 400 });
+      return { error: 'All Fields Required!' };
     }
 
     if (!isMobilePhone(formatPhoneNumber(phoneNumber), 'en-US')) {
-      return new NextResponse('Invalid Phone Number!', { status: 400 });
+      return { error: 'Invalid Phone Number!' };
     }
 
     if (birthday.length < 10 || !isDate(birthday, { format: 'MM/DD/YYYY' })) {
-      return new NextResponse('Invalid Date of Birth!', { status: 400 });
+      return { error: 'Invalid Date of Birth!' };
     }
 
     const existingUser = await prisma.customer.findUnique({
@@ -29,9 +31,7 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return new NextResponse('Phone Number already registered!', {
-        status: 400,
-      });
+      return { error: 'Phone Number already registered!' };
     }
 
     const user = await prisma.customer.create({
@@ -39,13 +39,15 @@ export async function POST(req: Request) {
         firstName,
         phoneNumber,
         birthday: formatISO(new Date(birthday)),
-        points: 0,
-        visits: 1,
+        currentPoints: 0,
+        lifetimePoints: 0,
+        visitCount: 1,
+        status: Status.CHECK_IN,
       },
     });
 
-    return Response.json({ id: user.id }, { status: 200 });
-  } catch (error) {
-    return new NextResponse('Internal Server Error', { status: 500 });
+    return { success: 'User Checked In', userId: user.id };
+  } catch {
+    return { error: 'Internal Server Error!' };
   }
-}
+};

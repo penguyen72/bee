@@ -1,38 +1,23 @@
-'use client';
+import { getUser } from '@/actions/get-user';
 
-import { CustomerType } from '@/lib/types';
-import axios from 'axios';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+interface Props {
+  params: { id: string };
+}
 
-export default function Home() {
-  const { id } = useParams();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<CustomerType | null>(null);
+export default async function Home({ params }: Props) {
+  const data = await getUser(params.id);
 
-  useEffect(() => {
-    axios
-      .get('/api/get-user', { params: { id } })
-      .then((response) => {
-        setUser(response.data.user);
-      })
-      .then((error: any) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+  if (data.error || !data.user) return null;
 
-  if (loading || !user) return null;
-
-  if (user.visits > 1) {
+  if (data.user.visitCount > 1) {
     return (
       <main className="bg-amber-200 flex min-h-screen flex-col items-center justify-center gap-12">
         <p className="text-xl font-semibold">
-          Thank you {user.firstName} for Checking In!
+          Thank you {data.user.firstName} for Checking In!
         </p>
-        <p className="text-4xl">You currently have {user.points} Points!</p>
+        <p className="text-4xl">
+          You currently have {data.user.currentPoints} Points!
+        </p>
         <p className="text-xl">
           Please let us know at Check Out if you would like to Redeem
         </p>
@@ -43,7 +28,7 @@ export default function Home() {
   return (
     <main className="bg-amber-300 flex min-h-screen flex-col items-center justify-center gap-8">
       <p className="text-xl font-semibold">
-        Thank you {user.firstName} for Checking In!
+        Thank you {data.user.firstName} for Checking In!
       </p>
       <p className="text-xl">
         You will earn points for Today&apos;s Visit after Check Out!
