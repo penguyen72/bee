@@ -50,6 +50,8 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
         data: {
           customerId: customer.id,
           checkInTime: new Date(),
+          checkOutTime: null,
+          currentPoints: customer.currentPoints,
         },
       });
 
