@@ -3,7 +3,6 @@
 import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
 import { SignUpSchema } from '@/schemas';
-import { Status } from '@prisma/client';
 import { formatISO } from 'date-fns';
 import { revalidatePath } from 'next/cache';
 import { isDate, isMobilePhone } from 'validator';
@@ -35,16 +34,26 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
       return { error: 'Phone Number already registered!' };
     }
 
-    const user = await prisma.customer.create({
-      data: {
-        firstName,
-        phoneNumber,
-        birthday: formatISO(new Date(birthday)),
-        currentPoints: 0,
-        lifetimePoints: 0,
-        visitCount: 1,
-        status: Status.CHECK_IN,
-      },
+    const user = await prisma.$transaction(async (tx) => {
+      const customer = await tx.customer.create({
+        data: {
+          firstName,
+          phoneNumber,
+          birthday: formatISO(new Date(birthday)),
+          currentPoints: 0,
+          lifetimePoints: 0,
+          visitCount: 1,
+        },
+      });
+
+      await prisma.transactions.create({
+        data: {
+          customerId: customer.id,
+          checkInTime: new Date(),
+        },
+      });
+
+      return customer;
     });
 
     revalidatePath('/', 'layout');

@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/prisma';
 import { getStartAndEndDate } from '@/lib/utils';
-import { Status } from '@prisma/client';
 
 export const getCheckInUsers = async (emailAddress: string | undefined) => {
   try {
@@ -24,35 +23,26 @@ export const getCheckInUsers = async (emailAddress: string | undefined) => {
     const timezone = organization.timezone;
     const { startDate, endDate } = getStartAndEndDate(today, timezone);
 
-    const [users, transactions] = await prisma.$transaction([
-      prisma.customer.findMany({
-        where: {
-          updatedAt: {
-            gte: startDate,
-            lt: endDate,
-          },
+    const transactions = await prisma.transactions.findMany({
+      include: {
+        customer: true,
+      },
+      where: {
+        updatedAt: {
+          gte: startDate,
+          lt: endDate,
         },
-      }),
-      prisma.transactions.findMany({
-        where: {
-          createdAt: {
-            gte: startDate,
-            lt: endDate,
-          },
-        },
-      }),
-    ]);
+      },
+    });
 
-    const checkInUsers = users.filter(
-      (user) => user.status === Status.CHECK_IN
+    const checkInUsers = transactions.filter(
+      (transaction) => !transaction.checkOutTime
     );
 
-    const checkInUserCount = users.filter(
-      (user) => user.status === Status.CHECK_IN
-    ).length;
+    const checkInUserCount = checkInUsers.length;
 
-    const checkOutUserCount = users.filter(
-      (user) => user.status === Status.CHECK_OUT
+    const checkOutUserCount = transactions.filter(
+      (transaction) => transaction.checkOutTime
     ).length;
 
     const netRevenue = transactions.reduce(

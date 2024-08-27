@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/table';
 import { TransactionsWithCustomer } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Prisma } from '@prisma/client';
 import {
   createColumnHelper,
   flexRender,
@@ -55,11 +54,21 @@ const columns = [
     },
   }),
   columnHelper.display({
+    id: 'check-in',
+    header: 'CHECK-IN TIME',
+    cell: (info) => {
+      const checkInTime = info.row.original.checkInTime;
+      return <p>{format(checkInTime, 'MM/dd/yyyy h:mm a')}</p>;
+    },
+  }),
+  columnHelper.display({
     id: 'check-out',
     header: 'CHECK-OUT TIME',
     cell: (info) => {
-      const updatedAt = info.row.original.updatedAt;
-      return <p>{format(updatedAt, 'MM/dd/yyyy h:mm a')}</p>;
+      const checkOutTime = info.row.original.checkOutTime;
+      return (
+        <p>{checkOutTime ? format(checkOutTime, 'MM/dd/yyyy h:mm a') : null}</p>
+      );
     },
   }),
   columnHelper.display({
@@ -80,7 +89,7 @@ const columns = [
     id: 'current-points',
     header: 'CURRENT POINTS',
     cell: (info) => {
-      const currentPoints = info.row.original.customer.currentPoints;
+      const currentPoints = info.row.original.currentPoints;
 
       return <p>{currentPoints}</p>;
     },
@@ -91,7 +100,7 @@ interface Props {
   data: TransactionsWithCustomer[];
 }
 
-export function MemberHistoryTable({ data }: Props) {
+export function TransactionsTable({ data }: Props) {
   const dataSource = useMemo(() => data, [data]);
 
   const { getHeaderGroups, getRowModel } = useReactTable({
@@ -129,9 +138,11 @@ export function MemberHistoryTable({ data }: Props) {
                   <TableCell
                     key={cell.id}
                     className={cn(
-                      index === 0 &&
-                        'rounded-l-md border-l-[12px] border-l-blue-300',
-                      index === self.length - 1 && 'rounded-r-md'
+                      index === 0 && 'rounded-l-md border-l-[12px]',
+                      index === self.length - 1 && 'rounded-r-md',
+                      row.original.pointsRedeemed
+                        ? 'border-l-violet-300'
+                        : 'border-l-green-200'
                     )}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

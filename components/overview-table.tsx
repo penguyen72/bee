@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { TransactionsWithCustomer } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Customer } from '@prisma/client';
 import {
@@ -17,11 +18,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
-const columnHelper = createColumnHelper<Customer>();
+const columnHelper = createColumnHelper<TransactionsWithCustomer>();
 
 const columns = [
   columnHelper.display({
@@ -31,14 +31,15 @@ const columns = [
       return <p>{info.row.index}</p>;
     },
   }),
-  columnHelper.accessor('firstName', {
+  columnHelper.display({
+    id: 'firstName',
     header: 'NAME',
     cell: (info) => {
-      const createdAt = info.row.original.createdAt;
-
+      const name = info.row.original.customer.firstName;
+      const createdAt = info.row.original.customer.createdAt;
       return (
         <div className="flex flex-col gap-2">
-          <p>{info.getValue()}</p>
+          <p>{name}</p>
           <p className="text-xs text-slate-500">
             Joined {format(createdAt, 'MMMM yyyy')}
           </p>
@@ -46,33 +47,43 @@ const columns = [
       );
     },
   }),
-  columnHelper.accessor('phoneNumber', {
+  columnHelper.display({
+    id: 'phoneNumber',
     header: 'PHONE NUMBER',
-    cell: (info) => info.renderValue(),
+    cell: (info) => {
+      const phoneNumber = info.row.original.customer.phoneNumber;
+      return <p>{phoneNumber}</p>;
+    },
   }),
   columnHelper.display({
     id: 'type',
     header: 'TYPE',
     cell: (info) => {
-      return <p>{info.row.original.visitCount > 1 ? 'Returning' : 'New'}</p>;
+      return (
+        <p>{info.row.original.customer.visitCount > 1 ? 'Returning' : 'New'}</p>
+      );
     },
   }),
   columnHelper.display({
     id: 'check-in',
     header: 'CHECK-IN TIME',
     cell: (info) => {
-      const updatedAt = info.row.original.updatedAt;
-      return <p>{format(updatedAt, 'MM/dd/yyyy h:mm a')}</p>;
+      const checkInTime = info.row.original.checkInTime;
+      return <p>{format(checkInTime, 'MM/dd/yyyy h:mm a')}</p>;
     },
   }),
-  columnHelper.accessor('currentPoints', {
+  columnHelper.display({
+    id: 'current-points',
     header: 'POINTS',
-    footer: (info) => info.column.id,
+    cell: (info) => {
+      const currentPoints = info.row.original.currentPoints;
+      return <p>{currentPoints}</p>;
+    },
   }),
 ];
 
 interface Props {
-  data: Customer[];
+  data: TransactionsWithCustomer[];
 }
 
 export function OverviewTable({ data }: Props) {

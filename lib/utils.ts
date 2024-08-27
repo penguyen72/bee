@@ -116,3 +116,19 @@ export function getStartAndEndDate(today: Date, timezone: string) {
 
   return { startDate, endDate };
 }
+
+export function getCurrentTimeBasedOnTimezone(today: Date, timezone: string) {
+  const currentDateBasedOnTimeZone = formatInTimeZone(
+    today,
+    timezone,
+    "yyyy-MM-dd'T'HH:mm:ss"
+  );
+
+  const startDate = fromZonedTime(
+    startOfDay(currentDateBasedOnTimeZone),
+    timezone
+  );
+  const endDate = fromZonedTime(endOfDay(currentDateBasedOnTimeZone), timezone);
+
+  return { startDate, endDate };
+}

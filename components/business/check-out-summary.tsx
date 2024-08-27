@@ -6,23 +6,22 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 import { REDEPEMTIONS } from '@/lib/constants';
-import { Redepemtion } from '@/lib/types';
+import { Redepemtion, TransactionsWithCustomer } from '@/lib/types';
 import { cn, convertToUSD } from '@/lib/utils';
 
-import { Customer, Status } from '@prisma/client';
 import { Fragment, useState } from 'react';
 
-import { CheckOutSummaryItem } from './check-out-summary-item';
 import { FormSuccess } from '../form-success';
+import { CheckOutSummaryItem } from './check-out-summary-item';
 
 interface Props {
-  user: Customer;
+  transaction: TransactionsWithCustomer;
   addedCharges: number[];
   setAddedCharges: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export function CheckOutSummary({
-  user,
+  transaction,
   addedCharges,
   setAddedCharges,
 }: Props) {
@@ -44,16 +43,14 @@ export function CheckOutSummary({
   }
 
   function handleCheckOut() {
-    checkOutUser(user.id, addedCharges, selected)
-      .then((data) => {
-        if (data.success) {
-          setSelected(null);
-          setAddedCharges([]);
-        }
-        setSuccess(data.success);
-        setError(data.error);
-      })
-      .finally(() => {});
+    checkOutUser(transaction.id, addedCharges, selected).then((data) => {
+      if (data.success) {
+        setSelected(null);
+        setAddedCharges([]);
+      }
+      setSuccess(data.success);
+      setError(data.error);
+    });
   }
 
   const balance =
@@ -96,7 +93,10 @@ export function CheckOutSummary({
                       selected?.id === redepemtion.id &&
                         'bg-purple-300 border-purple-300 hover:bg-purple-400 hover:border-purple-400 transition-all'
                     )}
-                    disabled={user.currentPoints < redepemtion.pointsRequired}
+                    disabled={
+                      transaction.customer.currentPoints <
+                      redepemtion.pointsRequired
+                    }
                     variant="outline"
                     onClick={() => handleSelected(redepemtion.id)}
                   >

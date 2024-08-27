@@ -2,30 +2,36 @@
 
 import prisma from '@/lib/prisma';
 import { Redepemtion } from '@/lib/types';
-import { Status } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 export const checkOutUser = async (
-  userId: string,
+  transactionId: string,
   charges: number[],
   redepemtion: Redepemtion | null
 ) => {
   try {
-    const pointsRedeemed = redepemtion?.pointsRequired;
-    const expense = redepemtion?.value;
+    if (charges.length === 0) {
+      return { error: 'No Charges Applied!' };
+    }
 
-    const existingUser = await prisma.customer.findUnique({
+    const pointsRedeemed = redepemtion?.pointsRequired ?? null;
+    const expense = redepemtion?.value ?? null;
+
+    const transaction = await prisma.transactions.findUnique({
+      include: {
+        customer: true,
+      },
       where: {
-        id: userId,
+        id: transactionId,
       },
     });
 
-    if (!existingUser) {
-      return { error: 'User Not Found!' };
+    if (!transaction) {
+      return { error: 'Transaction Not Found!' };
     }
 
-    if (existingUser.status !== Status.CHECK_IN) {
-      return { error: 'User Not Checked In!' };
+    if (transaction.checkOutTime) {
+      return { error: 'User Already Checked Out!' };
     }
 
     const totalCharge = charges.reduce((acc, charge) => {
@@ -34,29 +40,36 @@ export const checkOutUser = async (
 
     const pointsEarned = Math.floor(totalCharge);
 
+    const existingUser = transaction.customer;
+
     if (existingUser.currentPoints < (pointsRedeemed ?? 0)) {
       return { error: 'Insufficient Points!' };
     }
 
+    const currentPoints =
+      existingUser.currentPoints + pointsEarned - (pointsRedeemed ?? 0);
+
     await prisma.$transaction([
+      prisma.transactions.update({
+        where: {
+          id: transaction.id,
+        },
+        data: {
+          expense,
+          pointsEarned,
+          pointsRedeemed,
+          currentPoints,
+          profit: totalCharge,
+          checkOutTime: new Date(),
+        },
+      }),
       prisma.customer.update({
         where: {
           id: existingUser.id,
         },
         data: {
-          status: Status.CHECK_OUT,
-          currentPoints:
-            existingUser.currentPoints + pointsEarned - (pointsRedeemed ?? 0),
+          currentPoints: currentPoints,
           lifetimePoints: existingUser.currentPoints + pointsEarned,
-        },
-      }),
-      prisma.transactions.create({
-        data: {
-          expense,
-          pointsEarned,
-          pointsRedeemed,
-          userId: existingUser.id,
-          profit: totalCharge,
         },
       }),
     ]);

@@ -1,4 +1,5 @@
 import { getUser } from '@/actions/get-user';
+import { Redirect } from '@/components/redirect';
 
 interface Props {
   params: { id: string };
@@ -21,6 +22,7 @@ export default async function Home({ params }: Props) {
         <p className="text-xl">
           Please let us know at Check Out if you would like to Redeem
         </p>
+        <Redirect />
       </main>
     );
   }
@@ -33,6 +35,7 @@ export default async function Home({ params }: Props) {
       <p className="text-xl">
         You will earn points for Today&apos;s Visit after Check Out!
       </p>
+      <Redirect />
     </main>
   );
 }

@@ -11,7 +11,7 @@ interface Props {
     | undefined;
 }
 
-export async function MemberHistoryCard({ overview }: Props) {
+export async function TransactionsCard({ overview }: Props) {
   const items = [
     {
       title: 'Total Members',
@@ -19,21 +19,21 @@ export async function MemberHistoryCard({ overview }: Props) {
       color: 'bg-green-200',
     },
     {
-      title: 'Net Revenue',
-      content: convertToUSD(overview?.netRevenue),
-      color: 'bg-yellow-100',
-    },
-    {
       title: 'Rewards Redeemed',
       content: convertToUSD(overview?.rewardsRedeemed),
       color: 'bg-violet-300',
+    },
+    {
+      title: 'Net Revenue',
+      content: convertToUSD(overview?.netRevenue),
+      color: 'bg-yellow-100',
     },
   ];
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Member History</CardTitle>
+        <CardTitle>Transactions</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-3 gap-8">
         {items.map((item, index) => {

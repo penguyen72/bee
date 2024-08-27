@@ -3,7 +3,6 @@
 import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
 import { SignInSchema } from '@/schemas';
-import { Status } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { isMobilePhone } from 'validator';
 import { z } from 'zod';
@@ -30,25 +29,51 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       return { error: 'User Not Found!' };
     }
 
-    if (existingUser.status === Status.CHECK_IN) {
-      return { error: 'User Already Checked In!' };
-    }
+    const user = await prisma.$transaction(async (tx) => {
+      const latestTransaction = await tx.transactions.findFirst({
+        where: {
+          customerId: {
+            equals: existingUser.id,
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
 
-    const user = await prisma.customer.update({
-      where: {
-        firstName: existingUser.firstName,
-        phoneNumber: existingUser.phoneNumber,
-      },
-      data: {
-        visitCount: existingUser.visitCount + 1,
-        status: Status.CHECK_IN,
-      },
+      if (latestTransaction && !latestTransaction.checkOutTime) {
+        throw new Error('User Already Checked In!');
+      }
+
+      const customer = await tx.customer.update({
+        where: {
+          firstName: existingUser.firstName,
+          phoneNumber: existingUser.phoneNumber,
+        },
+        data: {
+          visitCount: existingUser.visitCount + 1,
+        },
+      });
+
+      await prisma.transactions.create({
+        data: {
+          customerId: customer.id,
+          checkInTime: new Date(),
+          checkOutTime: null,
+          currentPoints: customer.currentPoints,
+        },
+      });
+
+      return customer;
     });
 
     revalidatePath('/', 'layout');
     return { success: 'User Checked In', userId: user.id };
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.message === 'User Already Checked In!') {
+      return { error: error.message };
+    }
+
     return { error: 'Internal Server Error!' };
   }
 };

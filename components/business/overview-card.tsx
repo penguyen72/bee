@@ -20,24 +20,24 @@ export function OverviewCard({ overview }: Props) {
 
   const items = [
     {
-      title: 'Checked-In Clients',
+      title: 'Checked-In Members',
       content: overview.checkInUserCount,
       color: 'bg-blue-300',
     },
     {
-      title: 'Checked-Out Clients',
+      title: 'Checked-Out Members',
       content: overview.checkOutUserCount,
       color: 'bg-green-200',
-    },
-    {
-      title: 'Net Revenue',
-      content: convertToUSD(overview.netRevenue),
-      color: 'bg-yellow-100',
     },
     {
       title: 'Rewards Redeemed',
       content: convertToUSD(overview.rewardsRedeemed),
       color: 'bg-violet-300',
+    },
+    {
+      title: 'Net Revenue',
+      content: convertToUSD(overview.netRevenue),
+      color: 'bg-yellow-100',
     },
   ];
 

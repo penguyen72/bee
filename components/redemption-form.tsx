@@ -3,14 +3,15 @@
 import { CheckOutSummary } from '@/components/business/check-out-summary';
 import { Calculator } from '@/components/calculator';
 import { Button } from '@/components/ui/button';
+import { TransactionsWithCustomer } from '@/lib/types';
 import { Customer } from '@prisma/client';
 import { useState } from 'react';
 
 interface Props {
-  user: Customer;
+  transaction: TransactionsWithCustomer;
 }
 
-export function RedemptionForm({ user }: Props) {
+export function RedemptionForm({ transaction }: Props) {
   const [value, setValue] = useState<string>('');
   const [addedCharges, setAddedCharges] = useState<number[]>([]);
 
@@ -35,7 +36,7 @@ export function RedemptionForm({ user }: Props) {
       </div>
       <div className="col-span-8 h-full flex flex-col justify-between">
         <CheckOutSummary
-          user={user}
+          transaction={transaction}
           addedCharges={addedCharges}
           setAddedCharges={setAddedCharges}
         />

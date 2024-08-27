@@ -10,6 +10,14 @@ export const getHistoricalData = async () => {
         include: {
           customer: true,
         },
+        where: {
+          checkOutTime: {
+            not: null,
+          },
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
       }),
     ]);
 
