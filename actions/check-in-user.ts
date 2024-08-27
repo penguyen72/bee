@@ -30,6 +30,10 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       return { error: 'User Not Found!' };
     }
 
+    if (existingUser.status === Status.CHECK_IN) {
+      return { error: 'User Already Checked In!' };
+    }
+
     const user = await prisma.customer.update({
       where: {
         firstName: existingUser.firstName,
