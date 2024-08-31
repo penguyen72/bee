@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { getStartAndEndDate } from '@/lib/utils';
+import { isAfter, isBefore } from 'date-fns';
 
 export const getCheckInUsers = async (emailAddress: string | undefined) => {
   try {
@@ -27,25 +28,27 @@ export const getCheckInUsers = async (emailAddress: string | undefined) => {
       include: {
         customer: true,
       },
-      where: {
-        updatedAt: {
-          gte: startDate,
-          lt: endDate,
-        },
-      },
     });
+
+    const todayOverview = transactions.filter(
+      (transaction) =>
+        isBefore(startDate, transaction.updatedAt) &&
+        !isAfter(transaction.updatedAt, endDate)
+    );
 
     const checkInUsers = transactions.filter(
       (transaction) => !transaction.checkOutTime
     );
 
-    const checkInUserCount = checkInUsers.length;
+    const checkInUserCount = todayOverview.filter(
+      (transaction) => !transaction.checkOutTime
+    ).length;
 
-    const checkOutUserCount = transactions.filter(
+    const checkOutUserCount = todayOverview.filter(
       (transaction) => transaction.checkOutTime
     ).length;
 
-    const netRevenue = transactions.reduce(
+    const netRevenue = todayOverview.reduce(
       (acc, transaction) => acc + (transaction.profit ?? 0),
       0
     );

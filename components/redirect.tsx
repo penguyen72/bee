@@ -9,7 +9,7 @@ export function Redirect() {
   useEffect(() => {
     const id = setTimeout(() => {
       router.push('/');
-    }, 5000);
+    }, 20000);
 
     return () => {
       clearTimeout(id);
