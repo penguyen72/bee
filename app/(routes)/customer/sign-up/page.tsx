@@ -16,7 +16,7 @@ export default function Home() {
           Start earning points for your Next Visits!
         </p>
         <p className="text-2xl">Every $1 = 1 Point</p>
-        <p className="text-2xl">100 Points = $5 OFF</p>
+        <p className="text-2xl">250 Points = $10 OFF</p>
       </div>
     </main>
   );
