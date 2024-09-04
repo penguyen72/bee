@@ -40,11 +40,15 @@ export function ProfileForm({ organizationInfo }: Props) {
     defaultValues,
   });
 
+  const disabled = true;
+
   function onSubmit(values: z.infer<typeof ProfileSchema>) {
-    updateOrganizationProfile(id, values).then((data) => {
-      setSuccess(data.success);
-      setError(data.error);
-    });
+    if (disabled) {
+      updateOrganizationProfile(id, values).then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      });
+    }
   }
 
   return (
@@ -187,7 +191,7 @@ export function ProfileForm({ organizationInfo }: Props) {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button className="ml-auto mt-auto" type="submit">
+          <Button className="ml-auto mt-auto" type="submit" disabled={disabled}>
             Save
           </Button>
         </div>

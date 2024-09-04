@@ -21,7 +21,7 @@ export default async function Home() {
       <SettingsHeader title="Profile" />
       <div className="flex flex-col gap-8">
         <ProfileForm organizationInfo={data.organization} />
-        <ChangePasswordForm />
+        {/* <ChangePasswordForm /> */}
       </div>
     </div>
   );
