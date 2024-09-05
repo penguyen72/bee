@@ -30,10 +30,12 @@ export async function UserSummaryCard({ user }: Props) {
             <Phone className="size-4" />
             <p>{user.phoneNumber}</p>
           </span>
-          <span className="flex items-center gap-1">
-            <Cake className="size-4" />
-            <p>{user.birthday ? format(user.birthday, 'MM/dd/yyyy') : null}</p>
-          </span>
+          {user.birthday ? (
+            <span className="flex items-center gap-1">
+              <Cake className="size-4" />
+              <p>{format(user.birthday, 'MM/dd/yyyy')}</p>
+            </span>
+          ) : null}
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-semibold">Points</p>

@@ -12,15 +12,22 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
   try {
     const { firstName, phoneNumber, birthday } = values;
 
-    if (!firstName || !phoneNumber || !birthday) {
-      return { error: 'All Fields Required!' };
+    if (!firstName) {
+      return { error: 'First Name is Required!' };
+    }
+
+    if (!phoneNumber) {
+      return { error: 'Phone Number is Required!' };
     }
 
     if (!isMobilePhone(formatPhoneNumber(phoneNumber), 'en-US')) {
       return { error: 'Invalid Phone Number!' };
     }
 
-    if (birthday.length < 10 || !isDate(birthday, { format: 'MM/DD/YYYY' })) {
+    if (
+      birthday &&
+      (birthday.length < 10 || !isDate(birthday, { format: 'MM/DD/YYYY' }))
+    ) {
       return { error: 'Invalid Date of Birth!' };
     }
 
@@ -39,7 +46,7 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
         data: {
           firstName,
           phoneNumber,
-          birthday: formatISO(new Date(birthday)),
+          birthday: birthday ? formatISO(new Date(birthday)) : null,
           currentPoints: 0,
           lifetimePoints: 0,
           visitCount: 1,

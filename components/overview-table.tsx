@@ -28,7 +28,7 @@ const columns = [
     id: 'type',
     header: 'NO.',
     cell: (info) => {
-      return <p>{info.row.index}</p>;
+      return <p>{info.row.index + 1}</p>;
     },
   }),
   columnHelper.display({
