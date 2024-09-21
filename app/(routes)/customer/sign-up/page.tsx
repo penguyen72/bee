@@ -11,12 +11,8 @@ export default function Home() {
           <SignUpForm />
         </div>
       </div>
-      <div className="bg-amber-200 min-h-[25vh] flex flex-col items-center justify-center">
-        <p className="text-2xl font-semibold">
-          Start earning points for your Next Visits!
-        </p>
-        <p className="text-2xl">Every $1 = 1 Point</p>
-        <p className="text-2xl">250 Points = $10 OFF</p>
+      <div className="bg-amber-200 min-h-[25vh] flex items-center justify-center">
+        <p className="text-2xl font-semibold">We hope you enjoy your visit!</p>
       </div>
     </main>
   );
