@@ -3,8 +3,8 @@ import { Progress } from '@/components/ui/progress';
 import { findNextPossibleRedemption } from '@/lib/utils';
 import { Customer } from '@prisma/client';
 import { format } from 'date-fns';
-
-import { Cake, Pencil, Phone } from 'lucide-react';
+import { Cake, Phone } from 'lucide-react';
+import { EditMemberButton } from './edit-member-button';
 
 interface Props {
   user: Customer;
@@ -22,9 +22,9 @@ export async function UserSummaryCard({ user }: Props) {
     <Card className="w-full border-l-blue-300 border-l-[12px]">
       <CardContent className="grid grid-cols-4 gap-12 p-3">
         <div className="flex flex-col gap-2">
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-2">
             <p className="font-semibold">{user.firstName}</p>
-            <Pencil className="size-4" />
+            <EditMemberButton user={user} />
           </span>
           <span className="flex items-center gap-1">
             <Phone className="size-4" />
