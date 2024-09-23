@@ -1,6 +1,13 @@
 'use client';
 
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import {
   Table,
   TableBody,
   TableCell,
@@ -10,16 +17,17 @@ import {
 } from '@/components/ui/table';
 import { TransactionsWithCustomer } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Customer } from '@prisma/client';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const columnHelper = createColumnHelper<TransactionsWithCustomer>();
 
@@ -87,61 +95,101 @@ interface Props {
 }
 
 export function OverviewTable({ data }: Props) {
-  const router = useRouter();
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
   const dataSource = useMemo(() => data, [data]);
+  const router = useRouter();
+
+  const { pageIndex, pageSize } = pagination;
 
   const { getHeaderGroups, getRowModel } = useReactTable({
     columns,
     data: dataSource,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination,
+    },
   });
 
+  function goToPage(page: number) {
+    if (page < 0 || page >= Math.ceil(dataSource.length / pageSize)) return;
+
+    setPagination((prevValue) => {
+      return {
+        ...prevValue,
+        pageIndex: page,
+      };
+    });
+  }
+
   return (
-    <Table className="border-separate border-spacing-y-3">
-      <TableHeader>
-        {getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {getRowModel().rows.map((row) => {
-          return (
-            <TableRow
-              key={row.id}
-              className="bg-white hover:cursor-pointer"
-              onClick={() => router.push(`/overview/${row.original.id}`)}
-            >
-              {row.getVisibleCells().map((cell, index, self) => {
+    <div>
+      <Table className="border-separate border-spacing-y-3">
+        <TableHeader>
+          {getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
                 return (
-                  <TableCell
-                    key={cell.id}
-                    className={cn(
-                      index === 0 &&
-                        'rounded-l-md border-l-[12px] border-l-blue-300',
-                      index === self.length - 1 && 'rounded-r-md'
-                    )}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 );
               })}
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {getRowModel().rows.map((row) => {
+            return (
+              <TableRow
+                key={row.id}
+                className="bg-white hover:cursor-pointer"
+                onClick={() => router.push(`/overview/${row.original.id}`)}
+              >
+                {row.getVisibleCells().map((cell, index, self) => {
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        index === 0 &&
+                          'rounded-l-md border-l-[12px] border-l-blue-300',
+                        index === self.length - 1 && 'rounded-r-md'
+                      )}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+      <Pagination>
+        <PaginationContent className="w-full">
+          {pageIndex !== 0 ? (
+            <PaginationItem className="hover:cursor-pointer mr-auto">
+              <PaginationPrevious onClick={() => goToPage(pageIndex - 1)} />
+            </PaginationItem>
+          ) : null}
+          {pageIndex !== Math.floor(dataSource.length / pageSize) ? (
+            <PaginationItem className="hover:cursor-pointer ml-auto">
+              <PaginationNext onClick={() => goToPage(pageIndex + 1)} />
+            </PaginationItem>
+          ) : null}
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 }
