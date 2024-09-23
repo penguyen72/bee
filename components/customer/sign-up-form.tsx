@@ -8,21 +8,19 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { formatDateOfBirth, formatPhoneNumber } from '@/lib/utils';
 import { SignUpSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { FormError } from '../form-error';
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>();
-  const inputRef = useRef(null);
   const router = useRouter();
 
   // 1. Define your form.
