@@ -13,7 +13,6 @@ export const updateUserProfile = async (
   values: z.infer<typeof EditMemberSchema>
 ) => {
   try {
-    console.log(values);
     const { firstName, phoneNumber, birthday, points } = values;
 
     if (!firstName) {
