@@ -8,7 +8,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { formatDateOfBirth, formatPhoneNumber } from '@/lib/utils';
@@ -49,15 +48,24 @@ export function SignUpForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-2 w-full"
       >
-        <FormMessage className="mb-2" />
-        <FormDescription>Please enter your basic information.</FormDescription>
+        <FormDescription className="text-black text-base mb-2">
+          Please enter your basic information.
+        </FormDescription>
         <FormField
           control={form.control}
           name="firstName"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <Input placeholder="First Name" {...field} />
+                <Input
+                  className="text-base"
+                  placeholder="First Name"
+                  {...field}
+                  onChange={(event) => {
+                    event.target.value = event.target.value.replace(' ', '');
+                    field.onChange(event);
+                  }}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -69,6 +77,7 @@ export function SignUpForm() {
             <FormItem className="w-full">
               <FormControl>
                 <Input
+                  className="text-base"
                   placeholder="Phone Number"
                   type="text"
                   {...field}
@@ -89,6 +98,7 @@ export function SignUpForm() {
             <FormItem className="w-full">
               <FormControl>
                 <Input
+                  className="text-base"
                   placeholder="Date of Birth"
                   type="text"
                   {...field}
@@ -103,7 +113,7 @@ export function SignUpForm() {
           )}
         />
         <FormError message={error} />
-        <Button className="w-[100px] mt-2 mx-auto" type="submit">
+        <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue
         </Button>
       </form>
