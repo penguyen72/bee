@@ -11,6 +11,13 @@ export const SignInSchema = z.object({
   phoneNumber: z.string(),
 });
 
+export const EditMemberSchema = z.object({
+  firstName: z.string(),
+  phoneNumber: z.string(),
+  birthday: z.string(),
+  points: z.string(),
+});
+
 export const ProfileSchema = z.object({
   businessName: z.string().optional(),
   address: z.string().optional(),
