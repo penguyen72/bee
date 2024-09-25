@@ -1,11 +1,18 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { getStartAndEndDate } from '@/lib/utils';
 import { isAfter, isBefore } from 'date-fns';
 
 export const getCheckInUsers = async (emailAddress: string | undefined) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     if (!emailAddress) {
       return { error: 'Email Environment Variable Not Set!' };
     }

@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { ProfileSchema } from '@/schemas';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +11,12 @@ export const updateOrganizationProfile = async (
   values: z.infer<typeof ProfileSchema>
 ) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     await prisma.organizations.update({
       where: { id },
       data: values,

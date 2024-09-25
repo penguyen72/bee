@@ -1,9 +1,16 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 
 export const getTransaction = async (transactionId: string) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     const transaction = await prisma.transactions.findUnique({
       include: {
         customer: true,
