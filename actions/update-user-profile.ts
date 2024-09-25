@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { formatPhoneNumber } from '@/lib/utils';
 import { EditMemberSchema } from '@/schemas';
@@ -13,6 +14,12 @@ export const updateUserProfile = async (
   values: z.infer<typeof EditMemberSchema>
 ) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     const { firstName, phoneNumber, birthday, points } = values;
 
     if (!firstName) {
