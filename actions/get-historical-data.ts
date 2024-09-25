@@ -1,9 +1,16 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 
 export const getHistoricalData = async () => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     const [users, transactions] = await prisma.$transaction([
       prisma.customer.findMany(),
       prisma.transactions.findMany({

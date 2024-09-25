@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { Redepemtion } from '@/lib/types';
 import { revalidatePath } from 'next/cache';
@@ -10,6 +11,12 @@ export const checkOutUser = async (
   redepemtion: Redepemtion | null
 ) => {
   try {
+    const session = await auth();
+
+    if (!session) {
+      return { error: 'Authorized User' };
+    }
+
     if (charges.length === 0) {
       return { error: 'No Charges Applied!' };
     }

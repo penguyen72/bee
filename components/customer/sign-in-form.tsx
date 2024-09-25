@@ -48,14 +48,20 @@ export function SignInForm() {
         className="flex flex-col gap-2 w-full"
       >
         <FormMessage className="mb-2" />
-        <FormDescription>Please enter your basic information.</FormDescription>
+        <FormDescription className="text-black text-base mb-2">
+          Please enter your basic information.
+        </FormDescription>
         <FormField
           control={form.control}
           name="firstName"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
-                <Input placeholder="First Name" {...field} />
+                <Input
+                  className="text-base"
+                  placeholder="First Name"
+                  {...field}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -67,6 +73,7 @@ export function SignInForm() {
             <FormItem className="w-full">
               <FormControl>
                 <Input
+                  className="text-base"
                   placeholder="Phone Number"
                   type="text"
                   {...field}
@@ -81,7 +88,7 @@ export function SignInForm() {
           )}
         />
         <FormError message={error} />
-        <Button className="w-[100px] mt-2 mx-auto" type="submit">
+        <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue
         </Button>
       </form>
