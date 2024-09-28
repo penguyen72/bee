@@ -1,11 +1,8 @@
 name: 'Backup MongoDB'
 
 on:
-  push:
-    branches:
-      - '**'
-#   schedule:
-#     - cron: '0 2 * * *'
+  schedule:
+    - cron: '0 2 * * *'
 
 jobs:
   mongodump:
@@ -38,3 +35,4 @@ jobs:
         with:
           name: backups
           path: dump*.gz
+          retention-days: 7
