@@ -40,10 +40,7 @@ export function Calculator({ value, setValue }: Props) {
         ) {
           return prevValue;
         }
-
-        const newChar = '' ? prevValue.includes('.') : operation;
-        const newValue = prevValue + newChar;
-        return newValue;
+        return prevValue + operation;
       });
     }
   }
