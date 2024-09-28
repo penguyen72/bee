@@ -1,0 +1,38 @@
+name: 'Backup MongoDB'
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  mongodump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up MongoDB Database Tools
+        run: |
+          wget https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.7.2.deb
+          sudo dpkg -i mongodb-database-tools-ubuntu2204-x86_64-100.7.2.deb
+          sudo apt-get update
+          sudo apt-get install -y mongodb-database-tools
+
+      - name: Verify mongodump Installation
+        run: |
+          mongodump --version
+
+      - name: Perform mongodump
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          mongodump --uri=$MONGO_URI --archive=dump-$(date +%F).gz --gzip
+          find . -name "dump*.gz" -exec echo "Found dump file: {}" \;
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backups
+          path: dump*.gz
+          retention-days: 7
