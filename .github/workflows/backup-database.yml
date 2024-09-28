@@ -25,17 +25,10 @@ jobs:
       - name: Verify mongodump Installation
         run: |
           mongodump --version
-      # - name: 'Checkout repository'
-      #   uses: 'actions/checkout@v3'
 
-      # - name: Set up MongoDB Tools
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt install ./mongodb-database-tools-*-100.10.0.deb
-
-      # - name: Perform mongodump
-      #   env:
-      #     MONGO_URI: ${{ secrets.MONGO_URI }} # Use GitHub secrets to securely store connection string
-      #   run: |
-      #     mongodump --uri=$MONGO_URI --archive=dump-$(date +%F).gz --gzip
-      #     find . -name "dump*.gz" -exec echo "Found dump file: {}" \;
+      - name: Perform mongodump
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          mongodump --uri=$MONGO_URI --archive=dump-$(date +%F).gz --gzip
+          find . -name "dump*.gz" -exec echo "Found dump file: {}" \;
