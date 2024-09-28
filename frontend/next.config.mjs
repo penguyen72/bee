@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   env: {
     BUSINESS_EMAIL: process.env.BUSINESS_EMAIL,
   },
