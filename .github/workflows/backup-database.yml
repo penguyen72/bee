@@ -18,7 +18,7 @@ jobs:
       - name: Set up MongoDB Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y mongodb-clients
+          sudo apt-get install -y mongodb-database-tools
 
       - name: Perform mongodump
         env:
