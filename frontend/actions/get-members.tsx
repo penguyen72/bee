@@ -11,7 +11,11 @@ export const getMembers = async () => {
       return { error: 'Authorized User' };
     }
 
-    const users = await prisma.customer.findMany();
+    const users = await prisma.customer.findMany({
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
 
     return {
       success: 'Success',
