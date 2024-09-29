@@ -28,3 +28,7 @@ export const ProfileSchema = z.object({
   phoneNumber: z.string().optional(),
   emailAddress: z.string(),
 });
+
+export const MemberSearchSchema = z.object({
+  searchString: z.string().optional(),
+});

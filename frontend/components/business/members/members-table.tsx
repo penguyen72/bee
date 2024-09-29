@@ -1,12 +1,27 @@
 'use client';
 
 import { Table } from '@/components/table';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { MemberSearchSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Customer } from '@prisma/client';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import Fuse from 'fuse.js';
 
 const columnHelper = createColumnHelper<Customer>();
 
@@ -74,23 +89,59 @@ interface Props {
 
 export function MembersTable({ data }: Props) {
   const router = useRouter();
-  const dataSource = useMemo(() => data, [data]);
+  const form = useForm<z.infer<typeof MemberSearchSchema>>({
+    resolver: zodResolver(MemberSearchSchema),
+    defaultValues: {
+      searchString: '',
+    },
+  });
+
+  const searchString = form.watch('searchString');
+
+  const dataSource = useMemo(() => {
+    if (!searchString) return data;
+
+    const fuse = new Fuse(data, {
+      isCaseSensitive: false,
+      threshold: 0.2,
+      keys: ['firstName', 'phoneNumber'],
+    });
+
+    return fuse.search(searchString).map((member) => member.item);
+  }, [data, searchString]);
 
   return (
-    <Table
-      dataSource={dataSource}
-      columns={columns}
-      tableRowProps={(row) => ({
-        className: 'bg-white hover:cursor-pointer',
-        onClick: () => router.push(`/members/${row.original.id}`),
-      })}
-      tableCellProps={({ cellIndex, cellSelf }) => ({
-        className: cn(
-          'border-l-amber-300',
-          cellIndex === 0 && 'rounded-l-md border-l-[12px]',
-          cellIndex === cellSelf.length - 1 && 'rounded-r-md'
-        ),
-      })}
-    />
+    <div>
+      <Form {...form}>
+        <form>
+          <FormField
+            control={form.control}
+            name="searchString"
+            render={({ field }) => (
+              <FormItem className="w-[300px]">
+                <FormControl>
+                  <Input placeholder="Search Name or Phone Number" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        tableRowProps={(row) => ({
+          className: 'bg-white hover:cursor-pointer',
+          onClick: () => router.push(`/members/${row.original.id}`),
+        })}
+        tableCellProps={({ cellIndex, cellSelf }) => ({
+          className: cn(
+            'border-l-amber-300',
+            cellIndex === 0 && 'rounded-l-md border-l-[12px]',
+            cellIndex === cellSelf.length - 1 && 'rounded-r-md'
+          ),
+        })}
+      />
+    </div>
   );
 }
