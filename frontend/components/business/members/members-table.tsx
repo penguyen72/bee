@@ -78,6 +78,9 @@ export function MembersTable({ data }: Props) {
     <Table
       dataSource={dataSource}
       columns={columns}
+      tableRowProps={() => ({
+        className: 'bg-white',
+      })}
       tableCellProps={({ cellIndex, cellSelf }) => ({
         className: cn(
           'border-l-amber-300',
