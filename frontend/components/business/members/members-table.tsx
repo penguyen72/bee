@@ -1,27 +1,19 @@
 'use client';
 
 import { Table } from '@/components/table';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { cn, determineMemberType, MEMBER_TYPE_COLOR } from '@/lib/utils';
 import { MemberSearchSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Customer } from '@prisma/client';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import Fuse from 'fuse.js';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import Fuse from 'fuse.js';
 
 const columnHelper = createColumnHelper<Customer>();
 
@@ -69,7 +61,8 @@ const columns = [
     id: 'last-visit',
     header: 'MEMBER TYPE',
     cell: (info) => {
-      return null;
+      const memberType = determineMemberType(info.row.original);
+      return <p className={MEMBER_TYPE_COLOR[memberType]}>{memberType}</p>;
     },
   }),
   columnHelper.display({

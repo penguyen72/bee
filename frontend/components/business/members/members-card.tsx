@@ -1,29 +1,53 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+'use client';
 
-export function MembersCard() {
-  const items = [
-    {
-      title: 'Total Members',
-      content: 1254,
-    },
-    {
-      title: 'VIP Members',
-      content: 202,
-    },
-    {
-      title: 'Regular Members',
-      content: 800,
-    },
-    {
-      title: 'At Risk Members',
-      content: 212,
-    },
-    {
-      title: 'New Members',
-      content: 40,
-    },
-  ];
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn, determineMemberType } from '@/lib/utils';
+import { Customer } from '@prisma/client';
+import { useMemo } from 'react';
+
+interface Props {
+  data: Customer[];
+}
+
+export function MembersCard({ data }: Props) {
+  const items = useMemo(() => {
+    const totalMembers = data.length;
+    const vipMembers = data.filter(
+      (user) => determineMemberType(user) === 'Vip'
+    ).length;
+    const regularMembers = data.filter(
+      (user) => determineMemberType(user) === 'Regular'
+    ).length;
+    const atRiskMembers = data.filter(
+      (user) => determineMemberType(user) === 'At Risk'
+    ).length;
+    const newMembers = data.filter(
+      (user) => determineMemberType(user) === 'New'
+    ).length;
+
+    return [
+      {
+        title: 'Total Members',
+        content: totalMembers,
+      },
+      {
+        title: 'VIP Members',
+        content: vipMembers,
+      },
+      {
+        title: 'Regular Members',
+        content: regularMembers,
+      },
+      {
+        title: 'At Risk Members',
+        content: atRiskMembers,
+      },
+      {
+        title: 'New Members',
+        content: newMembers,
+      },
+    ];
+  }, [data]);
 
   return (
     <Card className="w-full">

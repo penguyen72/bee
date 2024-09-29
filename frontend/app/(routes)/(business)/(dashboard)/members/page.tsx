@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-6 w-full h-full">
-      <MembersCard />
+      <MembersCard data={data.users ?? []} />
       <MembersTable data={data.users ?? []} />
     </div>
   );

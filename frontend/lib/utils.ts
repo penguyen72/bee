@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { endOfDay, isAfter, startOfDay, subWeeks } from 'date-fns';
 import {
   formatInTimeZone,
   fromZonedTime,
@@ -6,7 +7,7 @@ import {
 } from 'date-fns-tz';
 import { twMerge } from 'tailwind-merge';
 import { REDEPEMTIONS } from './constants';
-import { endOfDay, startOfDay } from 'date-fns';
+import { Customer } from '@prisma/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -116,3 +117,34 @@ export function getStartAndEndDate(today: Date, timezone: string) {
 
   return { startDate, endDate };
 }
+
+export const Member = {
+  VIP: 'Vip',
+  REGULAR: 'Regular',
+  RISK: 'At Risk',
+  NEW: 'New',
+} as const;
+
+type ObjectType<T> = T[keyof T];
+
+type MemberType = ObjectType<typeof Member>;
+
+export function determineMemberType(user: Customer): MemberType {
+  const today = new Date();
+  if (user.visitCount === 1) {
+    return 'New';
+  } else if (isAfter(user.updatedAt, subWeeks(today, 2))) {
+    return 'Vip';
+  } else if (isAfter(user.updatedAt, subWeeks(today, 4))) {
+    return 'Regular';
+  } else {
+    return 'At Risk';
+  }
+}
+
+export const MEMBER_TYPE_COLOR: Record<MemberType, string> = {
+  [Member.NEW]: 'text-blue-700',
+  [Member.RISK]: 'text-red-700',
+  [Member.REGULAR]: 'text-green-700',
+  [Member.VIP]: 'text-yellow-700',
+};
