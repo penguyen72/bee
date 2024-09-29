@@ -1,11 +1,10 @@
 'use client';
 
-import { CheckOutSummary } from '@/components/business/check-out-summary';
 import { Calculator } from '@/components/calculator';
 import { Button } from '@/components/ui/button';
 import { TransactionsWithCustomer } from '@/lib/types';
-import { Customer } from '@prisma/client';
 import { useState } from 'react';
+import { CheckOutSummary } from './check-out-summary';
 
 interface Props {
   transaction: TransactionsWithCustomer;

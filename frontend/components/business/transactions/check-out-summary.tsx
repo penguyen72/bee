@@ -11,7 +11,7 @@ import { cn, convertToUSD } from '@/lib/utils';
 
 import { Fragment, useState } from 'react';
 
-import { FormSuccess } from '../form-success';
+import { FormSuccess } from '@/components/form-success';
 import { CheckOutSummaryItem } from './check-out-summary-item';
 
 interface Props {

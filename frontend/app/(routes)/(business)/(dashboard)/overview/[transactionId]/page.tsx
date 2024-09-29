@@ -1,6 +1,6 @@
 import { getTransaction } from '@/actions/get-transaction';
-import { UserSummaryCard } from '@/components/business/user-summary-card';
-import { RedemptionForm } from '@/components/redemption-form';
+import { RedemptionForm } from '@/components/business/transactions/redemption-form';
+import { UserSummaryCard } from '@/components/ui/user-summary-card';
 
 interface Props {
   params: { transactionId: string };
@@ -15,7 +15,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <div className="flex flex-col gap-6 w-full h-full">
-      <UserSummaryCard user={user} />
+      <UserSummaryCard user={user} type="transaction" />
       <RedemptionForm transaction={data.transaction} />
     </div>
   );

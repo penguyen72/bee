@@ -1,16 +1,17 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { findNextPossibleRedemption } from '@/lib/utils';
+import { cn, findNextPossibleRedemption } from '@/lib/utils';
 import { Customer } from '@prisma/client';
 import { format } from 'date-fns';
 import { Cake, Phone } from 'lucide-react';
-import { EditMemberButton } from './edit-member-button';
+import { EditMemberButton } from '../business/transactions/edit-member-button';
 
 interface Props {
   user: Customer;
+  type?: 'member' | 'transaction';
 }
 
-export async function UserSummaryCard({ user }: Props) {
+export async function UserSummaryCard({ user, type }: Props) {
   const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints);
   const pointsUntilNextRedemption = nextPossibleRedemption - user.currentPoints;
   const percentageOfNextRedemption = Math.min(
@@ -19,12 +20,18 @@ export async function UserSummaryCard({ user }: Props) {
   );
 
   return (
-    <Card className="w-full border-l-blue-300 border-l-[12px]">
+    <Card
+      className={cn(
+        'w-full border-l-[12px]',
+        type === 'member' && 'border-l-amber-300',
+        type === 'transaction' && 'border-l-blue-300'
+      )}
+    >
       <CardContent className="grid grid-cols-4 gap-12 p-3">
         <div className="flex flex-col gap-2">
           <span className="flex items-center gap-2">
             <p className="font-semibold">{user.firstName}</p>
-            <EditMemberButton user={user} />
+            {type === 'member' ? <EditMemberButton user={user} /> : null}
           </span>
           <span className="flex items-center gap-1">
             <Phone className="size-4" />
