@@ -1,10 +1,10 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { History, Home, Settings } from 'lucide-react';
+import { History, Home, Settings, Users } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
-export function OverviewHeader() {
+export function Header() {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -12,7 +12,7 @@ export function OverviewHeader() {
     <div className="flex items-center gap-4 justify-between w-full">
       <h2 className="text-xl font-semibold">Sun Nails & Spa</h2>
       <div className="flex items-center">
-        {pathname !== '/overview' ? (
+        {!pathname.includes('/overview') ? (
           <Button
             variant="ghost"
             size="icon"
@@ -21,13 +21,22 @@ export function OverviewHeader() {
             <Home />
           </Button>
         ) : null}
-        {pathname.includes('/overview') ? (
+        {!pathname.includes('/transactions') ? (
           <Button
             variant="ghost"
             size="icon"
             onClick={() => router.push('/transactions')}
           >
             <History />
+          </Button>
+        ) : null}
+        {!pathname.includes('/members') ? (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push('/members')}
+          >
+            <Users />
           </Button>
         ) : null}
         <Button

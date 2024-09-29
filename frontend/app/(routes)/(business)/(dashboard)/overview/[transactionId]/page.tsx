@@ -1,6 +1,6 @@
 import { getTransaction } from '@/actions/get-transaction';
-import { UserSummaryCard } from '@/components/business/user-summary-card';
-import { RedemptionForm } from '@/components/redemption-form';
+import { RedemptionForm } from '@/components/business/transactions/redemption-form';
+import { UserSummaryCard } from '@/components/business/transactions/user-summary-card';
 
 interface Props {
   params: { transactionId: string };
