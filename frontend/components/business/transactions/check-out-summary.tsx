@@ -105,7 +105,7 @@ export function CheckOutSummary({
                 );
               })}
             </div>
-            <p className="text-sm text-red-600 mb-6">Maximum $20 Off per day</p>
+            <p className="text-sm text-red-600 mb-6">Maximum $35 Off per day</p>
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
