@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Customer } from '@prisma/client';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 const columnHelper = createColumnHelper<Customer>();
@@ -72,14 +73,16 @@ interface Props {
 }
 
 export function MembersTable({ data }: Props) {
+  const router = useRouter();
   const dataSource = useMemo(() => data, [data]);
 
   return (
     <Table
       dataSource={dataSource}
       columns={columns}
-      tableRowProps={() => ({
-        className: 'bg-white',
+      tableRowProps={(row) => ({
+        className: 'bg-white hover:cursor-pointer',
+        onClick: () => router.push(`/members/${row.original.id}`),
       })}
       tableCellProps={({ cellIndex, cellSelf }) => ({
         className: cn(
