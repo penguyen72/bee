@@ -31,7 +31,7 @@ export async function UserSummaryCard({ user, type }: Props) {
         <div className="flex flex-col gap-2">
           <span className="flex items-center gap-2">
             <p className="font-semibold">{user.firstName}</p>
-            <EditMemberButton user={user} />
+            {type === 'member' ? <EditMemberButton user={user} /> : null}
           </span>
           <span className="flex items-center gap-1">
             <Phone className="size-4" />
