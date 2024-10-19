@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { History, Home, Settings, Users } from 'lucide-react';
+import { Gift, History, Home, Settings, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export function Header() {
@@ -31,6 +31,13 @@ export function Header() {
           onClick={() => router.push('/members')}
         >
           <Users />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.push('/promotions')}
+        >
+          <Gift />
         </Button>
         <Button
           variant="ghost"

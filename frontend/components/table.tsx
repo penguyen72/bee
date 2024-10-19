@@ -30,6 +30,7 @@ import { useState } from 'react';
 interface Props<TData extends RowData> {
   dataSource: TData[];
   columns: ColumnDef<TData, any>[];
+  hideHeader?: boolean;
   tableRowProps?: (
     row: Row<TData>,
     index: number,
@@ -55,6 +56,7 @@ interface Props<TData extends RowData> {
 export function Table<TData extends RowData>({
   dataSource,
   columns,
+  hideHeader,
   tableRowProps,
   tableCellProps,
 }: Props<TData>) {
@@ -88,24 +90,26 @@ export function Table<TData extends RowData>({
   return (
     <div>
       <ShadcnTable className="border-separate border-spacing-y-3">
-        <TableHeader>
-          {getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
+        {!hideHeader ? (
+          <TableHeader>
+            {getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+        ) : null}
         <TableBody>
           {getRowModel().rows.map((row, rowIndex, rowSelf) => {
             const _tableRowProps =

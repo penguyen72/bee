@@ -32,3 +32,16 @@ export const ProfileSchema = z.object({
 export const MemberSearchSchema = z.object({
   searchString: z.string().optional(),
 });
+
+export const AddPromotionSchema = z.object({
+  name: z.string(),
+  unit: z.string(),
+  value: z.string(),
+  type: z.string(),
+  expiration: z.date(),
+  addBusinessPhoneNumber: z.boolean(),
+  welcomeWalkin: z.boolean(),
+  optOut: z.boolean(),
+  message: z.string(),
+  messagePreview: z.string(),
+});
