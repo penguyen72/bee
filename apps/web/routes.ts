@@ -2,7 +2,7 @@ export const publicRoutePrefix: string = '/customer';
 
 export const publicRoutes: string[] = ['/'];
 
-export const authRoutes: string[] = ['/login'];
+export const authRoutes: string[] = ['/log-in', '/sign-up'];
 
 export const apiAuthPrefix: string = '/api/auth';
 
