@@ -3,13 +3,25 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "build:frontend": "npm run build --workspace=@bee/frontend",
+    "build:web": "npm run build --workspace=@bee/web",
+    "build:admin": "npm run build --workspace=@bee/admin",
+    "build:marketing": "npm run build --workspace=@bee/marketing",
     "dev": "turbo dev",
-    "dev:frontend": "npm run dev --workspace=@bee/frontend",
+    "dev:web": "npm run dev --workspace=@bee/web",
+    "dev:admin": "npm run dev --workspace=@bee/admin",
+    "dev:marketing": "npm run dev --workspace=@bee/marketing",
+    "install:ui": "npm install --workspace=@bee/ui",
+    "install:web": "npm install --workspace=@bee/web",
+    "install:admin": "npm install --workspace=@bee/admin",
+    "install:marketing": "npm install --workspace=@bee/marketing",
+    "add:ui": "npm run add --workspace=@bee/ui",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "husky": "8.0.3",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"
@@ -19,10 +31,19 @@
   },
   "packageManager": "npm@10.2.0",
   "workspaces": [
-    "frontend",
+    "apps/*",
     "packages/*"
   ],
   "dependencies": {
     "fuse.js": "^7.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md,json}": [
+      "prettier -w"
+    ]
   }
 }
