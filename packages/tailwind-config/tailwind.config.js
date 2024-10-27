@@ -4,7 +4,7 @@ const config = {
     '../../packages/ui/**/*.{js,ts,jsx,tsx}',
     '../../apps/web/**/*.{js,ts,jsx,tsx}',
     '../../apps/admin/**/*.{js,ts,jsx,tsx}',
-    '../../apps/marketing/**/*.{js,ts,jsx,tsx}',
+    '../../apps/marketing/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}',
     '!**/node_modules/**/*',
   ],
   prefix: '',
