@@ -12,6 +12,7 @@
   },
   "aliases": {
     "components": "@bee/ui/components",
+    "hooks": "@bee/ui/hooks",
     "utils": "@bee/ui/lib/utils"
   }
 }

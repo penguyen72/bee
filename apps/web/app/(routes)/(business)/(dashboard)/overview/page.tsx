@@ -8,7 +8,7 @@ export default async function Home() {
   if (data.error) return null;
 
   return (
-    <div className="flex flex-col gap-6 w-full h-full">
+    <div className="flex flex-col w-full h-full gap-6">
       <OverviewCard overview={data.overview} />
       <OverviewTable data={data.checkInUsers ?? []} />
     </div>

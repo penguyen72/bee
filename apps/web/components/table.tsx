@@ -106,12 +106,12 @@ export function Table<TData extends RowData>({ dataSource, columns, hideHeader, 
       <Pagination>
         <PaginationContent className="w-full">
           {pageIndex !== 0 ? (
-            <PaginationItem className="hover:cursor-pointer mr-auto">
+            <PaginationItem className="mr-auto hover:cursor-pointer">
               <PaginationPrevious onClick={() => goToPage(pageIndex - 1)} />
             </PaginationItem>
           ) : null}
           {pageIndex !== Math.floor(dataSource.length / pageSize) ? (
-            <PaginationItem className="hover:cursor-pointer ml-auto">
+            <PaginationItem className="ml-auto hover:cursor-pointer">
               <PaginationNext onClick={() => goToPage(pageIndex + 1)} />
             </PaginationItem>
           ) : null}

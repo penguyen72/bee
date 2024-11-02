@@ -4,7 +4,6 @@ import { Table } from '@/components/table';
 import { TransactionsWithCustomer } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { createColumnHelper } from '@tanstack/react-table';
-
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -28,9 +27,7 @@ const columns = [
       return (
         <div className="flex flex-col gap-2">
           <p>{name}</p>
-          <p className="text-xs text-slate-500">
-            Joined {format(createdAt, 'MMMM yyyy')}
-          </p>
+          <p className="text-xs text-slate-500">Joined {format(createdAt, 'MMMM yyyy')}</p>
         </div>
       );
     },
@@ -47,9 +44,7 @@ const columns = [
     id: 'type',
     header: 'TYPE',
     cell: (info) => {
-      return (
-        <p>{info.row.original.customer.visitCount > 1 ? 'Returning' : 'New'}</p>
-      );
+      return <p>{info.row.original.customer.visitCount > 1 ? 'Returning' : 'New'}</p>;
     },
   }),
   columnHelper.display({
@@ -93,7 +88,7 @@ export function OverviewTable({ data }: Props) {
       tableCellProps={({ cellIndex, cellSelf }) => ({
         className: cn(
           cellIndex === 0 && 'rounded-l-md border-l-[12px] border-l-blue-300',
-          cellIndex === cellSelf.length - 1 && 'rounded-r-md'
+          cellIndex === cellSelf.length - 1 && 'rounded-r-md',
         ),
       })}
     />
