@@ -3,10 +3,11 @@ import { RedemptionForm } from '@/components/business/transactions/redemption-fo
 import { UserSummaryCard } from '@/components/ui/user-summary-card';
 
 interface Props {
-  params: { transactionId: string };
+  params: Promise<{ transactionId: string }>;
 }
 
-export default async function Home({ params }: Props) {
+export default async function Home(props: Props) {
+  const params = await props.params;
   const data = await getTransaction(params.transactionId);
 
   if (data.error || !data.transaction?.customer) return null;

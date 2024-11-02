@@ -2,10 +2,11 @@ import { getMember } from '@/actions/get-member';
 import { UserSummaryCard } from '@/components/ui/user-summary-card';
 
 interface Props {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }
 
-export default async function Home({ params }: Props) {
+export default async function Home(props: Props) {
+  const params = await props.params;
   const data = await getMember(params.userId);
 
   if (data.error || !data?.customer) return null;
