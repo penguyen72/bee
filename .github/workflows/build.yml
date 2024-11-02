@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "test/workflow"
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build
+        run: |
+          echo 'build'

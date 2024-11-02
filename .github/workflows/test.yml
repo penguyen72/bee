@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+    branches:
+      - "test/workflow"
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print
+        run: |
+          echo 'print'
