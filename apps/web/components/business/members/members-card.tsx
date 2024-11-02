@@ -59,6 +59,7 @@ export function MembersCard({ data }: Props) {
           {items.map((item, index) => {
             return (
               <div
+                key={index}
                 className={cn(
                   "flex flex-col justify-between gap-1",
                   index === 0 && "font-semibold border-r-2 border-r-white",
