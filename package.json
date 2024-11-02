@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "build:frontend": "npm run build --workspace=@bee/frontend",
+    "build:web": "npm run build --workspace=@bee/web",
     "dev": "turbo dev",
-    "dev:frontend": "npm run dev --workspace=@bee/frontend",
+    "dev:web": "npm run dev --workspace=@bee/web",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -19,8 +19,7 @@
   },
   "packageManager": "npm@10.2.0",
   "workspaces": [
-    "frontend",
-    "packages/*"
+    "apps/*"
   ],
   "dependencies": {
     "fuse.js": "^7.0.0"
