@@ -1,10 +1,10 @@
-'use client';
+"use client"
 
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <main className="flex h-full flex-col text-center">
@@ -14,13 +14,13 @@ export default function Home() {
         </p>
         <Button
           className="bg-amber-300 hover:bg-amber-400 text-black text-2xl font-semibold w-96 h-14 py-4 rounded-xl shadow-md"
-          onClick={() => router.push('/customer/sign-up')}
+          onClick={() => router.push("/customer/sign-up")}
         >
           New User
         </Button>
         <Button
           className="bg-amber-200 hover:bg-amber-300 text-black text-2xl font-semibold w-96 h-14 py-4 rounded-xl shadow-md"
-          onClick={() => router.push('/customer/sign-in')}
+          onClick={() => router.push("/customer/sign-in")}
         >
           Returning User
         </Button>
@@ -34,5 +34,5 @@ export default function Home() {
         <p className="text-xl">750 Points = $35 Off</p>
       </div>
     </main>
-  );
+  )
 }

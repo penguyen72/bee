@@ -1,41 +1,41 @@
-'use client';
+"use client"
 
-import { SettingsNavItem } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import { CircleHelp, User, Users, Wrench } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
-import { Fragment } from 'react';
+import { SettingsNavItem } from "@/lib/types"
+import { cn } from "@/lib/utils"
+import { CircleHelp, User, Users, Wrench } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { Fragment } from "react"
 
 const items: SettingsNavItem[] = [
   {
-    key: 'profile',
+    key: "profile",
     icon: User,
-    label: 'Profile',
-    path: '/profile',
+    label: "Profile",
+    path: "/profile"
   },
   {
-    key: 'members',
+    key: "members",
     icon: Users,
-    label: 'Members',
-    path: '/members',
+    label: "Members",
+    path: "/members"
   },
   {
-    key: 'preferences',
+    key: "preferences",
     icon: Wrench,
-    label: 'Preferences',
-    path: '/preferences',
+    label: "Preferences",
+    path: "/preferences"
   },
   {
-    key: 'help',
+    key: "help",
     icon: CircleHelp,
-    label: 'Help',
-    path: '/help',
-  },
-];
+    label: "Help",
+    path: "/help"
+  }
+]
 
 export function SettingsNavBar() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <Fragment>
@@ -45,16 +45,16 @@ export function SettingsNavBar() {
           <div
             key={item.key}
             className={cn(
-              'flex items-center gap-4 py-2 pl-12 hover:cursor-pointer',
-              pathname.includes(item.path) && 'bg-amber-200'
+              "flex items-center gap-4 py-2 pl-12 hover:cursor-pointer",
+              pathname.includes(item.path) && "bg-amber-200"
             )}
             onClick={() => router.push(`/settings${item.path}`)}
           >
             <item.icon size={36} />
             <p className="text-lg font-semibold">{item.label}</p>
           </div>
-        );
+        )
       })}
     </Fragment>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { signIn } from '@/auth';
-import { Button } from '@/components/ui/button';
+import { signIn } from "@/auth"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
@@ -9,8 +9,8 @@ export default function Home() {
         <p>Welcome back! Please sign in to your account. </p>
         <form
           action={async () => {
-            'use server';
-            await signIn('google');
+            "use server"
+            await signIn("google")
           }}
         >
           <Button className="mt-4" variant="secondary" type="submit">
@@ -19,5 +19,5 @@ export default function Home() {
         </form>
       </div>
     </main>
-  );
+  )
 }

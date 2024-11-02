@@ -1,50 +1,50 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn, convertToUSD } from '@/lib/utils';
-import { formatInTimeZone } from 'date-fns-tz';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn, convertToUSD } from "@/lib/utils"
+import { formatInTimeZone } from "date-fns-tz"
 
 interface Props {
   overview:
     | {
-        checkInUserCount: number;
-        checkOutUserCount: number;
-        netRevenue: number;
-        rewardsRedeemed: number;
-        timezone: string;
+        checkInUserCount: number
+        checkOutUserCount: number
+        netRevenue: number
+        rewardsRedeemed: number
+        timezone: string
       }
-    | undefined;
+    | undefined
 }
 
 export function OverviewCard({ overview }: Props) {
-  if (!overview) return null;
+  if (!overview) return null
 
   const items = [
     {
-      title: 'Checked-In Members',
+      title: "Checked-In Members",
       content: overview.checkInUserCount,
-      color: 'bg-blue-300',
+      color: "bg-blue-300"
     },
     {
-      title: 'Checked-Out Members',
+      title: "Checked-Out Members",
       content: overview.checkOutUserCount,
-      color: 'bg-green-200',
+      color: "bg-green-200"
     },
     {
-      title: 'Rewards Redeemed',
+      title: "Rewards Redeemed",
       content: convertToUSD(overview.rewardsRedeemed),
-      color: 'bg-violet-300',
+      color: "bg-violet-300"
     },
     {
-      title: 'Net Revenue',
+      title: "Net Revenue",
       content: convertToUSD(overview.netRevenue),
-      color: 'bg-yellow-100',
-    },
-  ];
+      color: "bg-yellow-100"
+    }
+  ]
 
   const currentDateBasedOnTimeZone = formatInTimeZone(
     Date.now(),
     overview.timezone,
-    'MM/dd/yyyy'
-  );
+    "MM/dd/yyyy"
+  )
 
   return (
     <Card className="w-full">
@@ -64,9 +64,9 @@ export function OverviewCard({ overview }: Props) {
                 <p className="text-2xl font-semibold">{item.content}</p>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </CardContent>
     </Card>
-  );
+  )
 }

@@ -1,34 +1,34 @@
-'use client';
+"use client"
 
-import SettingsHeader from '@/components/settings/settings-header';
-import { Button } from '@/components/ui/button';
+import SettingsHeader from "@/components/settings/settings-header"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+  FormLabel
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 const formSchema = z.object({
   firstName: z.string(),
   phoneNUmber: z.string(),
-  birthday: z.string(),
-});
+  birthday: z.string()
+})
 
 export default function Home() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: '',
-      phoneNUmber: '',
-      birthday: '',
-    },
-  });
+      firstName: "",
+      phoneNUmber: "",
+      birthday: ""
+    }
+  })
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -93,5 +93,5 @@ export default function Home() {
         </form>
       </Form>
     </div>
-  );
+  )
 }

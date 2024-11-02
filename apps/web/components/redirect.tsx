@@ -1,20 +1,20 @@
-'use client';
+"use client"
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 export function Redirect() {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     const id = setTimeout(() => {
-      router.push('/');
-    }, 20000);
+      router.push("/")
+    }, 20000)
 
     return () => {
-      clearTimeout(id);
-    };
-  }, []);
+      clearTimeout(id)
+    }
+  }, [])
 
-  return null;
+  return null
 }

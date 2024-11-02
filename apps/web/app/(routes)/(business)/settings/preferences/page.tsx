@@ -1,6 +1,6 @@
-import { signOut } from '@/auth';
-import SettingsHeader from '@/components/settings/settings-header';
-import { Button } from '@/components/ui/button';
+import { signOut } from "@/auth"
+import SettingsHeader from "@/components/settings/settings-header"
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
@@ -8,8 +8,8 @@ export default function Home() {
       <SettingsHeader title="Preferences" />
       <form
         action={async () => {
-          'use server';
-          await signOut({ redirectTo: '/login' });
+          "use server"
+          await signOut({ redirectTo: "/login" })
         }}
       >
         <Button variant="secondary" type="submit">
@@ -17,5 +17,5 @@ export default function Home() {
         </Button>
       </form>
     </div>
-  );
+  )
 }

@@ -1,26 +1,26 @@
-'use client';
+"use client"
 
-import { Calculator } from '@/components/calculator';
-import { Button } from '@/components/ui/button';
-import { TransactionsWithCustomer } from '@/lib/types';
-import { useState } from 'react';
-import { CheckOutSummary } from './check-out-summary';
+import { Calculator } from "@/components/calculator"
+import { Button } from "@/components/ui/button"
+import { TransactionsWithCustomer } from "@/lib/types"
+import { useState } from "react"
+import { CheckOutSummary } from "./check-out-summary"
 
 interface Props {
-  transaction: TransactionsWithCustomer;
+  transaction: TransactionsWithCustomer
 }
 
 export function RedemptionForm({ transaction }: Props) {
-  const [value, setValue] = useState<string>('');
-  const [addedCharges, setAddedCharges] = useState<number[]>([]);
+  const [value, setValue] = useState<string>("")
+  const [addedCharges, setAddedCharges] = useState<number[]>([])
 
   function addCharge() {
     setAddedCharges((prevValue) => {
-      const newValue = [...prevValue];
-      newValue.push(Number(value));
-      return newValue;
-    });
-    setValue('');
+      const newValue = [...prevValue]
+      newValue.push(Number(value))
+      return newValue
+    })
+    setValue("")
   }
 
   return (
@@ -41,5 +41,5 @@ export function RedemptionForm({ transaction }: Props) {
         />
       </div>
     </div>
-  );
+  )
 }

@@ -1,22 +1,22 @@
-import { z } from 'zod';
+import { z } from "zod"
 
 export const SignUpSchema = z.object({
   firstName: z.string(),
   phoneNumber: z.string(),
-  birthday: z.string(),
-});
+  birthday: z.string()
+})
 
 export const SignInSchema = z.object({
   firstName: z.string(),
-  phoneNumber: z.string(),
-});
+  phoneNumber: z.string()
+})
 
 export const EditMemberSchema = z.object({
   firstName: z.string(),
   phoneNumber: z.string(),
   birthday: z.string(),
-  points: z.string(),
-});
+  points: z.string()
+})
 
 export const ProfileSchema = z.object({
   businessName: z.string().optional(),
@@ -26,12 +26,12 @@ export const ProfileSchema = z.object({
   zipCode: z.string().optional(),
   timezone: z.string().optional(),
   phoneNumber: z.string().optional(),
-  emailAddress: z.string(),
-});
+  emailAddress: z.string()
+})
 
 export const MemberSearchSchema = z.object({
-  searchString: z.string().optional(),
-});
+  searchString: z.string().optional()
+})
 
 export const AddPromotionSchema = z.object({
   name: z.string(),
@@ -43,5 +43,5 @@ export const AddPromotionSchema = z.object({
   welcomeWalkin: z.boolean(),
   optOut: z.boolean(),
   message: z.string(),
-  messagePreview: z.string(),
-});
+  messagePreview: z.string()
+})

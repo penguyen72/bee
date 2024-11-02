@@ -1,5 +1,5 @@
-import { SignInForm } from '@/components/customer/sign-in-form';
-import { HomeButton } from '@/components/home-button';
+import { SignInForm } from "@/components/customer/sign-in-form"
+import { HomeButton } from "@/components/home-button"
 
 export default function Home() {
   return (
@@ -15,5 +15,5 @@ export default function Home() {
         <p className="text-2xl font-semibold">We hope you enjoy your visit!</p>
       </div>
     </main>
-  );
+  )
 }

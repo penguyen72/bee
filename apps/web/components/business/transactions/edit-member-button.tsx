@@ -1,52 +1,52 @@
-'use client';
+"use client"
 
-import { updateUserProfile } from '@/actions/update-user-profile';
-import { FormError } from '@/components/form-error';
-import { Button } from '@/components/ui/button';
+import { updateUserProfile } from "@/actions/update-user-profile"
+import { FormError } from "@/components/form-error"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { formatDateOfBirth, formatPhoneNumber } from '@/lib/utils';
-import { EditMemberSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Customer } from '@prisma/client';
-import { formatDate } from 'date-fns';
-import { Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+  DialogTitle
+} from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { formatDateOfBirth, formatPhoneNumber } from "@/lib/utils"
+import { EditMemberSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Customer } from "@prisma/client"
+import { formatDate } from "date-fns"
+import { Pencil } from "lucide-react"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { z } from "zod"
 
 interface Props {
-  user: Customer;
+  user: Customer
 }
 
 export function EditMemberButton({ user }: Props) {
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState<string | undefined>();
+  const [open, setOpen] = useState(false)
+  const [error, setError] = useState<string | undefined>()
 
   const form = useForm<z.infer<typeof EditMemberSchema>>({
     resolver: zodResolver(EditMemberSchema),
     defaultValues: {
-      firstName: user.firstName ?? '',
+      firstName: user.firstName ?? "",
       phoneNumber: user.phoneNumber,
-      birthday: user.birthday ? formatDate(user.birthday, 'MM/dd/yyyy') : '',
-      points: String(user.currentPoints),
-    },
-  });
+      birthday: user.birthday ? formatDate(user.birthday, "MM/dd/yyyy") : "",
+      points: String(user.currentPoints)
+    }
+  })
 
   async function onSubmit(values: z.infer<typeof EditMemberSchema>) {
     updateUserProfile(user.id, values).then((data) => {
       if (data.success) {
-        setOpen(false);
-        setError(undefined);
+        setOpen(false)
+        setError(undefined)
       }
-      setError(data.error);
-    });
+      setError(data.error)
+    })
   }
 
   return (
@@ -95,8 +95,8 @@ export function EditMemberButton({ user }: Props) {
                       {...field}
                       value={formatPhoneNumber(field.value)}
                       onChange={(event) => {
-                        event.target.value = event.target.value.slice(0, 12);
-                        field.onChange(event);
+                        event.target.value = event.target.value.slice(0, 12)
+                        field.onChange(event)
                       }}
                     />
                   </FormControl>
@@ -116,8 +116,8 @@ export function EditMemberButton({ user }: Props) {
                       {...field}
                       value={formatDateOfBirth(field.value)}
                       onChange={(event) => {
-                        event.target.value = event.target.value.slice(0, 10);
-                        field.onChange(event);
+                        event.target.value = event.target.value.slice(0, 10)
+                        field.onChange(event)
                       }}
                     />
                   </FormControl>
@@ -156,5 +156,5 @@ export function EditMemberButton({ user }: Props) {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,44 +1,44 @@
-'use server';
+"use server"
 
-import prisma from '@/lib/prisma';
-import { formatPhoneNumber } from '@/lib/utils';
-import { SignUpSchema } from '@/schemas';
-import { formatISO } from 'date-fns';
-import { revalidatePath } from 'next/cache';
-import { isDate, isMobilePhone } from 'validator';
-import { z } from 'zod';
+import prisma from "@/lib/prisma"
+import { formatPhoneNumber } from "@/lib/utils"
+import { SignUpSchema } from "@/schemas"
+import { formatISO } from "date-fns"
+import { revalidatePath } from "next/cache"
+import { isDate, isMobilePhone } from "validator"
+import { z } from "zod"
 
 export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
   try {
-    const { firstName, phoneNumber, birthday } = values;
+    const { firstName, phoneNumber, birthday } = values
 
     if (!firstName) {
-      return { error: 'First Name is Required!' };
+      return { error: "First Name is Required!" }
     }
 
     if (!phoneNumber) {
-      return { error: 'Phone Number is Required!' };
+      return { error: "Phone Number is Required!" }
     }
 
-    if (!isMobilePhone(formatPhoneNumber(phoneNumber), 'en-US')) {
-      return { error: 'Invalid Phone Number!' };
+    if (!isMobilePhone(formatPhoneNumber(phoneNumber), "en-US")) {
+      return { error: "Invalid Phone Number!" }
     }
 
     if (
       birthday &&
-      (birthday.length < 10 || !isDate(birthday, { format: 'MM/DD/YYYY' }))
+      (birthday.length < 10 || !isDate(birthday, { format: "MM/DD/YYYY" }))
     ) {
-      return { error: 'Invalid Date of Birth!' };
+      return { error: "Invalid Date of Birth!" }
     }
 
     const existingUser = await prisma.customer.findUnique({
       where: {
-        phoneNumber: phoneNumber,
-      },
-    });
+        phoneNumber: phoneNumber
+      }
+    })
 
     if (existingUser) {
-      return { error: 'Phone Number already registered!' };
+      return { error: "Phone Number already registered!" }
     }
 
     const user = await prisma.$transaction(async (tx) => {
@@ -49,26 +49,26 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
           birthday: birthday ? formatISO(new Date(birthday)) : null,
           currentPoints: 0,
           lifetimePoints: 0,
-          visitCount: 1,
-        },
-      });
+          visitCount: 1
+        }
+      })
 
       await prisma.transactions.create({
         data: {
           customerId: customer.id,
           checkInTime: new Date(),
           checkOutTime: null,
-          currentPoints: customer.currentPoints,
-        },
-      });
+          currentPoints: customer.currentPoints
+        }
+      })
 
-      return customer;
-    });
+      return customer
+    })
 
-    revalidatePath('/', 'layout');
-    return { success: 'User Checked In', userId: user.id };
+    revalidatePath("/", "layout")
+    return { success: "User Checked In", userId: user.id }
   } catch (error) {
-    console.error(error);
-    return { error: 'Internal Server Error!' };
+    console.error(error)
+    return { error: "Internal Server Error!" }
   }
-};
+}

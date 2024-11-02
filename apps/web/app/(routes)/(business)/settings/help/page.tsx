@@ -1,6 +1,6 @@
-'use client';
+"use client"
 
-import SettingsHeader from '@/components/settings/settings-header';
+import SettingsHeader from "@/components/settings/settings-header"
 
 export default function Home() {
   return (
@@ -8,5 +8,5 @@ export default function Home() {
       <SettingsHeader title="Help" />
       <p className="text-xl font-semibold">Coming Soon!</p>
     </div>
-  );
+  )
 }

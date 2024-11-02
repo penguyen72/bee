@@ -1,63 +1,63 @@
-'use client';
+"use client"
 
-import { FormMenuItem } from '@/components/form-menu-item';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { FormMenuItem } from "@/components/form-menu-item"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  DialogTitle
+} from "@/components/ui/dialog"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+  FormLabel
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { AddPromotionSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
-import { CalendarIcon, Plus } from 'lucide-react';
-import { Fragment, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+  PopoverTrigger
+} from "@/components/ui/popover"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
+import { AddPromotionSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { format } from "date-fns"
+import { CalendarIcon, Plus } from "lucide-react"
+import { Fragment, useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { z } from "zod"
 
 const promotionTypeOptions = [
   {
-    label: 'Everything',
-    value: 'everything',
+    label: "Everything",
+    value: "everything"
   },
   {
-    label: 'Nail Care',
-    value: 'nailCare',
+    label: "Nail Care",
+    value: "nailCare"
   },
   {
-    label: 'Foot Care',
-    value: 'footCare',
-  },
-];
+    label: "Foot Care",
+    value: "footCare"
+  }
+]
 
 const promotionUnitsOptions = [
-  { label: '$', value: '$' },
-  { label: '%', value: '%' },
-];
+  { label: "$", value: "$" },
+  { label: "%", value: "%" }
+]
 
 function formatPromotionValue(unit: string, value: string) {
-  if (unit !== '$' && unit !== '%') return '';
-  if (unit === '$') return `${unit}${value}`;
-  if (unit === '%') return `${value}${unit}`;
+  if (unit !== "$" && unit !== "%") return ""
+  if (unit === "$") return `${unit}${value}`
+  if (unit === "%") return `${value}${unit}`
 }
 
 function generateMessage(
@@ -71,70 +71,70 @@ function generateMessage(
     expiration,
     addBusinessPhoneNumber,
     welcomeWalkin,
-    optOut,
-  } = values;
+    optOut
+  } = values
 
-  if (!name || !value) return null;
+  if (!name || !value) return null
 
   const businessPhoneNumberMessage = addBusinessPhoneNumber
-    ? ' Call us at 770-886-0072!'
-    : '';
-  const walkInMessage = welcomeWalkin ? ' Walk-Ins Welcome!' : '';
+    ? " Call us at 770-886-0072!"
+    : ""
+  const walkInMessage = welcomeWalkin ? " Walk-Ins Welcome!" : ""
   const optOutMessage = optOut
-    ? ' Reply STOP to opt out of future promotions.'
-    : '';
+    ? " Reply STOP to opt out of future promotions."
+    : ""
 
-  const promotionValue = formatPromotionValue(unit, value);
+  const promotionValue = formatPromotionValue(unit, value)
   const promotionType = promotionTypeOptions.find(
     (item) => item.value === type
-  )?.label;
-  const expirationDate = format(expiration, 'MM/dd/yyyy');
+  )?.label
+  const expirationDate = format(expiration, "MM/dd/yyyy")
 
-  const title = `Sun Nails & Spa: ${name} -`;
+  const title = `Sun Nails & Spa: ${name} -`
 
-  return `${title} Get ${promotionValue} Off all ${promotionType}! Offer EXP: ${expirationDate}.${businessPhoneNumberMessage}${walkInMessage}${optOutMessage}`;
+  return `${title} Get ${promotionValue} Off all ${promotionType}! Offer EXP: ${expirationDate}.${businessPhoneNumberMessage}${walkInMessage}${optOutMessage}`
 }
 
 export function AddPromotionButton() {
-  const [open, setOpen] = useState(false);
-  const [preview, setPreview] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [preview, setPreview] = useState(false)
   const form = useForm<z.infer<typeof AddPromotionSchema>>({
     resolver: zodResolver(AddPromotionSchema),
     defaultValues: {
-      name: '',
-      unit: '$',
-      value: '',
-      type: 'everything',
+      name: "",
+      unit: "$",
+      value: "",
+      type: "everything",
       addBusinessPhoneNumber: true,
       welcomeWalkin: true,
       optOut: false,
       expiration: new Date(),
-      message: '',
-      messagePreview: '',
-    },
-  });
+      message: "",
+      messagePreview: ""
+    }
+  })
 
   async function onSubmit(values: z.infer<typeof AddPromotionSchema>) {
-    console.log(values);
+    console.log(values)
   }
 
-  const name = form.watch('name');
-  const unit = form.watch('unit');
-  const value = form.watch('value');
-  const type = form.watch('type');
-  const expiration = form.watch('expiration');
-  const addBusinessPhoneNumber = form.watch('addBusinessPhoneNumber');
-  const welcomeWalkin = form.watch('welcomeWalkin');
-  const optOut = form.watch('optOut');
+  const name = form.watch("name")
+  const unit = form.watch("unit")
+  const value = form.watch("value")
+  const type = form.watch("type")
+  const expiration = form.watch("expiration")
+  const addBusinessPhoneNumber = form.watch("addBusinessPhoneNumber")
+  const welcomeWalkin = form.watch("welcomeWalkin")
+  const optOut = form.watch("optOut")
 
-  const values = form.getValues();
+  const values = form.getValues()
 
   useEffect(() => {
-    const message = generateMessage(values);
+    const message = generateMessage(values)
     if (message) {
-      form.setValue('message', message);
+      form.setValue("message", message)
     } else {
-      form.resetField('message');
+      form.resetField("message")
     }
   }, [
     name,
@@ -144,8 +144,8 @@ export function AddPromotionButton() {
     expiration,
     addBusinessPhoneNumber,
     welcomeWalkin,
-    optOut,
-  ]);
+    optOut
+  ])
 
   return (
     <Dialog open={open}>
@@ -160,7 +160,7 @@ export function AddPromotionButton() {
       <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>
-            {!preview ? 'Add New Promotion' : 'Confirm New Promotion Message'}
+            {!preview ? "Add New Promotion" : "Confirm New Promotion Message"}
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -200,7 +200,7 @@ export function AddPromotionButton() {
                               onChange={onChange}
                               isIcon
                             />
-                          );
+                          )
                         }}
                       />
                       <FormField
@@ -210,7 +210,7 @@ export function AddPromotionButton() {
                           <FormItem className="flex items-center gap-4 max-w-[200px]">
                             <FormControl>
                               <div className="relative">
-                                {unit === '$' ? (
+                                {unit === "$" ? (
                                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <span className="text-muted-foreground">
                                       $
@@ -219,14 +219,14 @@ export function AddPromotionButton() {
                                 ) : null}
                                 <Input
                                   className={cn(
-                                    '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
-                                    unit === '$' && 'pl-9'
+                                    "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
+                                    unit === "$" && "pl-9"
                                   )}
-                                  placeholder={unit === '$' ? '0.00' : '0'}
+                                  placeholder={unit === "$" ? "0.00" : "0"}
                                   type="number"
                                   {...field}
                                 />
-                                {unit === '%' ? (
+                                {unit === "%" ? (
                                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                                     <span className="text-muted-foreground">
                                       %
@@ -249,7 +249,7 @@ export function AddPromotionButton() {
                               value={value}
                               onChange={onChange}
                             />
-                          );
+                          )
                         }}
                       />
                       <FormField
@@ -262,14 +262,14 @@ export function AddPromotionButton() {
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button
-                                    variant={'outline'}
+                                    variant={"outline"}
                                     className={cn(
-                                      'w-[240px] pl-3 text-left font-normal',
-                                      !field.value && 'text-muted-foreground'
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
                                     )}
                                   >
                                     {field.value ? (
-                                      format(field.value, 'PPP')
+                                      format(field.value, "PPP")
                                     ) : (
                                       <span>Pick a date</span>
                                     )}
@@ -286,7 +286,7 @@ export function AddPromotionButton() {
                                   selected={field.value}
                                   onSelect={field.onChange}
                                   disabled={(date) =>
-                                    date < new Date('1900-01-01')
+                                    date < new Date("1900-01-01")
                                   }
                                   initialFocus
                                 />
@@ -352,7 +352,7 @@ export function AddPromotionButton() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-md">
-                      Message {preview && 'Preview'}
+                      Message {preview && "Preview"}
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -402,5 +402,5 @@ export function AddPromotionButton() {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

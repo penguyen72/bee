@@ -1,61 +1,61 @@
-'use client';
+"use client"
 
-import { checkOutUser } from '@/actions/check-out-user';
-import { FormError } from '@/components/form-error';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { checkOutUser } from "@/actions/check-out-user"
+import { FormError } from "@/components/form-error"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
-import { REDEPEMTIONS } from '@/lib/constants';
-import { Redepemtion, TransactionsWithCustomer } from '@/lib/types';
-import { cn, convertToUSD } from '@/lib/utils';
+import { REDEPEMTIONS } from "@/lib/constants"
+import { Redepemtion, TransactionsWithCustomer } from "@/lib/types"
+import { cn, convertToUSD } from "@/lib/utils"
 
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from "react"
 
-import { FormSuccess } from '@/components/form-success';
-import { CheckOutSummaryItem } from './check-out-summary-item';
+import { FormSuccess } from "@/components/form-success"
+import { CheckOutSummaryItem } from "./check-out-summary-item"
 
 interface Props {
-  transaction: TransactionsWithCustomer;
-  addedCharges: number[];
-  setAddedCharges: React.Dispatch<React.SetStateAction<number[]>>;
+  transaction: TransactionsWithCustomer
+  addedCharges: number[]
+  setAddedCharges: React.Dispatch<React.SetStateAction<number[]>>
 }
 
 export function CheckOutSummary({
   transaction,
   addedCharges,
-  setAddedCharges,
+  setAddedCharges
 }: Props) {
-  const [selected, setSelected] = useState<Redepemtion | null>(null);
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+  const [selected, setSelected] = useState<Redepemtion | null>(null)
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
 
-  const disableCheckOut = addedCharges.length === 0;
+  const disableCheckOut = addedCharges.length === 0
 
   function removeCharge(i: number) {
     setAddedCharges((prevValue) => {
-      const newValue = prevValue.filter((_, index) => index !== i);
-      return newValue;
-    });
+      const newValue = prevValue.filter((_, index) => index !== i)
+      return newValue
+    })
   }
 
   function handleSelected(id: string) {
-    setSelected(REDEPEMTIONS.find((item) => item.id === id) ?? null);
+    setSelected(REDEPEMTIONS.find((item) => item.id === id) ?? null)
   }
 
   function handleCheckOut() {
     checkOutUser(transaction.id, addedCharges, selected).then((data) => {
       if (data.success) {
-        setSelected(null);
-        setAddedCharges([]);
+        setSelected(null)
+        setAddedCharges([])
       }
-      setSuccess(data.success);
-      setError(data.error);
-    });
+      setSuccess(data.success)
+      setError(data.error)
+    })
   }
 
   const balance =
     addedCharges.reduce((acc, charge) => acc + charge, 0) -
-    (selected?.value ?? 0);
+    (selected?.value ?? 0)
 
   return (
     <Fragment>
@@ -68,7 +68,7 @@ export function CheckOutSummary({
               value={charge}
               handleDelete={() => removeCharge(index)}
             />
-          );
+          )
         })}
         {selected ? (
           <CheckOutSummaryItem
@@ -89,9 +89,9 @@ export function CheckOutSummary({
                   <Button
                     key={redepemtion.id}
                     className={cn(
-                      'rounded-2xl font-normal shadow-md',
+                      "rounded-2xl font-normal shadow-md",
                       selected?.id === redepemtion.id &&
-                        'bg-purple-300 border-purple-300 hover:bg-purple-400 hover:border-purple-400 transition-all'
+                        "bg-purple-300 border-purple-300 hover:bg-purple-400 hover:border-purple-400 transition-all"
                     )}
                     disabled={
                       transaction.customer.currentPoints <
@@ -102,7 +102,7 @@ export function CheckOutSummary({
                   >
                     {redepemtion.buttonLabel}
                   </Button>
-                );
+                )
               })}
             </div>
             <p className="text-sm text-red-600 mb-6">Maximum $35 Off per day</p>
@@ -127,5 +127,5 @@ export function CheckOutSummary({
         </div>
       </div>
     </Fragment>
-  );
+  )
 }

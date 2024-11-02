@@ -1,45 +1,45 @@
-'use client';
+"use client"
 
-import { createUser } from '@/actions/create-user';
-import { Button } from '@/components/ui/button';
+import { createUser } from "@/actions/create-user"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormDescription,
   FormField,
-  FormItem,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { formatDateOfBirth, formatPhoneNumber } from '@/lib/utils';
-import { SignUpSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { FormError } from '../form-error';
+  FormItem
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { formatDateOfBirth, formatPhoneNumber } from "@/lib/utils"
+import { SignUpSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { z } from "zod"
+import { FormError } from "../form-error"
 
 export function SignUpForm() {
-  const [error, setError] = useState<string | undefined>();
-  const router = useRouter();
+  const [error, setError] = useState<string | undefined>()
+  const router = useRouter()
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
-      firstName: '',
-      phoneNumber: '',
-      birthday: '',
-    },
-  });
+      firstName: "",
+      phoneNumber: "",
+      birthday: ""
+    }
+  })
 
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
     createUser(values).then((data) => {
       if (data.success) {
-        router.push(`/customer/${data.userId}`);
+        router.push(`/customer/${data.userId}`)
       }
-      setError(data.error);
-    });
+      setError(data.error)
+    })
   }
 
   return (
@@ -62,8 +62,8 @@ export function SignUpForm() {
                   placeholder="First Name"
                   {...field}
                   onChange={(event) => {
-                    event.target.value = event.target.value.replace(' ', '');
-                    field.onChange(event);
+                    event.target.value = event.target.value.replace(" ", "")
+                    field.onChange(event)
                   }}
                 />
               </FormControl>
@@ -83,8 +83,8 @@ export function SignUpForm() {
                   {...field}
                   value={formatPhoneNumber(field.value)}
                   onChange={(event) => {
-                    event.target.value = event.target.value.slice(0, 12);
-                    field.onChange(event);
+                    event.target.value = event.target.value.slice(0, 12)
+                    field.onChange(event)
                   }}
                 />
               </FormControl>
@@ -104,8 +104,8 @@ export function SignUpForm() {
                   {...field}
                   value={formatDateOfBirth(field.value)}
                   onChange={(event) => {
-                    event.target.value = event.target.value.slice(0, 10);
-                    field.onChange(event);
+                    event.target.value = event.target.value.slice(0, 10)
+                    field.onChange(event)
                   }}
                 />
               </FormControl>
@@ -118,5 +118,5 @@ export function SignUpForm() {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

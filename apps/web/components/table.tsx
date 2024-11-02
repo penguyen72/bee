@@ -1,20 +1,20 @@
-'use client';
+"use client"
 
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+  PaginationPrevious
+} from "@/components/ui/pagination"
 import {
   Table as ShadcnTable,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  TableRow
+} from "@/components/ui/table"
 import {
   Cell,
   ColumnDef,
@@ -23,34 +23,34 @@ import {
   getPaginationRowModel,
   Row,
   RowData,
-  useReactTable,
-} from '@tanstack/react-table';
-import { useState } from 'react';
+  useReactTable
+} from "@tanstack/react-table"
+import { useState } from "react"
 
 interface Props<TData extends RowData> {
-  dataSource: TData[];
-  columns: ColumnDef<TData, any>[];
-  hideHeader?: boolean;
+  dataSource: TData[]
+  columns: ColumnDef<TData, any>[]
+  hideHeader?: boolean
   tableRowProps?: (
     row: Row<TData>,
     index: number,
     self: Row<TData>[]
-  ) => React.HTMLAttributes<HTMLTableRowElement>;
+  ) => React.HTMLAttributes<HTMLTableRowElement>
   tableCellProps?: ({
     row,
     rowIndex,
     rowSelf,
     cell,
     cellIndex,
-    cellSelf,
+    cellSelf
   }: {
-    row: Row<TData>;
-    rowIndex: number;
-    rowSelf: Row<TData>[];
-    cell: Cell<TData, unknown>;
-    cellIndex: number;
-    cellSelf: Cell<TData, unknown>[];
-  }) => React.TdHTMLAttributes<HTMLTableCellElement>;
+    row: Row<TData>
+    rowIndex: number
+    rowSelf: Row<TData>[]
+    cell: Cell<TData, unknown>
+    cellIndex: number
+    cellSelf: Cell<TData, unknown>[]
+  }) => React.TdHTMLAttributes<HTMLTableCellElement>
 }
 
 export function Table<TData extends RowData>({
@@ -58,33 +58,33 @@ export function Table<TData extends RowData>({
   columns,
   hideHeader,
   tableRowProps,
-  tableCellProps,
+  tableCellProps
 }: Props<TData>) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 5,
-  });
+    pageSize: 5
+  })
 
-  const { pageIndex, pageSize } = pagination;
+  const { pageIndex, pageSize } = pagination
   const { getHeaderGroups, getRowModel } = useReactTable({
     columns,
     data: dataSource,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: {
-      pagination,
-    },
-  });
+      pagination
+    }
+  })
 
   function goToPage(page: number) {
-    if (page < 0 || page >= Math.ceil(dataSource.length / pageSize)) return;
+    if (page < 0 || page >= Math.ceil(dataSource.length / pageSize)) return
 
     setPagination((prevValue) => {
       return {
         ...prevValue,
-        pageIndex: page,
-      };
-    });
+        pageIndex: page
+      }
+    })
   }
 
   return (
@@ -104,7 +104,7 @@ export function Table<TData extends RowData>({
                             header.getContext()
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -113,24 +113,24 @@ export function Table<TData extends RowData>({
         <TableBody>
           {getRowModel().rows.map((row, rowIndex, rowSelf) => {
             const _tableRowProps =
-              typeof tableRowProps === 'function'
+              typeof tableRowProps === "function"
                 ? tableRowProps(row, rowIndex, rowSelf)
-                : tableRowProps;
+                : tableRowProps
 
             return (
               <TableRow key={row.id} {..._tableRowProps}>
                 {row.getVisibleCells().map((cell, cellIndex, cellSelf) => {
                   const _tableCellProps =
-                    typeof tableCellProps === 'function'
+                    typeof tableCellProps === "function"
                       ? tableCellProps({
                           row,
                           rowIndex,
                           rowSelf,
                           cell,
                           cellIndex,
-                          cellSelf,
+                          cellSelf
                         })
-                      : tableCellProps;
+                      : tableCellProps
 
                   return (
                     <TableCell key={cell.id} {..._tableCellProps}>
@@ -139,10 +139,10 @@ export function Table<TData extends RowData>({
                         cell.getContext()
                       )}
                     </TableCell>
-                  );
+                  )
                 })}
               </TableRow>
-            );
+            )
           })}
         </TableBody>
       </ShadcnTable>
@@ -161,5 +161,5 @@ export function Table<TData extends RowData>({
         </PaginationContent>
       </Pagination>
     </div>
-  );
+  )
 }

@@ -1,14 +1,15 @@
-import { getUser } from '@/actions/get-user';
-import { Redirect } from '@/components/redirect';
+import { getUser } from "@/actions/get-user"
+import { Redirect } from "@/components/redirect"
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>
 }
 
-export default async function Home({ params }: Props) {
-  const data = await getUser(params.id);
+export default async function Home(props: Props) {
+  const params = await props.params
+  const data = await getUser(params.id)
 
-  if (data.error || !data.user) return null;
+  if (data.error || !data.user) return null
 
   if (data.user.visitCount > 1) {
     return (
@@ -24,7 +25,7 @@ export default async function Home({ params }: Props) {
         </p>
         <Redirect />
       </main>
-    );
+    )
   }
 
   return (
@@ -37,5 +38,5 @@ export default async function Home({ params }: Props) {
       </p>
       <Redirect />
     </main>
-  );
+  )
 }

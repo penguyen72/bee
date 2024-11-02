@@ -1,34 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn, convertToUSD } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn, convertToUSD } from "@/lib/utils"
 
 interface Props {
   overview:
     | {
-        totalMembers: number;
-        netRevenue: number;
-        rewardsRedeemed: number;
+        totalMembers: number
+        netRevenue: number
+        rewardsRedeemed: number
       }
-    | undefined;
+    | undefined
 }
 
 export async function TransactionsCard({ overview }: Props) {
   const items = [
     {
-      title: 'Total Members',
+      title: "Total Members",
       content: overview?.totalMembers,
-      color: 'bg-green-200',
+      color: "bg-green-200"
     },
     {
-      title: 'Rewards Redeemed',
+      title: "Rewards Redeemed",
       content: convertToUSD(overview?.rewardsRedeemed),
-      color: 'bg-violet-300',
+      color: "bg-violet-300"
     },
     {
-      title: 'Net Revenue',
+      title: "Net Revenue",
       content: convertToUSD(overview?.netRevenue),
-      color: 'bg-yellow-100',
-    },
-  ];
+      color: "bg-yellow-100"
+    }
+  ]
 
   return (
     <Card className="w-full">
@@ -46,9 +46,9 @@ export async function TransactionsCard({ overview }: Props) {
                 <p className="text-2xl font-semibold">{item.content}</p>
               </CardContent>
             </Card>
-          );
+          )
         })}
       </CardContent>
     </Card>
-  );
+  )
 }

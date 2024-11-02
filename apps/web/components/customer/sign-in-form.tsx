@@ -1,44 +1,44 @@
-'use client';
+"use client"
 
-import { checkInUser } from '@/actions/check-in-user';
-import { FormError } from '@/components/form-error';
-import { Button } from '@/components/ui/button';
+import { checkInUser } from "@/actions/check-in-user"
+import { FormError } from "@/components/form-error"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { formatPhoneNumber } from '@/lib/utils';
-import { SignInSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+  FormMessage
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { formatPhoneNumber } from "@/lib/utils"
+import { SignInSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { z } from "zod"
 
 export function SignInForm() {
-  const [error, setError] = useState<string | undefined>();
-  const router = useRouter();
+  const [error, setError] = useState<string | undefined>()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
-      firstName: '',
-      phoneNumber: '',
-    },
-  });
+      firstName: "",
+      phoneNumber: ""
+    }
+  })
 
   async function onSubmit(values: z.infer<typeof SignInSchema>) {
     checkInUser(values).then((data) => {
       if (data.success) {
-        router.push(`/customer/${data.userId}`);
+        router.push(`/customer/${data.userId}`)
       }
-      setError(data.error);
-    });
+      setError(data.error)
+    })
   }
 
   return (
@@ -79,8 +79,8 @@ export function SignInForm() {
                   {...field}
                   value={formatPhoneNumber(field.value)}
                   onChange={(event) => {
-                    event.target.value = event.target.value.slice(0, 12);
-                    field.onChange(event);
+                    event.target.value = event.target.value.slice(0, 12)
+                    field.onChange(event)
                   }}
                 />
               </FormControl>
@@ -93,5 +93,5 @@ export function SignInForm() {
         </Button>
       </form>
     </Form>
-  );
+  )
 }

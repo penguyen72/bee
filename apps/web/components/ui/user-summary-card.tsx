@@ -1,37 +1,37 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { cn, findNextPossibleRedemption } from '@/lib/utils';
-import { Customer } from '@prisma/client';
-import { format } from 'date-fns';
-import { Cake, Phone } from 'lucide-react';
-import { EditMemberButton } from '../business/transactions/edit-member-button';
+import { Card, CardContent } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { cn, findNextPossibleRedemption } from "@/lib/utils"
+import { Customer } from "@prisma/client"
+import { format } from "date-fns"
+import { Cake, Phone } from "lucide-react"
+import { EditMemberButton } from "../business/transactions/edit-member-button"
 
 interface Props {
-  user: Customer;
-  type?: 'member' | 'transaction';
+  user: Customer
+  type?: "member" | "transaction"
 }
 
 export async function UserSummaryCard({ user, type }: Props) {
-  const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints);
-  const pointsUntilNextRedemption = nextPossibleRedemption - user.currentPoints;
+  const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints)
+  const pointsUntilNextRedemption = nextPossibleRedemption - user.currentPoints
   const percentageOfNextRedemption = Math.min(
     Math.floor((user.currentPoints / nextPossibleRedemption) * 100),
     100
-  );
+  )
 
   return (
     <Card
       className={cn(
-        'w-full border-l-[12px]',
-        type === 'member' && 'border-l-amber-300',
-        type === 'transaction' && 'border-l-blue-300'
+        "w-full border-l-[12px]",
+        type === "member" && "border-l-amber-300",
+        type === "transaction" && "border-l-blue-300"
       )}
     >
       <CardContent className="grid grid-cols-4 gap-12 p-3">
         <div className="flex flex-col gap-2">
           <span className="flex items-center gap-2">
             <p className="font-semibold">{user.firstName}</p>
-            {type === 'member' ? <EditMemberButton user={user} /> : null}
+            {type === "member" ? <EditMemberButton user={user} /> : null}
           </span>
           <span className="flex items-center gap-1">
             <Phone className="size-4" />
@@ -40,7 +40,7 @@ export async function UserSummaryCard({ user, type }: Props) {
           {user.birthday ? (
             <span className="flex items-center gap-1">
               <Cake className="size-4" />
-              <p>{format(user.birthday, 'MM/dd/yyyy')}</p>
+              <p>{format(user.birthday, "MM/dd/yyyy")}</p>
             </span>
           ) : null}
         </div>
@@ -57,7 +57,7 @@ export async function UserSummaryCard({ user, type }: Props) {
         <div className="flex flex-col gap-2">
           <p className="font-semibold">Last Visit</p>
           <p className="text-2xl font-semibold">
-            {format(user.updatedAt, 'MM/dd/yyyy')}
+            {format(user.updatedAt, "MM/dd/yyyy")}
           </p>
         </div>
         <div className="flex flex-col gap-2">
@@ -66,5 +66,5 @@ export async function UserSummaryCard({ user, type }: Props) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

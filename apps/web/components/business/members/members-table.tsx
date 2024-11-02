@@ -1,107 +1,107 @@
-'use client';
+"use client"
 
-import { Table } from '@/components/table';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { cn, determineMemberType, MEMBER_TYPE_COLOR } from '@/lib/utils';
-import { MemberSearchSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Customer } from '@prisma/client';
-import { createColumnHelper } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import Fuse from 'fuse.js';
-import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Table } from "@/components/table"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { cn, determineMemberType, MEMBER_TYPE_COLOR } from "@/lib/utils"
+import { MemberSearchSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Customer } from "@prisma/client"
+import { createColumnHelper } from "@tanstack/react-table"
+import { format } from "date-fns"
+import Fuse from "fuse.js"
+import { useRouter } from "next/navigation"
+import { useMemo } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-const columnHelper = createColumnHelper<Customer>();
+const columnHelper = createColumnHelper<Customer>()
 
 const columns = [
   columnHelper.display({
-    id: 'type',
-    header: 'NO.',
+    id: "type",
+    header: "NO.",
     cell: (info) => {
-      return <p>{info.row.index + 1}</p>;
-    },
+      return <p>{info.row.index + 1}</p>
+    }
   }),
   columnHelper.display({
-    id: 'firstName',
-    header: 'NAME',
+    id: "firstName",
+    header: "NAME",
     cell: (info) => {
-      const name = info.row.original.firstName;
-      const createdAt = info.row.original.createdAt;
+      const name = info.row.original.firstName
+      const createdAt = info.row.original.createdAt
       return (
         <div className="flex flex-col gap-2">
           <p>{name}</p>
           <p className="text-xs text-slate-500">
-            Joined {format(createdAt, 'MMMM yyyy')}
+            Joined {format(createdAt, "MMMM yyyy")}
           </p>
         </div>
-      );
-    },
+      )
+    }
   }),
   columnHelper.display({
-    id: 'phoneNumber',
-    header: 'PHONE NUMBER',
+    id: "phoneNumber",
+    header: "PHONE NUMBER",
     cell: (info) => {
-      const phoneNumber = info.row.original.phoneNumber;
-      return <p>{phoneNumber}</p>;
-    },
+      const phoneNumber = info.row.original.phoneNumber
+      return <p>{phoneNumber}</p>
+    }
   }),
   columnHelper.display({
-    id: 'last-visit',
-    header: 'LAST VISIT',
+    id: "last-visit",
+    header: "LAST VISIT",
     cell: (info) => {
-      const checkInTime = info.row.original.updatedAt;
-      return <p>{format(checkInTime, 'MM/dd/yyyy')}</p>;
-    },
+      const checkInTime = info.row.original.updatedAt
+      return <p>{format(checkInTime, "MM/dd/yyyy")}</p>
+    }
   }),
   columnHelper.display({
-    id: 'last-visit',
-    header: 'MEMBER TYPE',
+    id: "last-visit",
+    header: "MEMBER TYPE",
     cell: (info) => {
-      const memberType = determineMemberType(info.row.original);
-      return <p className={MEMBER_TYPE_COLOR[memberType]}>{memberType}</p>;
-    },
+      const memberType = determineMemberType(info.row.original)
+      return <p className={MEMBER_TYPE_COLOR[memberType]}>{memberType}</p>
+    }
   }),
   columnHelper.display({
-    id: 'current-points',
-    header: 'CURRENT POINTS',
+    id: "current-points",
+    header: "CURRENT POINTS",
     cell: (info) => {
-      const currentPoints = info.row.original.currentPoints;
+      const currentPoints = info.row.original.currentPoints
 
-      return <p>{currentPoints}</p>;
-    },
-  }),
-];
+      return <p>{currentPoints}</p>
+    }
+  })
+]
 
 interface Props {
-  data: Customer[];
+  data: Customer[]
 }
 
 export function MembersTable({ data }: Props) {
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<z.infer<typeof MemberSearchSchema>>({
     resolver: zodResolver(MemberSearchSchema),
     defaultValues: {
-      searchString: '',
-    },
-  });
+      searchString: ""
+    }
+  })
 
-  const searchString = form.watch('searchString');
+  const searchString = form.watch("searchString")
 
   const dataSource = useMemo(() => {
-    if (!searchString) return data;
+    if (!searchString) return data
 
     const fuse = new Fuse(data, {
       isCaseSensitive: false,
       threshold: 0.2,
-      keys: ['firstName', 'phoneNumber'],
-    });
+      keys: ["firstName", "phoneNumber"]
+    })
 
-    return fuse.search(searchString).map((member) => member.item);
-  }, [data, searchString]);
+    return fuse.search(searchString).map((member) => member.item)
+  }, [data, searchString])
 
   return (
     <div>
@@ -124,17 +124,17 @@ export function MembersTable({ data }: Props) {
         dataSource={dataSource}
         columns={columns}
         tableRowProps={(row) => ({
-          className: 'bg-white hover:cursor-pointer',
-          onClick: () => router.push(`/members/${row.original.id}`),
+          className: "bg-white hover:cursor-pointer",
+          onClick: () => router.push(`/members/${row.original.id}`)
         })}
         tableCellProps={({ cellIndex, cellSelf }) => ({
           className: cn(
-            'border-l-amber-300',
-            cellIndex === 0 && 'rounded-l-md border-l-[12px]',
-            cellIndex === cellSelf.length - 1 && 'rounded-r-md'
-          ),
+            "border-l-amber-300",
+            cellIndex === 0 && "rounded-l-md border-l-[12px]",
+            cellIndex === cellSelf.length - 1 && "rounded-r-md"
+          )
         })}
       />
     </div>
-  );
+  )
 }

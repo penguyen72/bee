@@ -1,15 +1,15 @@
-import { CircleMinus } from 'lucide-react';
+import { CircleMinus } from "lucide-react"
 
 interface Props {
-  label: string;
-  value: number;
-  handleDelete: () => void;
+  label: string
+  value: number
+  handleDelete: () => void
 }
 
-const formatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD"
+})
 
 export function CheckOutSummaryItem({ label, value, handleDelete }: Props) {
   return (
@@ -23,5 +23,5 @@ export function CheckOutSummaryItem({ label, value, handleDelete }: Props) {
       </div>
       <p className="font-semibold">{formatter.format(value)}</p>
     </div>
-  );
+  )
 }

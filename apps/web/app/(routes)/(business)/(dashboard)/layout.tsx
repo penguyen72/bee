@@ -1,4 +1,4 @@
-import { Header } from '@/components/business/header';
+import { Header } from "@/components/business/header"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -6,5 +6,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header />
       {children}
     </div>
-  );
+  )
 }

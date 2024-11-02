@@ -1,53 +1,53 @@
-'use client';
+"use client"
 
-import { updateOrganizationProfile } from '@/actions/update-organization-profile';
-import { FormError } from '@/components/form-error';
-import { FormSuccess } from '@/components/form-success';
-import { Button } from '@/components/ui/button';
+import { updateOrganizationProfile } from "@/actions/update-organization-profile"
+import { FormError } from "@/components/form-error"
+import { FormSuccess } from "@/components/form-success"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+  FormLabel
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { TIMEZONES } from '@/lib/utils';
-import { ProfileSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Organizations } from '@prisma/client';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+  SelectValue
+} from "@/components/ui/select"
+import { TIMEZONES } from "@/lib/utils"
+import { ProfileSchema } from "@/schemas"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Organizations } from "@prisma/client"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 interface Props {
-  organizationInfo: Organizations;
+  organizationInfo: Organizations
 }
 
 export function ProfileForm({ organizationInfo }: Props) {
-  const { id, ...defaultValues } = organizationInfo;
-  const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
+  const { id, ...defaultValues } = organizationInfo
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
   const form = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues,
-  });
+    defaultValues
+  })
 
-  const disabled = true;
+  const disabled = true
 
   function onSubmit(values: z.infer<typeof ProfileSchema>) {
     if (disabled) {
       updateOrganizationProfile(id, values).then((data) => {
-        setSuccess(data.success);
-        setError(data.error);
-      });
+        setSuccess(data.success)
+        setError(data.error)
+      })
     }
   }
 
@@ -150,7 +150,7 @@ export function ProfileForm({ organizationInfo }: Props) {
                             <SelectItem key={index} value={item.value}>
                               {item.label}
                             </SelectItem>
-                          );
+                          )
                         })}
                       </SelectContent>
                     </Select>
@@ -197,5 +197,5 @@ export function ProfileForm({ organizationInfo }: Props) {
         </div>
       </form>
     </Form>
-  );
+  )
 }

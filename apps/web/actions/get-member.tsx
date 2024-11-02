@@ -1,25 +1,25 @@
-'use server';
+"use server"
 
-import { auth } from '@/auth';
-import prisma from '@/lib/prisma';
+import { auth } from "@/auth"
+import prisma from "@/lib/prisma"
 
 export const getMember = async (userId: string) => {
   try {
-    const session = await auth();
+    const session = await auth()
 
     if (!session) {
-      return { error: 'Authorized User' };
+      return { error: "Authorized User" }
     }
 
     const customer = await prisma.customer.findUnique({
       where: {
-        id: userId,
-      },
-    });
+        id: userId
+      }
+    })
 
-    return { success: 'Success', customer };
+    return { success: "Success", customer }
   } catch (error) {
-    console.error(error);
-    return { error: 'Internal Server Error!' };
+    console.error(error)
+    return { error: "Internal Server Error!" }
   }
-};
+}
