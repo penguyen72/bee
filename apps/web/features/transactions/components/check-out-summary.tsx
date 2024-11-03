@@ -5,13 +5,14 @@ import { FormError } from "@/components/form-error"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 
-import { REDEPEMTIONS } from "@/lib/constants"
-import { Redepemtion, TransactionsWithCustomer } from "@/lib/types"
+import { TransactionsWithCustomer } from "@/lib/types"
 import { cn, convertToUSD } from "@/lib/utils"
 
 import { Fragment, useState } from "react"
 
 import { FormSuccess } from "@/components/form-success"
+import { REDEPEMTIONS } from "@/features/members/lib/constants"
+import { Redepemtion } from "@/features/members/lib/types"
 import { CheckOutSummaryItem } from "./check-out-summary-item"
 
 interface Props {

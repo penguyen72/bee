@@ -1,8 +1,8 @@
 "use server"
 
 import { auth } from "@/auth"
+import { Redepemtion } from "@/features/members/lib/types"
 import prisma from "@/lib/prisma"
-import { Redepemtion } from "@/lib/types"
 import { revalidatePath } from "next/cache"
 
 export const checkOutUser = async (

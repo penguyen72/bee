@@ -1,6 +1,6 @@
 "use client"
 
-import { UserSummaryCard } from "@/components/ui/user-summary-card"
+import { UserSummaryCard } from "@/components/user-summary-card"
 import { getMember } from "@/features/members/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "next/navigation"

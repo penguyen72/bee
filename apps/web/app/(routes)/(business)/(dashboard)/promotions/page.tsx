@@ -1,10 +1,10 @@
 "use client"
 
-import { AddPromotionButton } from "@/components/business/promotions/add-promotion-button"
 import { Table } from "@/components/table"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { AddPromotionButton } from "@/features/promotions/components/add-promotion-button"
 import { cn } from "@/lib/utils"
 import { createColumnHelper } from "@tanstack/react-table"
 import { format } from "date-fns"
