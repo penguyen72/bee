@@ -3,10 +3,16 @@
 import { Table } from "@/components/table"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { cn, determineMemberType, MEMBER_TYPE_COLOR } from "@/lib/utils"
+import {
+  determineMemberType,
+  getMembers,
+  MEMBER_TYPE_COLOR
+} from "@/features/members/lib/utils"
+import { cn } from "@/lib/utils"
 import { MemberSearchSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Customer } from "@prisma/client"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { format } from "date-fns"
 import Fuse from "fuse.js"
@@ -19,7 +25,7 @@ const columnHelper = createColumnHelper<Customer>()
 
 const columns = [
   columnHelper.display({
-    id: "type",
+    id: "index",
     header: "NO.",
     cell: (info) => {
       return <p>{info.row.index + 1}</p>
@@ -58,7 +64,7 @@ const columns = [
     }
   }),
   columnHelper.display({
-    id: "last-visit",
+    id: "member-type",
     header: "MEMBER TYPE",
     cell: (info) => {
       const memberType = determineMemberType(info.row.original)
@@ -76,12 +82,14 @@ const columns = [
   })
 ]
 
-interface Props {
-  data: Customer[]
-}
-
-export function MembersTable({ data }: Props) {
+export function MembersTable() {
   const router = useRouter()
+
+  const { data, isLoading } = useSuspenseQuery({
+    queryKey: ["members"],
+    queryFn: () => getMembers()
+  })
+
   const form = useForm<z.infer<typeof MemberSearchSchema>>({
     resolver: zodResolver(MemberSearchSchema),
     defaultValues: {
@@ -92,6 +100,8 @@ export function MembersTable({ data }: Props) {
   const searchString = form.watch("searchString")
 
   const dataSource = useMemo(() => {
+    if (!data) return []
+
     if (!searchString) return data
 
     const fuse = new Fuse(data, {
@@ -102,6 +112,8 @@ export function MembersTable({ data }: Props) {
 
     return fuse.search(searchString).map((member) => member.item)
   }, [data, searchString])
+
+  if (isLoading) return null
 
   return (
     <div>

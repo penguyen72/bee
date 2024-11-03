@@ -13,7 +13,7 @@ const columnHelper = createColumnHelper<Promotion>()
 
 const columns = [
   columnHelper.display({
-    id: "type",
+    id: "index",
     header: "NO.",
     cell: (info) => {
       return <p>{info.row.index + 1}</p>

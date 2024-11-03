@@ -1,19 +1,21 @@
 "use client"
 
 import { Table } from "@/components/table"
+import { getCheckedInUsers } from "@/features/overview/lib/utils"
 import { TransactionsWithCustomer } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 
 import { format } from "date-fns"
 import { useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
 const columnHelper = createColumnHelper<TransactionsWithCustomer>()
 
 const columns = [
   columnHelper.display({
-    id: "type",
+    id: "index",
     header: "NO.",
     cell: (info) => {
       return <p>{info.row.index + 1}</p>
@@ -70,17 +72,16 @@ const columns = [
   })
 ]
 
-interface Props {
-  data: TransactionsWithCustomer[]
-}
-
-export function OverviewTable({ data }: Props) {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 5
+export function OverviewTable() {
+  const { data, isLoading } = useSuspenseQuery({
+    queryKey: ["checked-in-users"],
+    queryFn: () => getCheckedInUsers()
   })
+
   const dataSource = useMemo(() => data, [data])
   const router = useRouter()
+
+  if (isLoading) return null
 
   return (
     <Table

@@ -1,56 +1,52 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { getOverviewStats } from "@/features/overview/lib/utils"
 import { cn, convertToUSD } from "@/lib/utils"
-import { formatInTimeZone } from "date-fns-tz"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { endOfDay, format, startOfDay } from "date-fns"
 
-interface Props {
-  overview:
-    | {
-        checkInUserCount: number
-        checkOutUserCount: number
-        netRevenue: number
-        rewardsRedeemed: number
-        timezone: string
-      }
-    | undefined
-}
+export function OverviewCard() {
+  const today = new Date()
 
-export function OverviewCard({ overview }: Props) {
-  if (!overview) return null
+  const start = startOfDay(today)
+  const end = endOfDay(today)
+
+  const { data, isLoading } = useSuspenseQuery({
+    queryKey: ["overview-stats"],
+    queryFn: () => getOverviewStats(start, end)
+  })
 
   const items = [
     {
       title: "Checked-In Members",
-      content: overview.checkInUserCount,
+      content: data.checkInUserCount,
       color: "bg-blue-300"
     },
     {
       title: "Checked-Out Members",
-      content: overview.checkOutUserCount,
+      content: data.checkOutUserCount,
       color: "bg-green-200"
     },
     {
       title: "Rewards Redeemed",
-      content: convertToUSD(overview.rewardsRedeemed),
+      content: convertToUSD(data.rewardsRedeemed),
       color: "bg-violet-300"
     },
     {
       title: "Net Revenue",
-      content: convertToUSD(overview.netRevenue),
+      content: convertToUSD(data.netRevenue),
       color: "bg-yellow-100"
     }
   ]
 
-  const currentDateBasedOnTimeZone = formatInTimeZone(
-    Date.now(),
-    overview.timezone,
-    "MM/dd/yyyy"
-  )
+  if (isLoading) return null
 
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>
-          Today&apos;s Overview - {currentDateBasedOnTimeZone}
+          Today&apos;s Overview - {format(new Date(), "MM/dd/yyyy")}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-4 gap-8">

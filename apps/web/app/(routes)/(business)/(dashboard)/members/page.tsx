@@ -1,16 +1,11 @@
-import { getMembers } from "@/actions/get-members"
-import { MembersCard } from "@/components/business/members/members-card"
-import { MembersTable } from "@/components/business/members/members-table"
+import { MembersCard } from "@/features/members/components/members-card"
+import { MembersTable } from "@/features/members/components/members-table"
 
-export default async function Home() {
-  const data = await getMembers()
-
-  if (data.error) return null
-
+export default function Home() {
   return (
     <div className="flex flex-col gap-6 w-full h-full">
-      <MembersCard data={data.users ?? []} />
-      <MembersTable data={data.users ?? []} />
+      <MembersCard />
+      <MembersTable />
     </div>
   )
 }

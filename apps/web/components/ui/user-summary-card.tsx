@@ -1,17 +1,19 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { cn, findNextPossibleRedemption } from "@/lib/utils"
+import { findNextPossibleRedemption } from "@/features/members/lib/utils"
+import { cn } from "@/lib/utils"
 import { Customer } from "@prisma/client"
 import { format } from "date-fns"
 import { Cake, Phone } from "lucide-react"
 import { EditMemberButton } from "../business/transactions/edit-member-button"
-
 interface Props {
   user: Customer
   type?: "member" | "transaction"
 }
 
-export async function UserSummaryCard({ user, type }: Props) {
+export function UserSummaryCard({ user, type }: Props) {
   const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints)
   const pointsUntilNextRedemption = nextPossibleRedemption - user.currentPoints
   const percentageOfNextRedemption = Math.min(

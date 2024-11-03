@@ -1,14 +1,13 @@
-"use server"
-
 import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
-export const getMembers = async () => {
+export async function GET() {
   try {
     const session = await auth()
 
     if (!session) {
-      return { error: "Authorized User" }
+      return new NextResponse("Authorized", { status: 401 })
     }
 
     const users = await prisma.customer.findMany({
@@ -17,12 +16,9 @@ export const getMembers = async () => {
       }
     })
 
-    return {
-      success: "Success",
-      users
-    }
+    return NextResponse.json(users, { status: 200 })
   } catch (error) {
     console.error(error)
-    return { error: "Internal Server Error!" }
+    return new NextResponse("Internal Server Error!", { status: 500 })
   }
 }
