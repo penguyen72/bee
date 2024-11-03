@@ -1,4 +1,4 @@
-import { SignUpForm } from "@/features/customer/sign-up-form"
+import { SignUpForm } from "@/features/customer/components/sign-up-form"
 import { HomeButton } from "@/components/home-button"
 
 export default function Home() {

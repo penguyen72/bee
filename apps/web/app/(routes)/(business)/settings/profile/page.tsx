@@ -1,7 +1,7 @@
 import { getOrganizationProfile } from "@/actions/get-organization-profile"
 import { ChangePasswordForm } from "@/features/settings/change-password-form"
-import { ProfileForm } from "@/features/settings/profile-form"
-import SettingsHeader from "@/features/settings/settings-header"
+import { ProfileForm } from "@/features/settings/components/profile-form"
+import SettingsHeader from "@/features/settings/components/settings-header"
 
 export default async function Home() {
   const data = await getOrganizationProfile(process.env.BUSINESS_EMAIL)

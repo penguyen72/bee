@@ -1,6 +1,6 @@
 "use client"
 
-import SettingsHeader from "@/features/settings/settings-header"
+import SettingsHeader from "@/features/settings/components/settings-header"
 import { Button } from "@/components/ui/button"
 import {
   Form,

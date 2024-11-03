@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
-import { FormError } from "../../components/form-error"
+import { FormError } from "../../../components/form-error"
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>()
