@@ -3,11 +3,12 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { findNextPossibleRedemption } from "@/features/members/lib/utils"
+import { EditMemberButton } from "@/features/transactions/components/edit-member-button"
 import { cn } from "@/lib/utils"
 import { Customer } from "@prisma/client"
 import { format } from "date-fns"
 import { Cake, Phone } from "lucide-react"
-import { EditMemberButton } from "../business/transactions/edit-member-button"
+
 interface Props {
   user: Customer
   type?: "member" | "transaction"

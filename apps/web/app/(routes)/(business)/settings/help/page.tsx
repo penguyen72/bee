@@ -1,6 +1,6 @@
 "use client"
 
-import SettingsHeader from "@/components/settings/settings-header"
+import SettingsHeader from "@/features/settings/settings-header"
 
 export default function Home() {
   return (
