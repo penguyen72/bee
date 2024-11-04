@@ -1,5 +1,5 @@
-import { SignInForm } from "@/components/customer/sign-in-form"
 import { HomeButton } from "@/components/home-button"
+import { SignInForm } from "@/features/customer/components/sign-in-form"
 
 export default function Home() {
   return (

@@ -1,4 +1,4 @@
-import { SettingsNavBar } from "@/components/settings/settings-nav-bar"
+import { SettingsNavBar } from "@/features/settings/components/settings-nav-bar"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

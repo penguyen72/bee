@@ -1,6 +1,6 @@
 import { getCheckInUsers } from "@/actions/get-check-in-users"
-import { OverviewCard } from "@/components/business/overview/overview-card"
-import { OverviewTable } from "@/components/business/overview/overview-table"
+import { OverviewCard } from "@/features/overview/components/overview-card"
+import { OverviewTable } from "@/features/overview/components/overview-table"
 
 export default async function Home() {
   const data = await getCheckInUsers(process.env.BUSINESS_EMAIL)
