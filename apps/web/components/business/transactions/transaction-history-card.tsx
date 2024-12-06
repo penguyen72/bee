@@ -1,9 +1,7 @@
 "use client"
 
-import apiClient from "@/apiClient"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn, convertToUSD } from "@/lib/utils"
-import { Query, useQuery } from "@tanstack/react-query"
 
 interface Props {
   overview:
@@ -16,30 +14,20 @@ interface Props {
 }
 
 export function TransactionsCard({ overview }: Props) {
-  const { data, isLoading } = useQuery({
-    queryKey: ["get-historical-data"],
-    queryFn: async () => {
-      const { data } = await apiClient.get("/get-historical-data")
-      return data
-    }
-  })
-
-  if (isLoading) return null
-
   const items = [
     {
       title: "Total Members",
-      content: data.overview?.totalMembers,
+      content: overview?.totalMembers,
       color: "bg-green-200"
     },
     {
       title: "Rewards Redeemed",
-      content: convertToUSD(data.overview?.rewardsRedeemed),
+      content: convertToUSD(overview?.rewardsRedeemed),
       color: "bg-violet-300"
     },
     {
       title: "Net Revenue",
-      content: convertToUSD(data.overview?.netRevenue),
+      content: convertToUSD(overview?.netRevenue),
       color: "bg-yellow-100"
     }
   ]
