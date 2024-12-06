@@ -1,8 +1,10 @@
 "use client"
 
+import apiClient from "@/apiClient"
 import { Table } from "@/components/table"
 import { TransactionsWithCustomer } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { useQuery } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
@@ -11,7 +13,7 @@ const columnHelper = createColumnHelper<TransactionsWithCustomer>()
 
 const columns = [
   columnHelper.display({
-    id: "type",
+    id: "number",
     header: "NO.",
     cell: (info) => {
       return <p>{info.row.index + 1}</p>
@@ -89,7 +91,15 @@ interface Props {
 }
 
 export function TransactionsTable({ data }: Props) {
-  const dataSource = useMemo(() => data, [data])
+  const { data: dataSource, isLoading } = useQuery({
+    queryKey: ["get-historical-data"],
+    queryFn: async () => {
+      const { data } = await apiClient.get("/get-historical-data")
+      return data
+    }
+  })
+
+  if (isLoading) return null
 
   return (
     <Table
