@@ -11,7 +11,7 @@ export function Legal() {
       <Button
         className="text-black"
         variant="link"
-        onClick={() => router.push("/privacy-notice")}
+        onClick={() => router.push("/privacy-policy")}
       >
         Privacy Notice
       </Button>

@@ -127,7 +127,7 @@ export default function Page() {
           <p>
             By using our Service, you consent to the collection, use, and
             sharing of personal data as outlined in our{" "}
-            <Link href="/privacy-notice">Privacy Notice</Link>.
+            <Link href="/privacy-policy">Privacy Policy</Link>.
           </p>
           <ul className="list-disc list-inside">
             <li>
