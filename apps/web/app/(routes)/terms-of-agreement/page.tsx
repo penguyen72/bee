@@ -1,10 +1,6 @@
-import { Header } from "@/components/header"
-import { Link } from "@/components/link"
-
 export default function Page() {
   return (
     <div className="flex flex-col items-center h-full bg-gradient-to-b from-amber-200 to-white-500">
-      <Header />
       <div className="mx-12 pb-48 max-w-[1250px] flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold tracking-[0.03em]">
@@ -127,7 +123,7 @@ export default function Page() {
           <p>
             By using our Service, you consent to the collection, use, and
             sharing of personal data as outlined in our{" "}
-            <Link href="/privacy-policy">Privacy Policy</Link>.
+            {/* <Link href="/privacy-policy">Privacy Policy</Link>. */}
           </p>
           <ul className="list-disc list-inside">
             <li>

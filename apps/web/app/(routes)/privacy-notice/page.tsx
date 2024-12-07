@@ -1,9 +1,6 @@
-import { Header } from "@/components/header"
-
 export default function Page() {
   return (
     <div className="flex flex-col items-center h-full bg-gradient-to-b from-amber-200 to-white-500">
-      <Header />
       <div className="mx-12 pb-48 max-w-[1250px] flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold tracking-[0.03em]">Privacy Notice</p>
