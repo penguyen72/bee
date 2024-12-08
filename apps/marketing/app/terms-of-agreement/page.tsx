@@ -1,10 +1,9 @@
-import { Header } from "@/components/header"
 import { Link } from "@/components/link"
 
 export default function Page() {
   return (
     <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
-      <div className="mx-12 pb-48 flex flex-col gap-4">
+      <div className="px-4 pb-48 flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold tracking-[0.03em]">
             Terms of Agreement
