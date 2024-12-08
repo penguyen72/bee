@@ -8,7 +8,7 @@ export function Header() {
   const router = useRouter()
 
   return (
-    <div className="flex flex-nowrap items-center justify-between max-w-[1000px] gap-48 py-12">
+    <div className="flex flex-nowrap items-center justify-between w-full gap-48 py-12 px-4 max-w-[1100px]">
       <div className="flex items-center">
         <div
           className="flex items-center gap-2 mr-8 hover:cursor-pointer"
@@ -35,10 +35,10 @@ export function Header() {
         </Button>
       </div>
       <div className="flex">
-        <Button className="text-black" variant="link">
-          Sign Up
-        </Button>
+        <Button>Get Started</Button>
         <Button
+          className="text-black"
+          variant="link"
           onClick={() => router.push("https://app.mighty-bee.com/overview")}
         >
           Log In
