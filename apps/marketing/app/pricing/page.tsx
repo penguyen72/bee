@@ -1,6 +1,5 @@
 "use client"
 
-import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Check } from "lucide-react"
@@ -13,8 +12,7 @@ const prices = [
 
 export default function Page() {
   return (
-    <div className="flex flex-col items-center h-full bg-gradient-to-b from-amber-200 to-white-500">
-      <Header />
+    <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
       <div className="my-12 max-w-[800px] text-center gap-6 flex flex-col items-center">
         <p className="text-4xl font-semibold">Pricing</p>
         <p>

@@ -3,7 +3,7 @@ export default function Page() {
     <div className="flex flex-col items-center h-full bg-gradient-to-b from-amber-200 to-white-500">
       <div className="mx-12 pb-48 max-w-[1250px] flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <p className="text-3xl font-bold tracking-[0.03em]">Privacy Notice</p>
+          <p className="text-3xl font-bold tracking-[0.03em]">Privacy Policy</p>
           <p>
             <span className="font-bold">Effective Date: </span>
             <span>October 25, 2024</span>
@@ -18,7 +18,7 @@ export default function Page() {
             or
             <span className="font-bold"> &quot;our&quot;</span>), values your
             privacy and is committed to protecting your personal information.
-            This Privacy Notice explains how we collect, use, and protect your
+            This Privacy Policy explains how we collect, use, and protect your
             data when you use our services.
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function Page() {
           </p>
           <p>
             We retain your personal information only for as long as necessary to
-            fulfill the purposes outlined in this notice, or as required by law.
+            fulfill the purposes outlined in this Policy, or as required by law.
           </p>
         </div>
         <div className="flex flex-col gap-2">
@@ -159,10 +159,10 @@ export default function Page() {
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-xl font-bold tracking-[0.03em]">
-            9. Changes to This Privacy Notice
+            9. Changes to This Privacy Policy
           </p>
           <p>
-            We may update this Privacy Notice from time to time. When we do, we
+            We may update this Privacy Policy from time to time. When we do, we
             will notify you by updating the &quot;Last Updated&quot; date at the
             top of this page.
           </p>
@@ -170,7 +170,7 @@ export default function Page() {
         <div className="flex flex-col gap-2">
           <p className="text-xl font-bold tracking-[0.03em]">10. Contact Us</p>
           <p>
-            If you have questions or concerns about this Privacy Notice or how
+            If you have questions or concerns about this Privacy Policy or how
             we handle your personal data, please contact us at:
           </p>
           <ul className="list-disc list-inside">
