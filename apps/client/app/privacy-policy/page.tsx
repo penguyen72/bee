@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <div className="flex flex-col overflow-y-scroll bg-amber-200">
+    <div className="flex flex-col overflow-y-scroll bg-gradient-to-b from-amber-200 to-white-500">
       <div className="flex flex-col gap-4 mx-auto py-16 max-w-[1110px]">
         <p>
           <strong className="text-3xl">Privacy Policy</strong>

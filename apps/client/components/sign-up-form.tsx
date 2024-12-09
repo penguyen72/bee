@@ -18,6 +18,7 @@ import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormError } from "./form-error"
+import { Link } from "./link"
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>()
@@ -113,6 +114,17 @@ export function SignUpForm() {
           )}
         />
         <FormError message={error} />
+
+        <p className="text-xs text-center">
+          By providing your phone number, you consent to receive marketing and
+          promotional text messages (such as discounts, special offers, and
+          updates) from Sun Nails & Spa at the phone number provided. Message
+          and data rates may apply. You can opt out at any time by replying STOP
+          to any message. Please see our{" "}
+          <Link href="terms-of-service">Terms of Service</Link> and{" "}
+          <Link href="terms-of-service">Privacy Policy</Link>.
+        </p>
+
         <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue
         </Button>

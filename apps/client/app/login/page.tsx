@@ -1,4 +1,5 @@
 import { signIn } from "@/auth"
+import { Link } from "@/components/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -38,9 +39,11 @@ export default function Page() {
             Log in with Microsoft
           </Button> */}
         </div>
+
         <p className="mt-4 text-sm text-center text-gray-500 max-w-64">
-          By clicking continue, you agree to our Terms of Service and Privacy
-          Policy.
+          By clicking continue, you agree to our{" "}
+          <Link href="terms-of-service">Terms of Service</Link> and{" "}
+          <Link href="terms-of-service">Privacy Policy</Link>
         </p>
       </div>
     </div>
