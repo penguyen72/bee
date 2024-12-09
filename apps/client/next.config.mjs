@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  env: {
-    BUSINESS_EMAIL: process.env.BUSINESS_EMAIL,
-  },
+  output: "standalone",
   experimental: {
     serverActions: {
-      allowedOrigins: ['mighty-bee.vercel.app'],
-    },
-  },
-};
+      allowedOrigins: ["mighty-bee.vercel.app"]
+    }
+  }
+}
 
-export default nextConfig;
+export default nextConfig

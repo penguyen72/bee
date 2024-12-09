@@ -1,4 +1,4 @@
-import { SignInForm } from "@/components/customer/sign-in-form"
+import { SignInForm } from "@/components/sign-in-form"
 import { HomeButton } from "@/components/home-button"
 
 export default function Home() {

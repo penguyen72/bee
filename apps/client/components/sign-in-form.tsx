@@ -45,10 +45,10 @@ export function SignInForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 w-full"
+        className="flex flex-col w-full gap-2"
       >
         <FormMessage className="mb-2" />
-        <FormDescription className="text-black text-base mb-2">
+        <FormDescription className="mb-2 text-base text-black">
           Please enter your basic information.
         </FormDescription>
         <FormField
