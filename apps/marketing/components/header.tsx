@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import ScrollIntoView from "react-scroll-into-view"
 
 export function Header() {
   const router = useRouter()
@@ -17,29 +18,28 @@ export function Header() {
           <Image alt="bee-icon" src="/bee-icon.svg" height={28} width={28} />
           <p className="text-xl font-semibold">Mighty Bee</p>
         </div>
-        <Button className="text-black" variant="link">
-          Product
-        </Button>
-        <Button className="text-black" variant="link">
-          How It Works
-        </Button>
-        <Button
-          className="text-black"
-          variant="link"
-          onClick={() => router.push("/pricing")}
-        >
-          Pricing
-        </Button>
-        <Button className="text-black" variant="link">
-          Contact
-        </Button>
+        <ScrollIntoView selector="#product">
+          <Button className="text-black" variant="link">
+            Product
+          </Button>
+        </ScrollIntoView>
+        <ScrollIntoView selector="#pricing">
+          <Button className="text-black" variant="link">
+            Pricing
+          </Button>
+        </ScrollIntoView>
+        <ScrollIntoView selector="#why-us">
+          <Button className="text-black" variant="link">
+            Why Us
+          </Button>
+        </ScrollIntoView>
       </div>
       <div className="flex">
         <Button>Get Started</Button>
         <Button
           className="text-black"
           variant="link"
-          onClick={() => router.push("https://app.mighty-bee.com/overview")}
+          onClick={() => router.push("/login")}
         >
           Log In
         </Button>

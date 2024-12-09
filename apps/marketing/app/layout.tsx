@@ -14,12 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <div className="flex flex-col items-center h-full bg-gradient-to-b from-amber-200 to-white-500">
-          <Header />
-          {children}
-        </div>
-      </body>
+      <body className="bg-amber-200">{children}</body>
     </html>
   )
 }

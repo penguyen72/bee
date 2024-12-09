@@ -1,48 +1,82 @@
-import { Link } from "@/components/link"
+import { Footer } from "@/components/footer"
+import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
-      <div className="py-24 w-full min-h-[600px] flex flex-col justify-between">
-        <div className="flex flex-col items-center text-center gap-6">
-          <p className="text-5xl font-semibold">Simplified Loyalty Solutions</p>
-          <p>
-            Mighty Bee helps small businesses strengthen customer relationships
-            and drive recurring business.
-          </p>
-          <Button>Get Started</Button>
+    <div className="flex flex-col items-center h-full">
+      <Header />
+      <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
+        <div className="py-24 px-4 w-full min-h-[600px] flex flex-col justify-between">
+          <div className="flex flex-col items-start gap-2 text-center">
+            <p className="text-5xl font-semibold">
+              Simplified Loyalty Solutions
+            </p>
+            <p className="text-2xl">for Your Small Business</p>
+            <p className="py-2">
+              Strengthen your customer relationships and drive recurring
+              business.
+            </p>
+            <Button>Get Started</Button>
+          </div>
         </div>
       </div>
-      <div className="flex justify-between w-full px-4 py-8 items-start">
-        <div className="flex items-center gap-2">
-          <Image alt="bee-icon" src="/bee-icon.svg" height={28} width={28} />
-          <p className="text-xl font-semibold">Mighty Bee</p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <p>Legal</p>
-          <Link
-            className="text-xs no-underline hover:underline"
-            href="/privacy-policy"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            className="text-xs no-underline hover:underline"
-            href="/terms-of-agreement"
-          >
-            Terms of Agreement
-          </Link>
+
+      <div id="product" className="flex flex-col w-full bg-amber-50">
+        <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
+          <div className="py-24 px-4 w-full min-h-[800px] flex flex-col justify-between">
+            <div className="flex flex-col items-start gap-2 text-center">
+              <p className="text-3xl font-semibold">Product</p>
+              Coming Soon
+            </div>
+          </div>
         </div>
       </div>
-      <Separator />
-      <div className="w-full px-4 py-6 pb-12">
-        <p className="text-xs">
-          Copyright &copy; 2024 Mighty Bee. All Rights Reserved
-        </p>
+
+      <div
+        id="pricing"
+        className="flex flex-col items-center max-w-[1100px] w-full mx-auto"
+      >
+        <div className="py-24 px-4 w-full min-h-[800px] flex flex-col justify-between">
+          <div className="flex flex-col items-start gap-2 text-center">
+            <p className="text-3xl font-semibold">Pricing</p>
+            Coming Soon
+          </div>
+        </div>
       </div>
+
+      <div id="why-us" className="flex flex-col w-full bg-amber-50">
+        <div className="flex flex-col items-center max-w-[1100px] w-full mx-auto">
+          <div className="py-24 px-4 w-full min-h-[800px] flex flex-col justify-between">
+            <div className="flex flex-col items-start gap-5">
+              <div className="flex items-center gap-2">
+                <p className="text-3xl font-semibold">Why Us?</p>
+                <Image
+                  alt="large-bee-logo"
+                  src="/large-bee-logo.svg"
+                  width={80}
+                  height={30}
+                />
+              </div>
+              <p>
+                At <strong>Mighty Bee</strong>, we recognize the unique
+                challenges small businesses face. Like a bee pollinates flowers
+                to promote growth, our intuitive and simple loyalty program
+                helps you effortlessly cultivate strong customer
+                connections—ensuring your small business can flourish and
+                thrive.
+              </p>
+            </div>
+            <div className="flex flex-col items-start">
+              <p className="py-2 text-2xl font-semibold">Are You Ready?</p>
+              <Button>Get Started</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   )
 }
