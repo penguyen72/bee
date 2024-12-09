@@ -14,7 +14,7 @@ export function HomeButton() {
       size="icon"
       onClick={() => router.push("/")}
     >
-      <HomeIcon size={32} />
+      <HomeIcon />
     </Button>
   )
 }

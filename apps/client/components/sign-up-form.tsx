@@ -36,7 +36,7 @@ export function SignUpForm() {
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
     createUser(values).then((data) => {
       if (data.success) {
-        router.push(`/customer/${data.userId}`)
+        router.push(`/${data.userId}`)
       }
       setError(data.error)
     })
@@ -46,9 +46,9 @@ export function SignUpForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 w-full"
+        className="flex flex-col w-full gap-2"
       >
-        <FormDescription className="text-black text-base mb-2">
+        <FormDescription className="mb-2 text-base text-black">
           Please enter your basic information.
         </FormDescription>
         <FormField

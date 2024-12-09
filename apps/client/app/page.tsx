@@ -1,13 +1,23 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { LogOut } from "lucide-react"
+import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 export default function Home() {
   const router = useRouter()
 
   return (
-    <main className="flex flex-col h-full text-center">
+    <main className="relative flex flex-col h-full text-center">
+      <Button
+        className="absolute right-8 top-8 hover:bg-slate-100/25"
+        variant="ghost"
+        size="icon"
+        onClick={() => signOut()}
+      >
+        <LogOut />
+      </Button>
       <div className="bg-[#FFF3D0] flex-1 flex flex-col gap-8 items-center justify-center p-12">
         <p className="mb-12 text-6xl font-extrabold">
           Welcome to Sun Nails & Spa!

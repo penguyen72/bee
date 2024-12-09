@@ -35,7 +35,7 @@ export function SignInForm() {
   async function onSubmit(values: z.infer<typeof SignInSchema>) {
     checkInUser(values).then((data) => {
       if (data.success) {
-        router.push(`/customer/${data.userId}`)
+        router.push(`/${data.userId}`)
       }
       setError(data.error)
     })
