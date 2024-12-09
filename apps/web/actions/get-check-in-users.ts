@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma"
 import { getStartAndEndDate } from "@/lib/utils"
 import { isAfter, isBefore } from "date-fns"
 
-export const getCheckInUsers = async (emailAddress: string | undefined) => {
+export const getCheckInUsers = async () => {
   try {
     const session = await auth()
 
@@ -13,13 +13,13 @@ export const getCheckInUsers = async (emailAddress: string | undefined) => {
       return { error: "Authorized User" }
     }
 
-    if (!emailAddress) {
-      return { error: "Email Environment Variable Not Set!" }
+    if (!session?.user?.email) {
+      return { error: "Email Not Provided!" }
     }
 
     const organization = await prisma.organizations.findUnique({
       where: {
-        emailAddress
+        emailAddress: session?.user?.email
       }
     })
 
