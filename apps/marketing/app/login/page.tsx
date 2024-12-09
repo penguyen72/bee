@@ -21,7 +21,7 @@ export default function Page() {
             Welcome
           </CardTitle>
           <CardDescription className="text-center">
-            Please select how you'd like to continue
+            Please select how you&apos;d like to continue
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
