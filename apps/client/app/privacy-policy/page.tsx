@@ -190,7 +190,7 @@ export default function Page() {
           </span>
         </p>
         <h4>
-          <strong>8. Children's Privacy</strong>
+          <strong>8. Children&apos;s Privacy</strong>
         </h4>
         <p>
           <span>
