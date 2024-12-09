@@ -1,4 +1,5 @@
 import { signIn } from "@/auth"
+import { Link } from "@/components/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -8,7 +9,10 @@ export default function Page() {
       <div className="w-1/2 h-full p-8 bg-amber-300">
         <div className="flex items-center gap-2 mr-8">
           <Image alt="bee-icon" src="/bee-icon.svg" height={28} width={28} />
-          <p className="text-xl font-semibold">Mighty Bee</p>
+          <p>
+            <span className="text-xl font-semibold">Mighty Bee</span>{" "}
+            <span className="text-xs">Business</span>
+          </p>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-1/2 h-full p-8">
@@ -20,7 +24,7 @@ export default function Page() {
               await signIn("google")
             }}
           >
-            <Button className="flex gap-6 w-full" variant="outline">
+            <Button className="flex w-full gap-6" variant="outline">
               <Image
                 alt="google-icon"
                 src="/google-icon.svg"
@@ -35,9 +39,10 @@ export default function Page() {
             Log in with Microsoft
           </Button> */}
         </div>
-        <p className="mt-4 text-sm text-center text-gray-500 max-w-64">
-          By clicking continue, you agree to our Terms of Service and Privacy
-          Policy.
+        <p className="mt-4 text-sm text-center text-gray-500 max-w-72">
+          By clicking continue, you agree to our{" "}
+          <Link href="/terms-of-agreement">Terms of Agreement</Link> and{" "}
+          <Link href="/privacy-policy">Privacy Policy</Link>
         </p>
       </div>
     </div>

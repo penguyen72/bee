@@ -42,8 +42,8 @@ export default function Page() {
 
         <p className="mt-4 text-sm text-center text-gray-500 max-w-64">
           By clicking continue, you agree to our{" "}
-          <Link href="terms-of-service">Terms of Service</Link> and{" "}
-          <Link href="terms-of-service">Privacy Policy</Link>
+          <Link href="/terms-of-service">Terms of Service</Link> and{" "}
+          <Link href="/privacy-policy">Privacy Policy</Link>
         </p>
       </div>
     </div>

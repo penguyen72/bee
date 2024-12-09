@@ -1,6 +1,10 @@
 export const publicRoutePrefix: string = "/customer"
 
-export const publicRoutes: string[] = ["/"]
+export const publicRoutes: string[] = [
+  "/",
+  "/privacy-policy",
+  "/terms-of-agreement"
+]
 
 export const authRoutes: string[] = ["/login"]
 
