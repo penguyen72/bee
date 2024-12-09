@@ -22,9 +22,9 @@ export default function Page() {
             protect your data when you use our services.
           </span>
         </p>
-        <h4>
+        <p>
           <strong>1. Who We Are</strong>
-        </h4>
+        </p>
         <p>
           <span>
             Mighty Bee is a software startup providing software solutions for
@@ -38,9 +38,9 @@ export default function Page() {
             <span> mightybee.business@gmail.com</span>
           </li>
         </ul>
-        <h4>
+        <p>
           <strong>2. Information We Collect</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We may collect the following personal information from you when you
@@ -66,9 +66,9 @@ export default function Page() {
             <span>: To send special offers on your birthday.</span>
           </li>
         </ul>
-        <h4>
+        <p>
           <strong>3. How We Use Your Information</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We collect and process your data for the following purposes:
@@ -94,9 +94,9 @@ export default function Page() {
             applicable privacy laws.
           </span>
         </p>
-        <h4>
+        <p>
           <strong>4. How We Protect Your Information</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We implement industry-standard security measures to protect your
@@ -114,9 +114,9 @@ export default function Page() {
             </span>
           </li>
         </ul>
-        <h4>
+        <p>
           <strong>5. Sharing Your Information</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We do not sell your personal information to third parties. However,
@@ -180,27 +180,27 @@ export default function Page() {
             contact us at mightybee.business@gmail.com
           </span>
         </p>
-        <h4>
+        <p>
           <strong>7. Retention of Your Data</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We retain your personal information only for as long as necessary to
             fulfill the purposes outlined in this notice, or as required by law.
           </span>
         </p>
-        <h4>
+        <p>
           <strong>8. Children&apos;s Privacy</strong>
-        </h4>
+        </p>
         <p>
           <span>
             Our services are not intended for individuals under the age of 13.
             We do not knowingly collect personal data from children.
           </span>
         </p>
-        <h4>
+        <p>
           <strong>9. Changes to This Privacy Notice</strong>
-        </h4>
+        </p>
         <p>
           <span>
             We may update this Privacy Notice from time to time. When we do, we
@@ -208,9 +208,9 @@ export default function Page() {
             top of this page.
           </span>
         </p>
-        <h4>
+        <p>
           <strong>10. Contact Us</strong>
-        </h4>
+        </p>
         <p>
           <span>
             If you have questions or concerns about this Privacy Notice or how
