@@ -163,7 +163,7 @@ export default function Page() {
         <ul className="list-disc list-inside">
           <li>
             <span>
-              You are responsible for ensuring that your customers' data is
+              You are responsible for ensuring that your customers&apos; data is
               accurate and up to date.
             </span>
           </li>
