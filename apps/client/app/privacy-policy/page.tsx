@@ -15,11 +15,11 @@ export default function Page() {
         </p>
         <p>
           <span>
-            Mighty Bee (<strong>"we,"</strong> <strong>"us,"</strong> or{" "}
-            <strong>"our"</strong>) values your privacy and is committed to
-            protecting your personal information. This Privacy Notice explains
-            how we collect, use, and protect your data when you use our
-            services.
+            Mighty Bee (<strong>&quot;we, &quot;</strong>
+            <strong>&quot;us,&quot;</strong> or <strong>&quot;our&quot;</strong>
+            ) values your privacy and is committed to protecting your personal
+            information. This Privacy Notice explains how we collect, use, and
+            protect your data when you use our services.
           </span>
         </p>
         <h4>
@@ -148,14 +148,12 @@ export default function Page() {
           <li>
             <strong>Access:</strong>
             <span>
-              {" "}
               The right to request a copy of the data we hold about you.
             </span>
           </li>
           <li>
             <strong>Correction:</strong>
             <span>
-              {" "}
               The right to update or correct your information to ensure its
               accuracy.
             </span>
@@ -163,7 +161,6 @@ export default function Page() {
           <li>
             <strong>Deletion:</strong>
             <span>
-              {" "}
               The right to request that we delete your data, subject to certain
               legal exceptions.
             </span>
@@ -171,7 +168,6 @@ export default function Page() {
           <li>
             <strong>Objection:</strong>
             <span>
-              {" "}
               The right to opt out of certain uses of your data, such as for
               direct marketing purposes.
             </span>
@@ -208,8 +204,8 @@ export default function Page() {
         <p>
           <span>
             We may update this Privacy Notice from time to time. When we do, we
-            will notify you by updating the "Last Updated" date at the top of
-            this page.
+            will notify you by updating the &quot;Last Updated&quot; date at the
+            top of this page.
           </span>
         </p>
         <h4>

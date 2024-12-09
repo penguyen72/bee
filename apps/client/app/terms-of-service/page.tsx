@@ -16,11 +16,11 @@ export default function Page() {
         <p>
           <span>
             Thank you for choosing a business powered by Mighty Bee. These Terms
-            of Service (<strong>"Terms"</strong>) govern your use of the loyalty
-            services provided by our clients through our software. By providing
-            your personal information (e.g., first name, phone number, and date
-            of birth) to a business using Mighty Bee&rsquo;s software, you agree
-            to these Terms.
+            of Service (<strong>&quot;Terms&quot;</strong>) govern your use of
+            the loyalty services provided by our clients through our software.
+            By providing your personal information (e.g., first name, phone
+            number, and date of birth) to a business using Mighty Bee&rsquo;s
+            software, you agree to these Terms.
           </span>
         </p>
         <h4>
@@ -179,10 +179,10 @@ export default function Page() {
         <p>
           <span>
             We may update these Terms periodically. When changes are made, the
-            "Last Updated" date at the top of this document will reflect the new
-            version. Continued participation in services provided by businesses
-            using Mighty Bee software constitutes acceptance of the updated
-            Terms.
+            &quot;Last Updated&quot; date at the top of this document will
+            reflect the new version. Continued participation in services
+            provided by businesses using Mighty Bee software constitutes
+            acceptance of the updated Terms.
           </span>
         </p>
         <h4>
