@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import { getStartAndEndDate } from "@/lib/utils"
 import { isAfter, isBefore } from "date-fns"
 

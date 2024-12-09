@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { EditMemberSchema } from "@/schemas"
 import { formatISO } from "date-fns"

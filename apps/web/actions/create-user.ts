@@ -1,6 +1,6 @@
 "use server"
 
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { SignUpSchema } from "@/schemas"
 import { formatISO } from "date-fns"

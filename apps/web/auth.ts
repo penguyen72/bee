@@ -1,20 +1,27 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
+import authConfig from "@/auth.config"
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "@/lib/prisma"
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user }) {
-      const allowedUsers = process.env.GOOGLE_PROVIDER_ALLOWED_USERS
-      const allowedEmails = allowedUsers
-        ? allowedUsers.split(",").filter((user) => user)
-        : []
+      const allowedUsers = await prisma.organizations.findMany({
+        select: {
+          emailAddress: true
+        }
+      })
 
+      const allowedEmails = allowedUsers.map((item) => item.emailAddress)
       if (allowedEmails.includes(user?.email ?? "")) {
         return true
       } else {
         return false
       }
     }
-  }
+  },
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
+  ...authConfig
 })

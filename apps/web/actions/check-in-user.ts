@@ -1,6 +1,6 @@
 "use server"
 
-import prisma from "@/lib/prisma"
+import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { SignInSchema } from "@/schemas"
 import { revalidatePath } from "next/cache"
