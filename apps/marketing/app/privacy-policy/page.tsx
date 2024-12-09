@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <div className="flex flex-col items-center max-w-[1100px] mx-auto">
-      <div className="px-4 pb-48 flex flex-col gap-4">
+      <div className="flex flex-col gap-4 px-4 pb-48">
         <div className="flex flex-col gap-2">
           <p className="text-3xl font-bold leading-10">Privacy Policy</p>
           <p>
@@ -127,7 +127,7 @@ export default function Page() {
             <li>
               <span className="font-bold">Service Providers: </span>Third-party
               vendors who assist in delivering our services, including:
-              <ul className="list-disc list-inside pl-8">
+              <ul className="pl-8 list-disc list-inside">
                 <li>
                   <span className="font-bold">Payment Processors: </span>To
                   securely handle transactions.
