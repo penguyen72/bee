@@ -22,8 +22,8 @@ export default function Page() {
           <span>These </span>
           <strong>Terms of Agreement </strong>
           <span>
-            (<strong>"Terms"</strong>) govern your use of the services provided
-            by Mighty Bee (<strong>&quot;we, &quot;</strong>
+            (<strong>&quot;Terms&quot;</strong>) govern your use of the services
+            provided by Mighty Bee (<strong>&quot;we, &quot;</strong>
             <strong>&quot;us,&quot;</strong> or <strong>&quot;our&quot;</strong>
             ). By accessing or using our software and services, you agree to be
             bound by these Terms. If you do not agree with these Terms, you must
@@ -312,7 +312,7 @@ export default function Page() {
         <p>
           <span>
             We may update these Terms at any time. Changes will be effective as
-            of the "Last Updated" date.
+            of the &quot;Last Updated&quot; date.
           </span>
         </p>
         <ul className="list-disc list-inside">
