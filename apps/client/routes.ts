@@ -1,4 +1,4 @@
-export const publicRoutes: string[] = ["/privacy-policy", "terms-of-service"]
+export const publicRoutes: string[] = ["/privacy-policy", "/terms-of-service"]
 
 export const authRoutes: string[] = ["/login"]
 
