@@ -11,11 +11,7 @@ export function Header() {
     <div className="flex items-center gap-4 justify-between w-full">
       <h2 className="text-xl font-semibold">Sun Nails & Spa</h2>
       <div className="flex items-center">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.push("/overview")}
-        >
+        <Button variant="ghost" size="icon" onClick={() => router.push("/")}>
           <Home />
         </Button>
         <Button
@@ -42,7 +38,7 @@ export function Header() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => router.push("/settings/profile")}
+          onClick={() => router.push("/profile")}
         >
           <Settings />
         </Button>

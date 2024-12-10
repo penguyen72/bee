@@ -58,7 +58,7 @@ const columns = [
     }
   }),
   columnHelper.display({
-    id: "last-visit",
+    id: "member-type",
     header: "MEMBER TYPE",
     cell: (info) => {
       const memberType = determineMemberType(info.row.original)

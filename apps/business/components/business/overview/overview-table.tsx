@@ -88,7 +88,7 @@ export function OverviewTable({ data }: Props) {
       columns={columns}
       tableRowProps={(row) => ({
         className: "bg-white hover:cursor-pointer",
-        onClick: () => router.push(`/overview/${row.original.id}`)
+        onClick: () => router.push(`/${row.original.id}`)
       })}
       tableCellProps={({ cellIndex, cellSelf }) => ({
         className: cn(

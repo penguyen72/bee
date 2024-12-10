@@ -13,10 +13,7 @@ export function SettingsHeader({ title }: Props) {
   return (
     <div className="flex justify-between items-center">
       <p className="text-2xl font-semibold">{title}</p>
-      <Home
-        className="hover:cursor-pointer"
-        onClick={() => router.push("/overview")}
-      />
+      <Home className="hover:cursor-pointer" onClick={() => router.push("/")} />
     </div>
   )
 }

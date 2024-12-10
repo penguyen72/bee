@@ -17,7 +17,7 @@ const items: SettingsNavItem[] = [
     key: "members",
     icon: Users,
     label: "Members",
-    path: "/members"
+    path: "/edit-member"
   },
   {
     key: "preferences",
@@ -48,7 +48,7 @@ export function SettingsNavBar() {
               "flex items-center gap-4 py-2 pl-12 hover:cursor-pointer",
               pathname.includes(item.path) && "bg-amber-200"
             )}
-            onClick={() => router.push(`/settings${item.path}`)}
+            onClick={() => router.push(`${item.path}`)}
           >
             <item.icon size={36} />
             <p className="text-lg font-semibold">{item.label}</p>
