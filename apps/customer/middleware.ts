@@ -6,22 +6,23 @@ import authConfig from "./auth.config"
 const { auth } = NextAuth(authConfig)
 
 export default auth((req) => {
-  const { nextUrl } = req
-  const isLoggedIn = !!req.auth
+  return
+  // const { nextUrl } = req
+  // const isLoggedIn = !!req.auth
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+  // const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+  // const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  // const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
-  if (isApiAuthRoute) return
+  // if (isApiAuthRoute) return
 
-  if (isLoggedIn && isAuthRoute) {
-    return Response.redirect(new URL("/", nextUrl))
-  }
+  // if (isLoggedIn && isAuthRoute) {
+  //   return Response.redirect(new URL("/", nextUrl))
+  // }
 
-  if (!isLoggedIn && !(isAuthRoute || isPublicRoute)) {
-    return Response.redirect(new URL("/login", nextUrl))
-  }
+  // if (!isLoggedIn && !(isAuthRoute || isPublicRoute)) {
+  //   return Response.redirect(new URL("/login", nextUrl))
+  // }
 })
 
 export const config = {
