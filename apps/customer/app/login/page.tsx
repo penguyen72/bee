@@ -11,7 +11,7 @@ export default function Page() {
           <Image alt="bee-icon" src="/bee-icon.svg" height={28} width={28} />
           <p>
             <span className="text-xl font-semibold">Mighty Bee</span>{" "}
-            <span className="text-xs">Client</span>
+            <span className="text-xs">Customer</span>
           </p>
         </div>
       </div>
