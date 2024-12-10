@@ -27,17 +27,17 @@ export default function Page() {
         <CardContent className="space-y-4">
           <Button
             className="w-full py-6 text-lg"
-            variant="outline"
-            onClick={() => router.push("https://www.client.mighty-bee.com")}
-          >
-            Continue as Client
-          </Button>
-          <Button
-            className="w-full py-6 text-lg"
             variant="default"
             onClick={() => router.push("https://www.app.mighty-bee.com")}
           >
             Continue as Business
+          </Button>
+          <Button
+            className="w-full py-6 text-lg"
+            variant="outline"
+            onClick={() => router.push("https://www.customer.mighty-bee.com")}
+          >
+            Continue for Customer
           </Button>
         </CardContent>
       </Card>
