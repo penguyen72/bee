@@ -1,8 +1,8 @@
-name: 'Backup MongoDB'
+name: "Backup MongoDB"
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
 
 jobs:
   mongodump:
