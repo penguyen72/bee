@@ -10,7 +10,11 @@ import { z } from "zod"
 
 export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
   try {
-    const { firstName, phoneNumber, birthday } = values
+    const { firstName, phoneNumber, birthday, consent } = values
+
+    if (!consent) {
+      return { error: "Consent is Required!" }
+    }
 
     if (!firstName) {
       return { error: "First Name is Required!" }

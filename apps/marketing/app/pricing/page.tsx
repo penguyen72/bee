@@ -1,7 +1,5 @@
-"use client"
-
+import { GetStartedButton } from "@/components/get-started-button"
 import { Header } from "@/components/header"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Check } from "lucide-react"
 
@@ -36,7 +34,7 @@ export default function Page() {
                     <p className="text-3xl font-bold">${item.price}</p>
                     <p className="font-bold">/mo</p>
                   </span>
-                  <Button className="my-3">Get Started</Button>
+                  <GetStartedButton />
                   <div className="flex flex-col gap-1">
                     <p className="font-semibold">What&apos;s included</p>
                     <div className="text-sm">

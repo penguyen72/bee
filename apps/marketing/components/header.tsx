@@ -1,9 +1,10 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import ScrollIntoView from "react-scroll-into-view"
+import { GetStartedButton } from "./get-started-button"
 
 export function Header() {
   const router = useRouter()
@@ -35,7 +36,7 @@ export function Header() {
         </ScrollIntoView>
       </div>
       <div className="flex">
-        <Button>Get Started</Button>
+        <GetStartedButton />
         <Button
           className="text-black"
           variant="link"

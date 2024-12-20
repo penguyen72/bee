@@ -7,7 +7,8 @@ import {
   FormControl,
   FormDescription,
   FormField,
-  FormItem
+  FormItem,
+  FormLabel
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { formatDateOfBirth, formatPhoneNumber } from "@/lib/utils"
@@ -19,6 +20,7 @@ import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormError } from "./form-error"
 import { Link } from "./link"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export function SignUpForm() {
   const [error, setError] = useState<string | undefined>()
@@ -30,7 +32,8 @@ export function SignUpForm() {
     defaultValues: {
       firstName: "",
       phoneNumber: "",
-      birthday: ""
+      birthday: "",
+      consent: false
     }
   })
 
@@ -113,17 +116,30 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="consent"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel>
+                By providing your phone number, you consent to receive marketing
+                and promotional text messages (such as discounts, special
+                offers, and updates) from Sun Nails & Spa at the phone number
+                provided. Message and data rates may apply. You can opt out at
+                any time by replying STOP to any message. Please see our{" "}
+                <Link href="terms-of-service">Terms of Service</Link> and{" "}
+                <Link href="terms-of-service">Privacy Policy</Link>.
+              </FormLabel>
+            </FormItem>
+          )}
+        />
         <FormError message={error} />
-
-        <p className="text-xs text-center">
-          By providing your phone number, you consent to receive marketing and
-          promotional text messages (such as discounts, special offers, and
-          updates) from Sun Nails & Spa at the phone number provided. Message
-          and data rates may apply. You can opt out at any time by replying STOP
-          to any message. Please see our{" "}
-          <Link href="terms-of-service">Terms of Service</Link> and{" "}
-          <Link href="terms-of-service">Privacy Policy</Link>.
-        </p>
 
         <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue

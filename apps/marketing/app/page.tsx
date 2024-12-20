@@ -1,6 +1,6 @@
 import { Footer } from "@/components/footer"
+import { GetStartedButton } from "@/components/get-started-button"
 import { Header } from "@/components/header"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
               Strengthen your customer relationships and drive recurring
               business.
             </p>
-            <Button>Get Started</Button>
+            <GetStartedButton />
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-start">
               <p className="py-2 text-2xl font-semibold">Are You Ready?</p>
-              <Button>Get Started</Button>
+              <GetStartedButton />
             </div>
           </div>
         </div>
