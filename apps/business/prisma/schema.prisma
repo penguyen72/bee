@@ -55,6 +55,18 @@ model Organizations {
   emailAddress String   @unique
 }
 
+model Promotion {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  title             String
+  unit              String
+  type              String
+  value             Int
+  expiration        DateTime
+  deliveredMessages Int
+}
+
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?

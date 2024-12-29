@@ -22,3 +22,5 @@ export type SettingsNavItem = {
 export type TransactionsWithCustomer = Prisma.TransactionsGetPayload<{
   include: { customer: true }
 }>
+
+export type ObjectValue<T> = T[keyof T]
