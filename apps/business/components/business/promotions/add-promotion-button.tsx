@@ -45,16 +45,16 @@ export function AddPromotionButton() {
 
       if (status !== 200) {
         setError("Unable to Send Messages!")
+      } else {
+        addPromotion(values, data.deliveredMessages).then((response) => {
+          if (response.success) {
+            form.setValue("deliveredMessages", data.deliveredMessages)
+            setState("Confirmed")
+          } else {
+            setError(response.error)
+          }
+        })
       }
-
-      addPromotion(values, data.deliveredMessages).then((response) => {
-        if (response.success) {
-          form.setValue("deliveredMessages", data.deliveredMessages)
-          setState("Confirmed")
-        } else {
-          setError(response.error)
-        }
-      })
     } catch {
       setError("Unknown Error Occurred!")
     }

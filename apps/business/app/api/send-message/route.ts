@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { sendSMS } from "@/lib/twilio"
+import { subYears } from "date-fns"
 
 export async function POST(request: Request) {
   try {
@@ -12,7 +13,13 @@ export async function POST(request: Request) {
 
     const customers = await prisma.customer.findMany({
       select: {
-        phoneNumber: true
+        phoneNumber: true,
+        updatedAt: true
+      },
+      where: {
+        updatedAt: {
+          gte: subYears(new Date(), 2)
+        }
       }
     })
 
