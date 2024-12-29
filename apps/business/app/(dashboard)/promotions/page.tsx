@@ -1,60 +1,9 @@
-"use client"
-
+import { getPromotions } from "@/actions/get-promotions"
 import { AddPromotionButton } from "@/components/business/promotions/add-promotion-button"
-import { Table } from "@/components/table"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { cn } from "@/lib/utils"
-import { createColumnHelper } from "@tanstack/react-table"
-import { format } from "date-fns"
-
-const columnHelper = createColumnHelper<Promotion>()
-
-const columns = [
-  columnHelper.display({
-    id: "number",
-    header: "NO.",
-    cell: (info) => {
-      return <p>{info.row.index + 1}</p>
-    }
-  }),
-  columnHelper.display({
-    id: "details",
-    cell: (info) => {
-      const title = info.row.original.title
-      const unit = info.row.original.unit
-      const value = info.row.original.value
-      const type = info.row.original.type
-      const expiration = info.row.original.expiration
-      const deliveredMessages = info.row.original.deliveredMessages
-      const createdAt = info.row.original.createdAt
-
-      return (
-        <div className="flex justify-between mr-12 my-12">
-          <div className="flex flex-col gap-2">
-            <p>
-              {title} - {value}
-              {unit} Off {type}
-            </p>
-            <p className="text-xs text-slate-500">
-              Joined {format(createdAt, "MMMM yyyy")}
-            </p>
-          </div>
-          <div className="flex flex-col gap-1">
-            <p>
-              <span className="font-semibold">EXP: </span>
-              {format(expiration, "MM/dd/yyyy")}
-            </p>
-            <p className="text-sm text-green-700">
-              {deliveredMessages} Messages Delivered
-            </p>
-          </div>
-        </div>
-      )
-    }
-  })
-]
+import { PromotionTable } from "@/features/promotions/components/promotion-table"
 
 type Promotion = {
   id: string
@@ -67,20 +16,11 @@ type Promotion = {
   createdAt: Date
 }
 
-const dataSource: Promotion[] = [
-  {
-    id: "134809340jjalsdkfj",
-    title: "Member Special",
-    unit: "%",
-    value: 5,
-    type: "Everything",
-    expiration: new Date(),
-    deliveredMessages: 123,
-    createdAt: new Date()
-  }
-]
+export default async function Home() {
+  const data = await getPromotions()
 
-export default function Home() {
+  if (data.error) return null
+
   return (
     <div className="flex flex-col gap-6 w-full h-full">
       <Card className="w-full">
@@ -105,21 +45,7 @@ export default function Home() {
           <Separator className="bg-black" orientation="vertical" />
           <Button variant="link">Expired</Button>
         </div>
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          hideHeader
-          tableRowProps={() => ({
-            className: "bg-white"
-          })}
-          tableCellProps={({ cellIndex, cellSelf }) => ({
-            className: cn(
-              cellIndex === 0 &&
-                "rounded-l-md border-l-[12px] border-l-rose-300",
-              cellIndex === cellSelf.length - 1 && "rounded-r-md"
-            )
-          })}
-        />
+        <PromotionTable data={data.promotions ?? []} />
       </div>
     </div>
   )

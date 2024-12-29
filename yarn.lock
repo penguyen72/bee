@@ -3630,10 +3630,10 @@ turbo@^2.1.2:
     turbo-windows-64 "2.2.3"
     turbo-windows-arm64 "2.2.3"
 
-twilio@^5.3.4:
-  version "5.3.5"
-  resolved "https://registry.yarnpkg.com/twilio/-/twilio-5.3.5.tgz#0390bbdab016bf31e591047e3b7309ce08aa1ccf"
-  integrity sha512-f/sA1Yd6TyIzfcq0u4QDGU+93afwswsJB+rf3T08tvBAMobBDVR3DfGREwJr5jp8xUic0qWa7GbJidk16NA4bg==
+twilio@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/twilio/-/twilio-5.4.0.tgz#7b16b4dcfd4f8f4fc4ddf3c2180d36bbb3b76f68"
+  integrity sha512-kEmxzdOLTzXzUEXIkBVwT1Itxlbp+rtGrQogNfPtSE3EjoEsxrxB/9tdMIEbrsioL8CzTk/+fiKNJekAyHxjuQ==
   dependencies:
     axios "^1.7.4"
     dayjs "^1.11.9"

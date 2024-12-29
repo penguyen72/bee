@@ -34,7 +34,7 @@ export const MemberSearchSchema = z.object({
 })
 
 export const AddPromotionSchema = z.object({
-  name: z.string(),
+  title: z.string(),
   unit: z.string(),
   value: z.string(),
   type: z.string(),
@@ -43,5 +43,5 @@ export const AddPromotionSchema = z.object({
   welcomeWalkin: z.boolean(),
   optOut: z.boolean(),
   message: z.string(),
-  messagePreview: z.string()
+  deliveredMessages: z.number().optional()
 })
