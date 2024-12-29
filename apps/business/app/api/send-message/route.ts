@@ -16,9 +16,11 @@ export async function POST(request: Request) {
       }
     })
 
-    const customerNumbers = customers.map(
-      (item) => "+1" + item.phoneNumber.replaceAll("-", "")
-    )
+    const customerNumbers = [
+      ...new Set(
+        customers.map((item) => "+1" + item.phoneNumber.replaceAll("-", ""))
+      )
+    ]
 
     const data = await request.formData()
 
