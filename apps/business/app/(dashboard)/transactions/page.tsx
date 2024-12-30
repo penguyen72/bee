@@ -1,6 +1,6 @@
 import { getHistoricalData } from "@/actions/get-historical-data"
-import { TransactionsCard } from "@/components/business/transactions/transaction-history-card"
-import { TransactionsTable } from "@/components/business/transactions/transaction-history-table"
+import { TransactionsCard } from "@/features/transactions/transaction-history-card"
+import { TransactionsTable } from "@/features/transactions/transaction-history-table"
 
 export default async function Home() {
   const data = await getHistoricalData()

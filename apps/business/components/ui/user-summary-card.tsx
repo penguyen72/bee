@@ -4,7 +4,7 @@ import { cn, findNextPossibleRedemption } from "@/lib/utils"
 import { Customer } from "@prisma/client"
 import { format } from "date-fns"
 import { Cake, Phone } from "lucide-react"
-import { EditMemberButton } from "../business/transactions/edit-member-button"
+import { EditMemberButton } from "../../features/transactions/edit-member-button"
 
 interface Props {
   user: Customer

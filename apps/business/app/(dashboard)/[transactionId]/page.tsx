@@ -1,4 +1,4 @@
-import { RedemptionForm } from "@/components/business/transactions/redemption-form"
+import { RedemptionForm } from "@/features/transactions/redemption-form"
 import { UserSummaryCard } from "@/components/ui/user-summary-card"
 import { prisma } from "@/lib/prisma"
 

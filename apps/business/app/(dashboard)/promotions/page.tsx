@@ -1,8 +1,8 @@
 import { getPromotions } from "@/actions/get-promotions"
-import { AddPromotionButton } from "@/components/business/promotions/add-promotion-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { AddPromotionButton } from "@/features/promotions/components/add-promotion-button"
 import { PromotionTable } from "@/features/promotions/components/promotion-table"
 
 export default async function Home() {
