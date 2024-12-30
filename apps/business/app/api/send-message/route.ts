@@ -7,11 +7,11 @@ export async function POST(request: Request) {
   try {
     const session = await auth()
 
-    if (!session) return { error: "Unauthorized User!" }
+    if (!session) throw new Error("Unauthorized User!")
 
     const email = session.user?.email
 
-    if (!email) return { error: "Invalid Email!" }
+    if (!email) throw new Error("Invalid Email!")
 
     const organization = await prisma.organizations.findUnique({
       where: {
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       }
     })
 
-    if (!organization) return { error: "Invalid Organization!" }
+    if (!organization) throw new Error("Invalid Organization!")
 
     const customers = await prisma.customer.findMany({
       select: {

@@ -1,7 +1,6 @@
-import { RedemptionForm } from "@/features/transactions/redemption-form"
-import { UserSummaryCard } from "@/components/user-summary-card"
-import { prisma } from "@/lib/prisma"
 import { getTransacton } from "@/actions/get-transaction"
+import { UserSummaryCard } from "@/components/user-summary-card"
+import { RedemptionForm } from "@/features/transactions/redemption-form"
 
 interface Props {
   params: Promise<{ transactionId: string }>
