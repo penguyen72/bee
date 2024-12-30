@@ -3,22 +3,23 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 
-export const getOrganizationProfile = async (
-  emailAddress: string | undefined
-) => {
+export const getOrganizationProfile = async () => {
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
 
-    if (!emailAddress) {
-      return { error: "Email Environment Variable Not Set!" }
-    }
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
     const organization = await prisma.organizations.findUnique({
-      where: { emailAddress }
+      where: {
+        emailAddress: email
+      }
     })
+
+    if (!organization) return { error: "Invalid Organization!" }
 
     return { success: "Success!", organization }
   } catch (error) {

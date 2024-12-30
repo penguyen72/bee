@@ -41,7 +41,8 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
     const existingUser = await prisma.customer.findUnique({
       where: {
         firstName,
-        phoneNumber
+        phoneNumber,
+        organizationId: organization.id
       }
     })
 
@@ -52,9 +53,8 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
     const user = await prisma.$transaction(async (tx) => {
       const latestTransaction = await tx.transactions.findFirst({
         where: {
-          customerId: {
-            equals: existingUser.id
-          }
+          customerId: existingUser.id,
+          organizationId: organization.id
         },
         orderBy: {
           updatedAt: "desc"
@@ -68,14 +68,15 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       const customer = await tx.customer.update({
         where: {
           firstName: existingUser.firstName,
-          phoneNumber: existingUser.phoneNumber
+          phoneNumber: existingUser.phoneNumber,
+          organizationId: organization.id
         },
         data: {
           visitCount: existingUser.visitCount + 1
         }
       })
 
-      await prisma.transactions.create({
+      await tx.transactions.create({
         data: {
           organizationId: organization.id,
           customerId: customer.id,

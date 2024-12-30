@@ -13,17 +13,21 @@ export const updateOrganizationProfile = async (
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
 
-    await prisma.organizations.update({
-      where: { id },
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.update({
+      where: {
+        emailAddress: email
+      },
       data: values
     })
 
     revalidatePath("/", "layout")
-    return { success: "Profile Updated!" }
+    return { success: "Profile Updated!", organization }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

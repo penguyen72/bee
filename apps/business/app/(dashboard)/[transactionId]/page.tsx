@@ -1,6 +1,7 @@
 import { RedemptionForm } from "@/features/transactions/redemption-form"
 import { UserSummaryCard } from "@/components/user-summary-card"
 import { prisma } from "@/lib/prisma"
+import { getTransacton } from "@/actions/get-transaction"
 
 interface Props {
   params: Promise<{ transactionId: string }>
@@ -8,23 +9,14 @@ interface Props {
 
 export default async function Home(props: Props) {
   const params = await props.params
-  const transaction = await prisma.transactions.findUnique({
-    include: {
-      customer: true
-    },
-    where: {
-      id: params.transactionId
-    }
-  })
+  const data = await getTransacton(params.transactionId)
 
-  if (!transaction?.customer) return null
-
-  const user = transaction.customer
+  if (data.error || !data?.transaction) return null
 
   return (
     <div className="flex flex-col w-full h-full gap-6">
-      <UserSummaryCard user={user} type="transaction" />
-      <RedemptionForm transaction={transaction} />
+      <UserSummaryCard user={data.transaction.customer} type="transaction" />
+      <RedemptionForm transaction={data.transaction} />
     </div>
   )
 }

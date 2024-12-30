@@ -3,7 +3,7 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 
-export const getPromotions = async () => {
+export const getMember = async (userId: string) => {
   try {
     const session = await auth()
 
@@ -24,16 +24,14 @@ export const getPromotions = async () => {
 
     if (!organization) return { error: "Invalid Organization!" }
 
-    const promotions = await prisma.promotion.findMany({
+    const customer = await prisma.customer.findUnique({
       where: {
+        id: userId,
         organizationId: organization.id
       }
     })
 
-    return {
-      success: "Success",
-      promotions
-    }
+    return { success: "Success", customer }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

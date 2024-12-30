@@ -57,7 +57,8 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
 
     const existingUser = await prisma.customer.findUnique({
       where: {
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        organizationId: organization.id
       }
     })
 
@@ -78,7 +79,7 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
         }
       })
 
-      await prisma.transactions.create({
+      await tx.transactions.create({
         data: {
           organizationId: organization.id,
           customerId: customer.id,

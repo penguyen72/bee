@@ -7,12 +7,29 @@ export const getHistoricalData = async () => {
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
 
     const [users, transactions] = await prisma.$transaction([
-      prisma.customer.findMany(),
+      prisma.customer.findMany({
+        where: {
+          organizationId: organization.id
+        }
+      }),
       prisma.transactions.findMany({
         include: {
           customer: true
@@ -20,7 +37,8 @@ export const getHistoricalData = async () => {
         where: {
           checkOutTime: {
             not: null
-          }
+          },
+          organizationId: organization.id
         },
         orderBy: {
           updatedAt: "desc"

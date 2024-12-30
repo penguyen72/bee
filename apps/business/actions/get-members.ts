@@ -3,7 +3,7 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 
-export const getPromotions = async () => {
+export const getMembers = async () => {
   try {
     const session = await auth()
 
@@ -24,15 +24,18 @@ export const getPromotions = async () => {
 
     if (!organization) return { error: "Invalid Organization!" }
 
-    const promotions = await prisma.promotion.findMany({
+    const users = await prisma.customer.findMany({
       where: {
         organizationId: organization.id
+      },
+      orderBy: {
+        updatedAt: "desc"
       }
     })
 
     return {
       success: "Success",
-      promotions
+      users
     }
   } catch (error) {
     console.error(error)
