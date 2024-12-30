@@ -1,5 +1,6 @@
 "use server"
 
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { SignInSchema } from "@/schemas"
@@ -9,6 +10,25 @@ import { z } from "zod"
 
 export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
   try {
+    const session = await auth()
+
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
+
     const { firstName, phoneNumber } = values
     if (!firstName || !phoneNumber) {
       return { error: "All Fields Required!" }
@@ -57,6 +77,7 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
 
       await prisma.transactions.create({
         data: {
+          organizationId: organization.id,
           customerId: customer.id,
           checkInTime: new Date(),
           checkOutTime: null,
