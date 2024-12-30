@@ -1,39 +1,22 @@
-"use server"
-
-import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
+import { getOrganization } from "./get-organization"
+import { ProjectError } from "@/lib/errors"
 
 export const getUser = async (id: string) => {
-  try {
-    const session = await auth()
+  const organization = await getOrganization()
 
-    if (!session) return { error: "Unauthorized User!" }
+  const user = await prisma.customer.findUnique({
+    where: {
+      id,
+      organizationId: organization.id
+    }
+  })
 
-    const email = session.user?.email
-
-    if (!email) return { error: "Invalid Email!" }
-
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true
-      },
-      where: {
-        emailAddress: email
-      }
+  if (!user)
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "User Does Not Exist!"
     })
 
-    if (!organization) return { error: "Invalid Organization!" }
-
-    const user = await prisma.customer.findUnique({
-      where: {
-        id,
-        organizationId: organization.id
-      }
-    })
-
-    return { success: "Success", user }
-  } catch (error) {
-    console.error(error)
-    return { error: "Internal Server Error!" }
-  }
+  return user
 }
