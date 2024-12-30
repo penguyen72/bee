@@ -1,5 +1,5 @@
 import { getMember } from "@/actions/get-member"
-import { UserSummaryCard } from "@/components/ui/user-summary-card"
+import { UserSummaryCard } from "@/components/user-summary-card"
 
 interface Props {
   params: Promise<{ userId: string }>
