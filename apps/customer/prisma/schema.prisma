@@ -20,12 +20,14 @@ model Customer {
   organization   Organizations  @relation(fields: [organizationId], references: [id])
   organizationId String         @db.ObjectId
   firstName      String?
-  phoneNumber    String         @unique
+  phoneNumber    String
   birthday       DateTime?
   visitCount     Int
   currentPoints  Int
   lifetimePoints Int
   Transactions   Transactions[]
+
+  @@unique(fields: [phoneNumber, organizationId], name: "customer_identifier")
 }
 
 model Transactions {

@@ -21,7 +21,7 @@ import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 
 export function SignInForm() {
-  const [error, setError] = useState<string | undefined>()
+  const [formError, setFormError] = useState<string | undefined>()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof SignInSchema>>({
@@ -33,12 +33,16 @@ export function SignInForm() {
   })
 
   async function onSubmit(values: z.infer<typeof SignInSchema>) {
-    checkInUser(values).then((data) => {
-      if (data.success) {
-        router.push(`/${data.userId}`)
+    try {
+      const userId = await checkInUser(values)
+      router.push(`/${userId}`)
+    } catch (error) {
+      if (error instanceof Error) {
+        setFormError(error.message)
+      } else {
+        setFormError("Unknown Error Occurred!")
       }
-      setError(data.error)
-    })
+    }
   }
 
   return (
@@ -87,7 +91,7 @@ export function SignInForm() {
             </FormItem>
           )}
         />
-        <FormError message={error} />
+        <FormError message={formError} />
         <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue
         </Button>

@@ -8,94 +8,105 @@ import { formatISO } from "date-fns"
 import { revalidatePath } from "next/cache"
 import { isDate, isMobilePhone } from "validator"
 import { z } from "zod"
+import { getOrganization } from "./get-organization"
+import { ProjectError } from "@/lib/errors"
 
-export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
-  try {
-    const session = await auth()
+const validInputs = (values: z.infer<typeof SignUpSchema>) => {
+  const { firstName, phoneNumber, birthday, consent } = values
 
-    if (!session) return { error: "Unauthorized User!" }
+  if (!firstName) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "First Name is Required!"
+    })
+  }
 
-    const email = session.user?.email
+  if (!phoneNumber) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Phone Number is Required!"
+    })
+  }
 
-    if (!email) return { error: "Invalid Email!" }
+  if (!isMobilePhone(formatPhoneNumber(phoneNumber), "en-US")) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Invalid Phone Number!"
+    })
+  }
 
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true
-      },
-      where: {
-        emailAddress: email
-      }
+  if (!birthday)
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Birthday is Required!"
     })
 
-    if (!organization) return { error: "Invalid Organization!" }
+  if (
+    birthday &&
+    (birthday.length < 10 || !isDate(birthday, { format: "MM/DD/YYYY" }))
+  ) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Invalid Date of Birth!"
+    })
+  }
 
-    const { firstName, phoneNumber, birthday, consent } = values
+  if (!consent) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Consent is Required!"
+    })
+  }
 
-    if (!consent) {
-      return { error: "Consent is Required!" }
-    }
+  return { firstName, phoneNumber, birthday, consent }
+}
 
-    if (!firstName) {
-      return { error: "First Name is Required!" }
-    }
+export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
+  const organization = await getOrganization()
 
-    if (!phoneNumber) {
-      return { error: "Phone Number is Required!" }
-    }
+  const { firstName, phoneNumber, birthday } = validInputs(values)
 
-    if (!isMobilePhone(formatPhoneNumber(phoneNumber), "en-US")) {
-      return { error: "Invalid Phone Number!" }
-    }
-
-    if (
-      birthday &&
-      (birthday.length < 10 || !isDate(birthday, { format: "MM/DD/YYYY" }))
-    ) {
-      return { error: "Invalid Date of Birth!" }
-    }
-
-    const existingUser = await prisma.customer.findUnique({
-      where: {
+  const existingUser = await prisma.customer.findUnique({
+    where: {
+      customer_identifier: {
         phoneNumber: phoneNumber,
+        organizationId: organization.id
+      }
+    }
+  })
+
+  if (existingUser)
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Phone Number already registered!"
+    })
+
+  const user = await prisma.$transaction(async (tx) => {
+    const customer = await tx.customer.create({
+      data: {
+        firstName,
+        phoneNumber,
+        birthday: birthday ? formatISO(new Date(birthday)) : null,
+        currentPoints: 0,
+        lifetimePoints: 0,
+        visitCount: 1,
         organizationId: organization.id
       }
     })
 
-    if (existingUser) {
-      return { error: "Phone Number already registered!" }
-    }
-
-    const user = await prisma.$transaction(async (tx) => {
-      const customer = await tx.customer.create({
-        data: {
-          firstName,
-          phoneNumber,
-          birthday: birthday ? formatISO(new Date(birthday)) : null,
-          currentPoints: 0,
-          lifetimePoints: 0,
-          visitCount: 1,
-          organizationId: organization.id
-        }
-      })
-
-      await tx.transactions.create({
-        data: {
-          organizationId: organization.id,
-          customerId: customer.id,
-          checkInTime: new Date(),
-          checkOutTime: null,
-          currentPoints: customer.currentPoints
-        }
-      })
-
-      return customer
+    await tx.transactions.create({
+      data: {
+        organizationId: organization.id,
+        customerId: customer.id,
+        checkInTime: new Date(),
+        checkOutTime: null,
+        currentPoints: customer.currentPoints
+      }
     })
 
-    revalidatePath("/", "layout")
-    return { success: "User Checked In", userId: user.id }
-  } catch (error) {
-    console.error(error)
-    return { error: "Internal Server Error!" }
-  }
+    return customer
+  })
+
+  revalidatePath("/", "layout")
+  return user.id
 }
