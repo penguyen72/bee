@@ -2,6 +2,7 @@
 
 import { createUser } from "@/actions/create-user"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Form,
   FormControl,
@@ -20,13 +21,11 @@ import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormError } from "./form-error"
 import { Link } from "./link"
-import { Checkbox } from "@/components/ui/checkbox"
 
 export function SignUpForm() {
-  const [error, setError] = useState<string | undefined>()
+  const [formError, setFormError] = useState<string | undefined>()
   const router = useRouter()
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
@@ -38,12 +37,16 @@ export function SignUpForm() {
   })
 
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    createUser(values).then((data) => {
-      if (data.success) {
-        router.push(`/${data.userId}`)
+    try {
+      const userId = await createUser(values)
+      router.push(`/${userId}`)
+    } catch (error) {
+      if (error instanceof Error) {
+        setFormError(error.message)
+      } else {
+        setFormError("Unknown Error Occurred!")
       }
-      setError(data.error)
-    })
+    }
   }
 
   return (
@@ -139,7 +142,7 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-        <FormError message={error} />
+        <FormError message={formError} />
 
         <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
           Continue
