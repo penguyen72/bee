@@ -11,19 +11,7 @@ export const getPromotions = async () => {
       return { error: "Authorized User" }
     }
 
-    const promotions = await prisma.promotion.findMany({
-      select: {
-        id: true,
-        title: true,
-        unit: true,
-        value: true,
-        type: true,
-        expiration: true,
-        deliveredMessages: true,
-        createdAt: true,
-        updatedAt: true
-      }
-    })
+    const promotions = await prisma.promotion.findMany()
 
     return {
       success: "Success",

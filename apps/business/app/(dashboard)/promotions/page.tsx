@@ -5,17 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { PromotionTable } from "@/features/promotions/components/promotion-table"
 
-type Promotion = {
-  id: string
-  title: string
-  unit: string
-  value: number
-  type: string
-  expiration: Date
-  deliveredMessages: number
-  createdAt: Date
-}
-
 export default async function Home() {
   const data = await getPromotions()
 
