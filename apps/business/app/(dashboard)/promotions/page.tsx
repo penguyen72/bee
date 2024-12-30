@@ -1,20 +1,9 @@
 import { getPromotions } from "@/actions/get-promotions"
-import { AddPromotionButton } from "@/components/business/promotions/add-promotion-button"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { AddPromotionButton } from "@/features/promotions/components/add-promotion-button"
 import { PromotionTable } from "@/features/promotions/components/promotion-table"
-
-type Promotion = {
-  id: string
-  title: string
-  unit: string
-  value: number
-  type: string
-  expiration: Date
-  deliveredMessages: number
-  createdAt: Date
-}
 
 export default async function Home() {
   const data = await getPromotions()

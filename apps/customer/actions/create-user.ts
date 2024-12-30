@@ -1,5 +1,6 @@
 "use server"
 
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { SignUpSchema } from "@/schemas"
@@ -10,6 +11,25 @@ import { z } from "zod"
 
 export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
   try {
+    const session = await auth()
+
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
+
     const { firstName, phoneNumber, birthday, consent } = values
 
     if (!consent) {
@@ -37,7 +57,8 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
 
     const existingUser = await prisma.customer.findUnique({
       where: {
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        organizationId: organization.id
       }
     })
 
@@ -53,12 +74,14 @@ export const createUser = async (values: z.infer<typeof SignUpSchema>) => {
           birthday: birthday ? formatISO(new Date(birthday)) : null,
           currentPoints: 0,
           lifetimePoints: 0,
-          visitCount: 1
+          visitCount: 1,
+          organizationId: organization.id
         }
       })
 
-      await prisma.transactions.create({
+      await tx.transactions.create({
         data: {
+          organizationId: organization.id,
           customerId: customer.id,
           checkInTime: new Date(),
           checkOutTime: null,

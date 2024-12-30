@@ -9,21 +9,25 @@ export const getCheckInUsers = async () => {
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
 
-    if (!session?.user?.email) {
-      return { error: "Email Not Provided!" }
-    }
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
 
     const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true,
+        timezone: true
+      },
       where: {
-        emailAddress: session?.user?.email
+        emailAddress: email
       }
     })
 
-    if (!organization || !organization.timezone) {
+    if (!organization) return { error: "Invalid Organization!" }
+
+    if (!organization.timezone) {
       return { error: "Time Zone Not Set!" }
     }
 
@@ -34,6 +38,9 @@ export const getCheckInUsers = async () => {
     const transactions = await prisma.transactions.findMany({
       include: {
         customer: true
+      },
+      where: {
+        organizationId: organization.id
       }
     })
 

@@ -16,9 +16,22 @@ export const updateUserProfile = async (
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
 
     const { firstName, phoneNumber, birthday, points } = values
 
@@ -46,7 +59,10 @@ export const updateUserProfile = async (
     }
 
     await prisma.customer.update({
-      where: { id },
+      where: {
+        id,
+        organizationId: organization.id
+      },
       data: {
         firstName,
         phoneNumber,

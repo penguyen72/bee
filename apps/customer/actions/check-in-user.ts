@@ -1,5 +1,6 @@
 "use server"
 
+import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { formatPhoneNumber } from "@/lib/utils"
 import { SignInSchema } from "@/schemas"
@@ -9,6 +10,25 @@ import { z } from "zod"
 
 export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
   try {
+    const session = await auth()
+
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
+
     const { firstName, phoneNumber } = values
     if (!firstName || !phoneNumber) {
       return { error: "All Fields Required!" }
@@ -21,7 +41,8 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
     const existingUser = await prisma.customer.findUnique({
       where: {
         firstName,
-        phoneNumber
+        phoneNumber,
+        organizationId: organization.id
       }
     })
 
@@ -32,9 +53,8 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
     const user = await prisma.$transaction(async (tx) => {
       const latestTransaction = await tx.transactions.findFirst({
         where: {
-          customerId: {
-            equals: existingUser.id
-          }
+          customerId: existingUser.id,
+          organizationId: organization.id
         },
         orderBy: {
           updatedAt: "desc"
@@ -48,15 +68,17 @@ export const checkInUser = async (values: z.infer<typeof SignInSchema>) => {
       const customer = await tx.customer.update({
         where: {
           firstName: existingUser.firstName,
-          phoneNumber: existingUser.phoneNumber
+          phoneNumber: existingUser.phoneNumber,
+          organizationId: organization.id
         },
         data: {
           visitCount: existingUser.visitCount + 1
         }
       })
 
-      await prisma.transactions.create({
+      await tx.transactions.create({
         data: {
+          organizationId: organization.id,
           customerId: customer.id,
           checkInTime: new Date(),
           checkOutTime: null,

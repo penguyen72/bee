@@ -7,9 +7,19 @@ export async function POST(request: Request) {
   try {
     const session = await auth()
 
-    if (!session) {
-      throw new Error("Unauthorized User!")
-    }
+    if (!session) throw new Error("Unauthorized User!")
+
+    const email = session.user?.email
+
+    if (!email) throw new Error("Invalid Email!")
+
+    const organization = await prisma.organizations.findUnique({
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) throw new Error("Invalid Organization!")
 
     const customers = await prisma.customer.findMany({
       select: {
@@ -19,7 +29,8 @@ export async function POST(request: Request) {
       where: {
         updatedAt: {
           gte: subYears(new Date(), 2)
-        }
+        },
+        organizationId: organization.id
       }
     })
 

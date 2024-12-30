@@ -13,9 +13,22 @@ export const checkOutUser = async (
   try {
     const session = await auth()
 
-    if (!session) {
-      return { error: "Authorized User" }
-    }
+    if (!session) return { error: "Unauthorized User!" }
+
+    const email = session.user?.email
+
+    if (!email) return { error: "Invalid Email!" }
+
+    const organization = await prisma.organizations.findUnique({
+      select: {
+        id: true
+      },
+      where: {
+        emailAddress: email
+      }
+    })
+
+    if (!organization) return { error: "Invalid Organization!" }
 
     if (charges.length === 0) {
       return { error: "No Charges Applied!" }
@@ -29,7 +42,8 @@ export const checkOutUser = async (
         customer: true
       },
       where: {
-        id: transactionId
+        id: transactionId,
+        organizationId: organization.id
       }
     })
 
@@ -59,7 +73,8 @@ export const checkOutUser = async (
     await prisma.$transaction([
       prisma.transactions.update({
         where: {
-          id: transaction.id
+          id: transaction.id,
+          organizationId: organization.id
         },
         data: {
           expense,
@@ -72,7 +87,8 @@ export const checkOutUser = async (
       }),
       prisma.customer.update({
         where: {
-          id: existingUser.id
+          id: existingUser.id,
+          organizationId: organization.id
         },
         data: {
           currentPoints: currentPoints,
