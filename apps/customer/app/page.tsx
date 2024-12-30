@@ -1,39 +1,18 @@
-"use client"
+import { getOrganization } from "@/actions/get-organization"
+import { HomeActions } from "@/components/home-actions"
+import { SignOutButton } from "@/components/sign-out-button"
 
-import { Button } from "@/components/ui/button"
-import { LogOut } from "lucide-react"
-import { signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
-
-export default function Home() {
-  const router = useRouter()
+export default async function Home() {
+  const organization = await getOrganization()
 
   return (
     <main className="relative flex flex-col h-full text-center">
-      <Button
-        className="absolute right-8 top-8 hover:bg-slate-100/25"
-        variant="ghost"
-        size="icon"
-        onClick={() => signOut()}
-      >
-        <LogOut />
-      </Button>
+      <SignOutButton />
       <div className="bg-[#FFF3D0] flex-1 flex flex-col gap-8 items-center justify-center p-12">
         <p className="mb-12 text-6xl font-extrabold">
-          Welcome to Sun Nails & Spa!
+          Welcome to {organization.businessName}!
         </p>
-        <Button
-          className="py-4 text-2xl font-semibold text-black shadow-md bg-amber-300 hover:bg-amber-400 w-96 h-14 rounded-xl"
-          onClick={() => router.push("/sign-up")}
-        >
-          New User
-        </Button>
-        <Button
-          className="py-4 text-2xl font-semibold text-black shadow-md bg-amber-200 hover:bg-amber-300 w-96 h-14 rounded-xl"
-          onClick={() => router.push("/sign-in")}
-        >
-          Returning User
-        </Button>
+        <HomeActions />
       </div>
       <div className="bg-[#FFF7EA] flex flex-col items-center justify-center p-12 gap-1">
         <p className="mb-2 text-3xl font-semibold">
