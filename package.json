@@ -3,17 +3,18 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "build:admin": "npm run build --workspace=@bee/admin",
-    "build:marketing": "npm run build --workspace=@bee/marketing",
-    "build:customer": "npm run build --workspace=@bee/customer",
-    "build:business": "npm run build --workspace=@bee/business",
+    "build:admin": "yarn workspace @bee/admin build",
+    "build:marketing": "yarn workspace @bee/marketing build",
+    "build:customer": "yarn workspace @bee/customer build",
+    "build:business": "yarn workspace @bee/business build",
     "dev": "turbo dev",
-    "dev:admin": "npm run dev --workspace=@bee/admin",
-    "dev:marketing": "npm run dev --workspace=@bee/marketing",
-    "dev:customer": "npm run dev --workspace=@bee/customer",
-    "dev:business": "npm run dev --workspace=@bee/business",
+    "dev:admin": "yarn workspace @bee/admin dev",
+    "dev:marketing": "yarn workspace @bee/marketing dev",
+    "dev:customer": "yarn workspace @bee/customer dev",
+    "dev:business": "yarn workspace @bee/business dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prisma:generate": "yarn workspace @bee/business prisma:generate && yarn workspace @bee/customer prisma:generate"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
