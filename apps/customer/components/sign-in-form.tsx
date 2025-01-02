@@ -68,8 +68,12 @@ export function SignInForm() {
               <FormControl>
                 <Input
                   className="text-base"
-                  placeholder="First Name"
+                  placeholder="First Name*"
                   {...field}
+                  onChange={(event) => {
+                    event.target.value = event.target.value.replace(" ", "")
+                    field.onChange(event)
+                  }}
                 />
               </FormControl>
             </FormItem>
@@ -84,7 +88,7 @@ export function SignInForm() {
               <FormControl>
                 <Input
                   className="text-base"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number*"
                   type="text"
                   {...field}
                   value={formatPhoneNumber(field.value)}
