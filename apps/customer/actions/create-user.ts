@@ -35,12 +35,6 @@ const validInputs = (values: z.infer<typeof SignUpSchema>) => {
     })
   }
 
-  if (!birthday)
-    throw new ProjectError({
-      name: "INTERNAL_SERVER_ERROR",
-      message: "Birthday is Required!"
-    })
-
   if (
     birthday &&
     (birthday.length < 10 || !isDate(birthday, { format: "MM/DD/YYYY" }))

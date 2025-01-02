@@ -71,7 +71,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input
                   className="text-base"
-                  placeholder="First Name"
+                  placeholder="First Name*"
                   {...field}
                   onChange={(event) => {
                     event.target.value = event.target.value.replace(" ", "")
@@ -91,7 +91,7 @@ export function SignUpForm() {
               <FormControl>
                 <Input
                   className="text-base"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number*"
                   type="text"
                   {...field}
                   value={formatPhoneNumber(field.value)}
@@ -116,7 +116,7 @@ export function SignUpForm() {
                   placeholder="Date of Birth"
                   type="text"
                   {...field}
-                  value={formatDateOfBirth(field.value)}
+                  value={formatDateOfBirth(field.value ?? "")}
                   onChange={(event) => {
                     event.target.value = event.target.value.slice(0, 10)
                     field.onChange(event)

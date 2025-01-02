@@ -3,7 +3,7 @@ import { z } from "zod"
 export const SignUpSchema = z.object({
   firstName: z.string(),
   phoneNumber: z.string(),
-  birthday: z.string(),
+  birthday: z.string().optional(),
   consent: z.boolean().default(false)
 })
 
