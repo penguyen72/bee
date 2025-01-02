@@ -15,14 +15,16 @@ import { Input } from "@/components/ui/input"
 import { formatDateOfBirth, formatPhoneNumber } from "@/lib/utils"
 import { SignUpSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { Fragment, useState, useTransition } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import { FormError } from "./form-error"
 import { Link } from "./link"
 
 export function SignUpForm() {
+  const [isPending, startTransition] = useTransition()
   const [formError, setFormError] = useState<string | undefined>()
   const router = useRouter()
 
@@ -37,16 +39,18 @@ export function SignUpForm() {
   })
 
   async function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    try {
-      const userId = await createUser(values)
-      router.push(`/${userId}`)
-    } catch (error) {
-      if (error instanceof Error) {
-        setFormError(error.message)
-      } else {
-        setFormError("Unknown Error Occurred!")
+    startTransition(async () => {
+      try {
+        const userId = await createUser(values)
+        router.push(`/${userId}`)
+      } catch (error) {
+        if (error instanceof Error) {
+          setFormError(error.message)
+        } else {
+          setFormError("Unknown Error Occurred!")
+        }
       }
-    }
+    })
   }
 
   return (
@@ -61,6 +65,7 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="firstName"
+          disabled={isPending}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
@@ -80,6 +85,7 @@ export function SignUpForm() {
         <Controller
           control={form.control}
           name="phoneNumber"
+          disabled={isPending}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
@@ -101,6 +107,7 @@ export function SignUpForm() {
         <Controller
           control={form.control}
           name="birthday"
+          disabled={isPending}
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
@@ -122,11 +129,13 @@ export function SignUpForm() {
         <FormField
           control={form.control}
           name="consent"
+          disabled={isPending}
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-2">
               <FormControl>
                 <Checkbox
                   checked={field.value}
+                  disabled={isPending}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
@@ -143,9 +152,19 @@ export function SignUpForm() {
           )}
         />
         <FormError message={formError} />
-
-        <Button className="w-[100px] mt-2 mx-auto text-base" type="submit">
-          Continue
+        <Button
+          className="flex gap-2 mx-auto mt-2"
+          type="submit"
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Fragment>
+              <Loader2 className="animate-spin" />
+              Loading...
+            </Fragment>
+          ) : (
+            "Continue"
+          )}
         </Button>
       </form>
     </Form>
