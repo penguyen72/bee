@@ -59,7 +59,7 @@ export const checkOutUser = async (
       return acc + charge
     }, 0)
 
-    const pointsEarned = Math.floor(totalCharge)
+    const pointsEarned = Math.floor(totalCharge) - (expense ?? 0)
 
     const existingUser = transaction.customer
 
