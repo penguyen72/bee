@@ -9,7 +9,7 @@ import { REDEPEMTIONS } from "@/lib/constants"
 import { Redepemtion, TransactionsWithCustomer } from "@/lib/types"
 import { cn, convertToUSD } from "@/lib/utils"
 
-import { Fragment, useState } from "react"
+import { Fragment, TransitionStartFunction, useState } from "react"
 
 import { FormSuccess } from "@/components/form-success"
 import { CheckOutSummaryItem } from "./check-out-summary-item"
@@ -18,12 +18,16 @@ interface Props {
   transaction: TransactionsWithCustomer
   addedCharges: number[]
   setAddedCharges: React.Dispatch<React.SetStateAction<number[]>>
+  isPending: boolean
+  startTransition: TransitionStartFunction
 }
 
 export function CheckOutSummary({
   transaction,
   addedCharges,
-  setAddedCharges
+  setAddedCharges,
+  isPending,
+  startTransition
 }: Props) {
   const [selected, setSelected] = useState<Redepemtion | null>(null)
   const [error, setError] = useState<string | undefined>()
@@ -43,13 +47,15 @@ export function CheckOutSummary({
   }
 
   function handleCheckOut() {
-    checkOutUser(transaction.id, addedCharges, selected).then((data) => {
-      if (data.success) {
-        setSelected(null)
-        setAddedCharges([])
-      }
-      setSuccess(data.success)
-      setError(data.error)
+    startTransition(async () => {
+      checkOutUser(transaction.id, addedCharges, selected).then((data) => {
+        if (data.success) {
+          setSelected(null)
+          setAddedCharges([])
+        }
+        setSuccess(data.success)
+        setError(data.error)
+      })
     })
   }
 
@@ -95,7 +101,7 @@ export function CheckOutSummary({
                     )}
                     disabled={
                       transaction.customer.currentPoints <
-                      redepemtion.pointsRequired
+                        redepemtion.pointsRequired || isPending
                     }
                     variant="outline"
                     onClick={() => handleSelected(redepemtion.id)}
@@ -118,7 +124,7 @@ export function CheckOutSummary({
             <Button
               className="rounded-2xl text-xl bg-green-300 border-green-300 hover:bg-green-400 hover:border-green-400 transition-all"
               variant="outline"
-              disabled={disableCheckOut}
+              disabled={disableCheckOut || isPending}
               onClick={handleCheckOut}
             >
               Check out
