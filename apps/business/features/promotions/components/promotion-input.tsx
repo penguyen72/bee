@@ -38,9 +38,10 @@ interface Props {
   form: UseFormReturn<z.infer<typeof AddPromotionSchema>, any, undefined>
   error: string | undefined
   setState: Dispatch<SetStateAction<PromotionProgress | null>>
+  isPending: boolean
 }
 
-export function PromotionInput({ form, error, setState }: Props) {
+export function PromotionInput({ form, error, setState, isPending }: Props) {
   const title = form.watch("title")
   const unit = form.watch("unit")
   const value = form.watch("value")
@@ -86,6 +87,7 @@ export function PromotionInput({ form, error, setState }: Props) {
               <Input
                 placeholder="Insert Promotion Name Here"
                 type="text"
+                disabled={isPending}
                 {...field}
               />
             </FormControl>
@@ -104,6 +106,7 @@ export function PromotionInput({ form, error, setState }: Props) {
                   options={PROMOTION_UNIT_OPTIONS}
                   value={value}
                   onChange={onChange}
+                  disabled={isPending}
                   isIcon
                 />
               )
@@ -128,6 +131,7 @@ export function PromotionInput({ form, error, setState }: Props) {
                       )}
                       placeholder="0"
                       type="number"
+                      disabled={isPending}
                       {...field}
                     />
                     {unit === "%" ? (
@@ -149,6 +153,7 @@ export function PromotionInput({ form, error, setState }: Props) {
                 <FormMenuItem
                   options={PROMOTION_TYPE_OPTIONS}
                   value={value}
+                  disabled={isPending}
                   onChange={onChange}
                 />
               )
@@ -169,6 +174,7 @@ export function PromotionInput({ form, error, setState }: Props) {
                           "w-[240px] pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
+                        disabled={isPending}
                       >
                         {field.value ? (
                           format(field.value, "PPP")
@@ -184,7 +190,9 @@ export function PromotionInput({ form, error, setState }: Props) {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) => date < new Date("1900-01-01")}
+                      disabled={(date) =>
+                        date < new Date("1900-01-01") || isPending
+                      }
                       initialFocus
                     />
                   </PopoverContent>
@@ -200,7 +208,11 @@ export function PromotionInput({ form, error, setState }: Props) {
         render={({ field }) => (
           <FormItem className="flex items-center gap-2">
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                disabled={isPending}
+              />
             </FormControl>
             <p className="text-sm !m-0">Add Business Phone Number to Message</p>
           </FormItem>
@@ -212,7 +224,11 @@ export function PromotionInput({ form, error, setState }: Props) {
         render={({ field }) => (
           <FormItem className="flex items-center gap-2">
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                disabled={isPending}
+              />
             </FormControl>
             <p className="text-sm !m-0">Walk-Ins Welcome</p>
           </FormItem>
@@ -224,7 +240,11 @@ export function PromotionInput({ form, error, setState }: Props) {
         render={({ field }) => (
           <FormItem className="flex items-center gap-2">
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                disabled={isPending}
+              />
             </FormControl>
             <p className="text-sm !m-0">Reply STOP to opt out</p>
           </FormItem>
@@ -240,6 +260,7 @@ export function PromotionInput({ form, error, setState }: Props) {
               <Textarea
                 placeholder="Insert Message Here"
                 className="resize-none"
+                disabled={isPending}
                 {...field}
               />
             </FormControl>
@@ -252,6 +273,7 @@ export function PromotionInput({ form, error, setState }: Props) {
           className="w-24"
           type="button"
           variant="secondary"
+          disabled={isPending}
           onClick={() => setState(null)}
         >
           Cancel
@@ -259,7 +281,7 @@ export function PromotionInput({ form, error, setState }: Props) {
         <Button
           className="w-24"
           type="button"
-          disabled={!message}
+          disabled={!message || isPending}
           onClick={() => setState("Preview")}
         >
           Preview

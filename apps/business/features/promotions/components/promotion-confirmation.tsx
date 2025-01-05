@@ -19,9 +19,10 @@ import { z } from "zod"
 interface Props {
   form: UseFormReturn<z.infer<typeof AddPromotionSchema>, any, undefined>
   setState: Dispatch<SetStateAction<PromotionProgress | null>>
+  isPending: boolean
 }
 
-export function PromotionConfirmation({ form, setState }: Props) {
+export function PromotionConfirmation({ form, setState, isPending }: Props) {
   const deliveredMessages = form.watch("deliveredMessages")
 
   return (
@@ -40,7 +41,7 @@ export function PromotionConfirmation({ form, setState }: Props) {
                 <Textarea
                   placeholder="Insert Message Here"
                   className="resize-none"
-                  disabled
+                  disabled={isPending}
                   {...field}
                 />
               </FormControl>
@@ -55,6 +56,7 @@ export function PromotionConfirmation({ form, setState }: Props) {
             className="w-24"
             type="button"
             variant="secondary"
+            disabled={isPending}
             onClick={() => {
               setState(null)
               form.reset()
