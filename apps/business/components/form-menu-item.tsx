@@ -8,14 +8,16 @@ type option<T> = {
 interface Props<T> {
   options: option<T>[]
   value: T
-  isIcon?: boolean
+  disabled?: boolean
   onChange: (...event: any[]) => void
+  isIcon?: boolean
 }
 
 export function FormMenuItem<T>({
   options,
   value,
   isIcon,
+  disabled = false,
   onChange
 }: Props<T>) {
   return (
@@ -27,6 +29,7 @@ export function FormMenuItem<T>({
             className="h-8"
             variant={value === item.value ? "secondary" : "ghost"}
             type="button"
+            disabled={disabled}
             size={isIcon ? "icon" : undefined}
             onClick={() => onChange(item.value)}
           >

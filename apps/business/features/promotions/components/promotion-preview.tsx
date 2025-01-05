@@ -12,6 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { PromotionProgress } from "@/features/promotions/lib/types"
 import { AddPromotionSchema } from "@/schemas"
+import { Loader2 } from "lucide-react"
 import { Dispatch, Fragment, SetStateAction } from "react"
 import { UseFormReturn } from "react-hook-form"
 import { z } from "zod"
@@ -20,9 +21,10 @@ interface Props {
   form: UseFormReturn<z.infer<typeof AddPromotionSchema>, any, undefined>
   error: string | undefined
   setState: Dispatch<SetStateAction<PromotionProgress | null>>
+  isPending: boolean
 }
 
-export function PromotionPreview({ form, error, setState }: Props) {
+export function PromotionPreview({ form, error, setState, isPending }: Props) {
   return (
     <Fragment>
       <DialogHeader>
@@ -39,6 +41,7 @@ export function PromotionPreview({ form, error, setState }: Props) {
                 <Textarea
                   placeholder="Insert Message Here"
                   className="resize-none"
+                  disabled={isPending}
                   {...field}
                 />
               </FormControl>
@@ -51,12 +54,20 @@ export function PromotionPreview({ form, error, setState }: Props) {
             className="w-24"
             type="button"
             variant="secondary"
+            disabled={isPending}
             onClick={() => setState("In Progress")}
           >
             Go Back
           </Button>
-          <Button className="w-24" type="submit">
-            Send
+          <Button className="w-24" type="submit" disabled={isPending}>
+            {isPending ? (
+              <Fragment>
+                <Loader2 className="animate-spin" />
+                Loading...
+              </Fragment>
+            ) : (
+              "Send"
+            )}
           </Button>
         </div>
       </div>

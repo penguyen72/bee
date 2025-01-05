@@ -12,11 +12,12 @@ import { AddPromotionSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Plus } from "lucide-react"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 export function AddPromotionButton() {
+  const [isPending, startTransition] = useTransition()
   const [state, setState] = useState<PromotionProgress | null>(null)
   const [error, setError] = useState<string | undefined>()
   const form = useForm<z.infer<typeof AddPromotionSchema>>({
@@ -35,29 +36,35 @@ export function AddPromotionButton() {
   })
 
   async function onSubmit(values: z.infer<typeof AddPromotionSchema>) {
-    const formData = new FormData()
-    formData.append("message", values.message)
+    startTransition(async () => {
+      const formData = new FormData()
+      formData.append("message", values.message)
 
-    try {
-      const { data, status } = await axios.post("/api/send-message", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
-
-      if (status !== 200) {
-        setError("Unable to Send Messages!")
-      } else {
-        addPromotion(values, data.deliveredMessages).then((response) => {
-          if (response.success) {
-            form.setValue("deliveredMessages", data.deliveredMessages)
-            setState("Confirmed")
-          } else {
-            setError(response.error)
+      try {
+        const { data, status } = await axios.post(
+          "/api/send-message",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" }
           }
-        })
+        )
+
+        if (status !== 200) {
+          setError("Unable to Send Messages!")
+        } else {
+          addPromotion(values, data.deliveredMessages).then((response) => {
+            if (response.success) {
+              form.setValue("deliveredMessages", data.deliveredMessages)
+              setState("Confirmed")
+            } else {
+              setError(response.error)
+            }
+          })
+        }
+      } catch {
+        setError("Unknown Error Occurred!")
       }
-    } catch {
-      setError("Unknown Error Occurred!")
-    }
+    })
   }
 
   return (
@@ -78,13 +85,27 @@ export function AddPromotionButton() {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             {state === "In Progress" ? (
-              <PromotionInput form={form} error={error} setState={setState} />
+              <PromotionInput
+                form={form}
+                error={error}
+                setState={setState}
+                isPending={isPending}
+              />
             ) : null}
             {state === "Preview" ? (
-              <PromotionPreview form={form} error={error} setState={setState} />
+              <PromotionPreview
+                form={form}
+                error={error}
+                setState={setState}
+                isPending={isPending}
+              />
             ) : null}
             {state === "Confirmed" ? (
-              <PromotionConfirmation form={form} setState={setState} />
+              <PromotionConfirmation
+                form={form}
+                setState={setState}
+                isPending={isPending}
+              />
             ) : null}
           </form>
         </Form>
