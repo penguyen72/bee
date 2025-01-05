@@ -20,9 +20,10 @@ const operations = [
 interface Props {
   value: string
   setValue: React.Dispatch<React.SetStateAction<string>>
+  disabled: boolean
 }
 
-export function Calculator({ value, setValue }: Props) {
+export function Calculator({ value, setValue, disabled = false }: Props) {
   function performOperation(operation: string) {
     if (operation === "delete") {
       setValue((prevValue) => {
@@ -66,6 +67,7 @@ export function Calculator({ value, setValue }: Props) {
               className="text-2xl font-semibold"
               variant="ghost"
               size="lg"
+              disabled={disabled}
               onClick={() => performOperation(operation.value)}
             >
               {content}

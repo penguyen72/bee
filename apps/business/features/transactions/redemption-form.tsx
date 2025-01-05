@@ -3,7 +3,7 @@
 import { Calculator } from "@/components/calculator"
 import { Button } from "@/components/ui/button"
 import { TransactionsWithCustomer } from "@/lib/types"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { CheckOutSummary } from "./check-out-summary"
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 }
 
 export function RedemptionForm({ transaction }: Props) {
+  const [isPending, startTransition] = useTransition()
   const [value, setValue] = useState<string>("")
   const [addedCharges, setAddedCharges] = useState<number[]>([])
 
@@ -27,10 +28,14 @@ export function RedemptionForm({ transaction }: Props) {
     <div className="grid grid-cols-12 w-full flex-grow gap-16 h-full">
       <div className="col-span-4 h-full">
         <div className="flex flex-col gap-6 h-full">
-          <Button className="w-full rounded-2xl" onClick={addCharge}>
+          <Button
+            className="w-full rounded-2xl"
+            onClick={addCharge}
+            disabled={isPending}
+          >
             <p>Insert &gt; &gt;</p>
           </Button>
-          <Calculator value={value} setValue={setValue} />
+          <Calculator value={value} setValue={setValue} disabled={isPending} />
         </div>
       </div>
       <div className="col-span-8 h-full flex flex-col justify-between">
@@ -38,6 +43,8 @@ export function RedemptionForm({ transaction }: Props) {
           transaction={transaction}
           addedCharges={addedCharges}
           setAddedCharges={setAddedCharges}
+          isPending={isPending}
+          startTransition={startTransition}
         />
       </div>
     </div>
