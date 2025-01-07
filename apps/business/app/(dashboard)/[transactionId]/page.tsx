@@ -2,6 +2,8 @@ import { getTransacton } from "@/actions/get-transaction"
 import { UserSummaryCard } from "@/components/user-summary-card"
 import { RedemptionForm } from "@/features/transactions/redemption-form"
 
+export const dynamic = "force-dynamic"
+
 interface Props {
   params: Promise<{ transactionId: string }>
 }

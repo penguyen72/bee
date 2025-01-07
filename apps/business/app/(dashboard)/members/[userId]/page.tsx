@@ -1,6 +1,8 @@
 import { getMember } from "@/actions/get-member"
 import { UserSummaryCard } from "@/components/user-summary-card"
 
+export const dynamic = "force-dynamic"
+
 interface Props {
   params: Promise<{ userId: string }>
 }

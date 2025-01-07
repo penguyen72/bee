@@ -1,26 +1,15 @@
 "use server"
 
-import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
+import { getOrganization } from "./get-organization"
 
 export const getMember = async (userId: string) => {
   try {
-    const session = await auth()
+    const organizationResponse = await getOrganization()
 
-    if (!session) return { error: "Unauthorized User!" }
+    if (organizationResponse.error) return { error: organizationResponse.error }
 
-    const email = session.user?.email
-
-    if (!email) return { error: "Invalid Email!" }
-
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true
-      },
-      where: {
-        emailAddress: email
-      }
-    })
+    const organization = organizationResponse.data
 
     if (!organization) return { error: "Invalid Organization!" }
 
