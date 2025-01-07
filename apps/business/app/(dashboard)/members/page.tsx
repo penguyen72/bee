@@ -2,6 +2,8 @@ import { getMembers } from "@/actions/get-members"
 import { MembersCard } from "@/features/members/components/members-card"
 import { MembersTable } from "@/features/members/components/members-table"
 
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const data = await getMembers()
 

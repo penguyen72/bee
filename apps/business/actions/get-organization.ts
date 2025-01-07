@@ -12,10 +12,6 @@ export const getOrganization = async () => {
     if (!email) return { error: "Invalid Email!" }
 
     const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true,
-        businessName: true
-      },
       where: {
         emailAddress: email
       }

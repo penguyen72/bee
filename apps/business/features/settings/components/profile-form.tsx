@@ -28,11 +28,11 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 interface Props {
-  organizationInfo: Organizations
+  organization: Organizations
 }
 
-export function ProfileForm({ organizationInfo }: Props) {
-  const { id, ...defaultValues } = organizationInfo
+export function ProfileForm({ organization }: Props) {
+  const { id, ...defaultValues } = organization
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
   const form = useForm<z.infer<typeof ProfileSchema>>({

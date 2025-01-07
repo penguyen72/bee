@@ -5,6 +5,8 @@ import { Separator } from "@/components/ui/separator"
 import { AddPromotionButton } from "@/features/promotions/components/add-promotion-button"
 import { PromotionTable } from "@/features/promotions/components/promotion-table"
 
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const data = await getPromotions()
 

@@ -1,32 +1,21 @@
 "use server"
 
-import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { AddPromotionSchema } from "@/schemas"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
+import { getOrganization } from "./get-organization"
 
 export const addPromotion = async (
   values: z.infer<typeof AddPromotionSchema>,
   deliveredMessages: number
 ) => {
   try {
-    const session = await auth()
+    const organizationResponse = await getOrganization()
 
-    if (!session) return { error: "Unauthorized User!" }
+    if (organizationResponse.error) return { error: organizationResponse.error }
 
-    const email = session.user?.email
-
-    if (!email) return { error: "Invalid Email!" }
-
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true
-      },
-      where: {
-        emailAddress: email
-      }
-    })
+    const organization = organizationResponse.data
 
     if (!organization) return { error: "Invalid Organization!" }
 

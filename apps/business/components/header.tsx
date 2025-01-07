@@ -2,6 +2,8 @@ import { ProjectError } from "@/lib/errors"
 import { getOrganization } from "../actions/get-organization"
 import { HeaderActions } from "./header-actions"
 
+export const dynamic = "force-dynamic"
+
 export async function Header() {
   const response = await getOrganization()
 

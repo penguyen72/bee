@@ -8,28 +8,18 @@ import { formatISO } from "date-fns"
 import { revalidatePath } from "next/cache"
 import { isDate, isMobilePhone } from "validator"
 import { z } from "zod"
+import { getOrganization } from "./get-organization"
 
 export const updateUserProfile = async (
   id: string,
   values: z.infer<typeof EditMemberSchema>
 ) => {
   try {
-    const session = await auth()
+    const organizationResponse = await getOrganization()
 
-    if (!session) return { error: "Unauthorized User!" }
+    if (organizationResponse.error) return { error: organizationResponse.error }
 
-    const email = session.user?.email
-
-    if (!email) return { error: "Invalid Email!" }
-
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true
-      },
-      where: {
-        emailAddress: email
-      }
-    })
+    const organization = organizationResponse.data
 
     if (!organization) return { error: "Invalid Organization!" }
 
