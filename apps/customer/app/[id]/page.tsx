@@ -13,19 +13,21 @@ export default async function Home(props: Props) {
   const params = await props.params
   const response = await getUser(params.id)
 
-  if (response.error)
+  if (response.error) {
     throw new ProjectError({
       name: "INTERNAL_SERVER_ERROR",
       message: response.error
     })
+  }
 
   const user = response.data
 
-  if (!user)
+  if (!user) {
     throw new ProjectError({
       name: "INTERNAL_SERVER_ERROR",
       message: "Invalid User!"
     })
+  }
 
   if (user.visitCount === 1 && user.currentPoints === 0) {
     return (
