@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { REDEPEMTIONS } from "./constants"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -32,4 +33,21 @@ export function formatDateOfBirth(parsedValue: string) {
   } else {
     return `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4, 8)}`
   }
+}
+
+export function findNextPossibleRedemption(currentPoints: number) {
+  let left = 0
+  let right = REDEPEMTIONS.length - 1
+
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2)
+
+    if (currentPoints > REDEPEMTIONS[mid].pointsRequired) {
+      left = mid + 1
+    } else {
+      right = mid
+    }
+  }
+
+  return REDEPEMTIONS[left].pointsRequired
 }
