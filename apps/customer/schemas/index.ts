@@ -2,12 +2,11 @@ import { z } from "zod"
 
 export const SignUpSchema = z.object({
   firstName: z.string(),
-  phoneNumber: z.string(),
-  birthday: z.string().optional(),
-  consent: z.boolean().default(false)
+  birthday: z.string().optional()
 })
 
 export const SignInSchema = z.object({
-  firstName: z.string(),
-  phoneNumber: z.string()
+  phoneNumber: z.string(),
+  firstName: z.string().optional(),
+  birthday: z.string().optional()
 })

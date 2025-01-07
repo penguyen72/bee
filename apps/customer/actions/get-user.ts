@@ -1,22 +1,25 @@
 import { prisma } from "@/lib/prisma"
 import { getOrganization } from "./get-organization"
-import { ProjectError } from "@/lib/errors"
 
 export const getUser = async (id: string) => {
-  const organization = await getOrganization()
+  try {
+    const organizationResponse = await getOrganization()
+    if (organizationResponse.error) return { error: organizationResponse.error }
 
-  const user = await prisma.customer.findUnique({
-    where: {
-      id,
-      organizationId: organization.id
-    }
-  })
+    const organization = organizationResponse.data
+    if (!organization) return { error: "Invalid Organization!" }
 
-  if (!user)
-    throw new ProjectError({
-      name: "INTERNAL_SERVER_ERROR",
-      message: "User Does Not Exist!"
+    const user = await prisma.customer.findUnique({
+      where: {
+        id,
+        organizationId: organization.id
+      }
     })
 
-  return user
+    if (!user) return { error: "User Does Not Exist!" }
+    return { data: user }
+  } catch (error) {
+    console.error(error)
+    return { error: "Internal Server Error!" }
+  }
 }

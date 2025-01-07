@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { HomeIcon } from "lucide-react"
+import { CircleArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export function HomeButton() {
@@ -9,12 +9,12 @@ export function HomeButton() {
 
   return (
     <Button
-      className="absolute right-8 top-8 hover:bg-slate-100/25"
+      className="hover:bg-amber-100 rounded-full size-12 ml-auto"
       variant="ghost"
       size="icon"
       onClick={() => router.push("/")}
     >
-      <HomeIcon />
+      <CircleArrowRight className="size-10" />
     </Button>
   )
 }
