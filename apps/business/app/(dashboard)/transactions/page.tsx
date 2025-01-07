@@ -2,6 +2,8 @@ import { getHistoricalData } from "@/actions/get-historical-data"
 import { TransactionsCard } from "@/features/transactions/transaction-history-card"
 import { TransactionsTable } from "@/features/transactions/transaction-history-table"
 
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const data = await getHistoricalData()
 

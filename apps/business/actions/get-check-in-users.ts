@@ -1,29 +1,17 @@
 "use server"
 
-import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { getStartAndEndDate } from "@/lib/utils"
 import { isAfter, isBefore } from "date-fns"
+import { getOrganization } from "./get-organization"
 
 export const getCheckInUsers = async () => {
   try {
-    const session = await auth()
+    const organizationResponse = await getOrganization()
 
-    if (!session) return { error: "Unauthorized User!" }
+    if (organizationResponse.error) return { error: organizationResponse.error }
 
-    const email = session.user?.email
-
-    if (!email) return { error: "Invalid Email!" }
-
-    const organization = await prisma.organizations.findUnique({
-      select: {
-        id: true,
-        timezone: true
-      },
-      where: {
-        emailAddress: email
-      }
-    })
+    const organization = organizationResponse.data
 
     if (!organization) return { error: "Invalid Organization!" }
 
