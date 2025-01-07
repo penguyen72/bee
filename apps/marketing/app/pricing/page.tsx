@@ -17,9 +17,9 @@ export default function Page() {
         <div className="my-12 max-w-[800px] text-center gap-6 flex flex-col items-center">
           <p className="text-4xl font-semibold">Pricing</p>
           <p>
-            Choose the plan that works best for your salon’s size and goals.
-            Each plan comes with seamless check-in, client management, and
-            customization options to keep clients coming back.
+            Choose the plan that works best for your salon&apos;s size and
+            goals. Each plan comes with seamless check-in, client management,
+            and customization options to keep clients coming back.
           </p>
         </div>
         <div className="grid grid-cols-3 gap-6 my-12">
