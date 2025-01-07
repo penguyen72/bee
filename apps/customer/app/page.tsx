@@ -5,22 +5,26 @@ import { ProjectError } from "@/lib/errors"
 import Image from "next/image"
 import { Fragment } from "react"
 
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const response = await getOrganization()
 
-  if (response.error)
+  if (response.error) {
     throw new ProjectError({
       name: "INTERNAL_SERVER_ERROR",
       message: response.error
     })
+  }
 
   const organization = response.data
 
-  if (!organization)
+  if (!organization) {
     throw new ProjectError({
       name: "INTERNAL_SERVER_ERROR",
       message: "Invalid Organization!"
     })
+  }
 
   return (
     <main className="grid grid-cols-12 h-full">
