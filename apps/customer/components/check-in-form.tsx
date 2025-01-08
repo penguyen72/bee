@@ -91,8 +91,8 @@ export function CheckInForm({ organization }: Props) {
         onSubmit={form.handleSubmit(onSubmit)}
       >
         {step === 1 ? (
-          <div className="flex flex-col gap-6">
-            <div className="text-lg">
+          <div className="flex flex-col gap-4 xl:gap-6">
+            <div className="text-base xl:text-lg">
               <p>
                 Enter your{" "}
                 <span className="font-semibold underline">Phone Number</span>{" "}
@@ -107,7 +107,7 @@ export function CheckInForm({ organization }: Props) {
               setValue={form.setValue}
               error={form.formState.errors.phoneNumber?.message}
             />
-            <p className="px-12 text-base">
+            <p className="my-2 text-sm xl:text-base">
               By providing your phone number, you consent to receive marketing
               and promotional text messages (such as discounts, special offers,
               and updates) from {organization.businessName} at the phone number
@@ -195,13 +195,13 @@ export function CheckInForm({ organization }: Props) {
           ) : null}
           <Button
             className={cn(
-              "hover:bg-amber-100 rounded-full size-12",
+              "hover:bg-amber-100 rounded-full size-10 xl:size-12",
               step === 1 && "ml-auto"
             )}
             variant="ghost"
             size="icon"
           >
-            <CircleArrowRight className="size-10" />
+            <CircleArrowRight className="size-8 xl:size-10" />
           </Button>
         </div>
       </form>
