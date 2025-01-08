@@ -125,7 +125,7 @@ export function CheckInForm({ organization }: Props) {
               name="firstName"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <div className="text-lg">
+                  <div className="text-base xl:text-lg">
                     <p>
                       What&apos;s your{" "}
                       <span className="font-semibold underline">
@@ -137,7 +137,7 @@ export function CheckInForm({ organization }: Props) {
                   </div>
                   <FormControl>
                     <Input
-                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
+                      className="w-56 xl:w-64 mx-auto  text-xl xl:text-2xl px-10 xl:px-12 p-4 xl:py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
                       placeholder="Insert"
                       {...field}
                       onChange={(event) => {
@@ -154,7 +154,7 @@ export function CheckInForm({ organization }: Props) {
               name="birthday"
               render={({ field }) => (
                 <FormItem>
-                  <div className="text-lg">
+                  <div className="text-base xl:text-lg">
                     <p>
                       Do you want to sign up for{" "}
                       <span className="font-semibold underline">Birthday</span>{" "}
@@ -164,7 +164,7 @@ export function CheckInForm({ organization }: Props) {
                   </div>
                   <FormControl>
                     <Input
-                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
+                      className="w-56 xl:w-64 mx-auto  text-xl xl:text-2xl px-10 xl:px-12 p-4 xl:py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
                       placeholder="Insert"
                       type="text"
                       {...field}
@@ -184,13 +184,13 @@ export function CheckInForm({ organization }: Props) {
         <div className="flex justify-between">
           {step === 2 ? (
             <Button
-              className="hover:bg-amber-100 rounded-full size-12"
+              className="hover:bg-amber-100 rounded-full size-10 xl:size-12"
               variant="ghost"
               size="icon"
               type="button"
               onClick={goBack}
             >
-              <CircleArrowLeft className="size-10" />
+              <CircleArrowLeft className="size-8 xl:size-10" />
             </Button>
           ) : null}
           <Button
