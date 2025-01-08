@@ -137,8 +137,8 @@ export function CheckInForm({ organization }: Props) {
                   </div>
                   <FormControl>
                     <Input
-                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:text-black placeholder:font-normal rounded-2xl text-center"
-                      placeholder="Insert First Name"
+                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
+                      placeholder="Insert"
                       {...field}
                       onChange={(event) => {
                         event.target.value = event.target.value.replace(" ", "")
@@ -164,8 +164,8 @@ export function CheckInForm({ organization }: Props) {
                   </div>
                   <FormControl>
                     <Input
-                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:text-black placeholder:font-normal rounded-2xl text-center"
-                      placeholder="Insert Birthday"
+                      className="w-[250px] mx-auto text-xl px-12 py-6 bg-amber-100 border-none text-black font-semibold placeholder:font-normal rounded-2xl text-center"
+                      placeholder="Insert"
                       type="text"
                       {...field}
                       value={formatDateOfBirth(field.value ?? "")}
