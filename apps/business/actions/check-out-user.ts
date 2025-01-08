@@ -1,14 +1,13 @@
 "use server"
 
 import { prisma } from "@/lib/prisma"
-import { Redepemtion } from "@/lib/types"
 import { revalidatePath } from "next/cache"
 import { getOrganization } from "./get-organization"
 
 export const checkOutUser = async (
   transactionId: string,
   charges: number[],
-  redepemtion: Redepemtion | null
+  redepemtionId: string | undefined
 ) => {
   try {
     const organizationResponse = await getOrganization()
@@ -23,8 +22,15 @@ export const checkOutUser = async (
       return { error: "No Charges Applied!" }
     }
 
-    const pointsRedeemed = redepemtion?.pointsRequired ?? null
-    const expense = redepemtion?.value ?? null
+    const redemption = await prisma.redemptions.findUnique({
+      where: {
+        id: redepemtionId,
+        organizationId: organization.id
+      }
+    })
+
+    const pointsRedeemed = redemption?.pointsRequired ?? null
+    const expense = redemption?.value ?? null
 
     const transaction = await prisma.transactions.findUnique({
       include: {

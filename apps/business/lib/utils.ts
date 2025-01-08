@@ -1,9 +1,8 @@
+import { Customer, Redemptions } from "@prisma/client"
 import { clsx, type ClassValue } from "clsx"
 import { endOfDay, isAfter, startOfDay, subWeeks } from "date-fns"
 import { formatInTimeZone, fromZonedTime, getTimezoneOffset } from "date-fns-tz"
 import { twMerge } from "tailwind-merge"
-import { REDEPEMTIONS } from "./constants"
-import { Customer } from "@prisma/client"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -38,21 +37,26 @@ export function formatDateOfBirth(parsedValue: string) {
   }
 }
 
-export function findNextPossibleRedemption(currentPoints: number) {
+export function findNextPossibleRedemption(
+  currentPoints: number,
+  redemptions: Redemptions[]
+) {
+  if (!redemptions.length) return null
+
   let left = 0
-  let right = REDEPEMTIONS.length - 1
+  let right = redemptions.length - 1
 
   while (left < right) {
     const mid = Math.floor((left + right) / 2)
 
-    if (currentPoints > REDEPEMTIONS[mid].pointsRequired) {
+    if (currentPoints > redemptions[mid].pointsRequired) {
       left = mid + 1
     } else {
       right = mid
     }
   }
 
-  return REDEPEMTIONS[left].pointsRequired
+  return redemptions[left].pointsRequired
 }
 
 export function convertToUSD(value: number | undefined | null) {

@@ -1,9 +1,7 @@
-"use server"
-
 import { prisma } from "@/lib/prisma"
 import { getOrganization } from "./get-organization"
 
-export const getMember = async (userId: string) => {
+export const getTransactionData = async (transactionId: string) => {
   try {
     const organizationResponse = await getOrganization()
 
@@ -13,14 +11,26 @@ export const getMember = async (userId: string) => {
 
     if (!organization) return { error: "Invalid Organization!" }
 
-    const customer = await prisma.customer.findUnique({
+    const transaction = await prisma.transactions.findUnique({
+      include: {
+        customer: true
+      },
       where: {
-        id: userId,
+        id: transactionId,
         organizationId: organization.id
       }
     })
 
-    return { success: "Success", customer }
+    const redemptions = await prisma.redemptions.findMany({
+      where: {
+        organizationId: organization.id
+      },
+      orderBy: {
+        pointsRequired: "asc"
+      }
+    })
+
+    return { data: { transaction, redemptions } }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

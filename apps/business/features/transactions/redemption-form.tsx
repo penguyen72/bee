@@ -3,14 +3,16 @@
 import { Calculator } from "@/components/calculator"
 import { Button } from "@/components/ui/button"
 import { TransactionsWithCustomer } from "@/lib/types"
+import { Redemptions } from "@prisma/client"
 import { useState, useTransition } from "react"
 import { CheckOutSummary } from "./check-out-summary"
 
 interface Props {
   transaction: TransactionsWithCustomer
+  redemptions: Redemptions[]
 }
 
-export function RedemptionForm({ transaction }: Props) {
+export function RedemptionForm({ transaction, redemptions }: Props) {
   const [isPending, startTransition] = useTransition()
   const [value, setValue] = useState<string>("")
   const [addedCharges, setAddedCharges] = useState<number[]>([])
@@ -41,6 +43,7 @@ export function RedemptionForm({ transaction }: Props) {
       <div className="col-span-8 h-full flex flex-col justify-between">
         <CheckOutSummary
           transaction={transaction}
+          redemptions={redemptions}
           addedCharges={addedCharges}
           setAddedCharges={setAddedCharges}
           isPending={isPending}

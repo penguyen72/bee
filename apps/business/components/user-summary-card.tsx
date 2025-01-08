@@ -1,23 +1,34 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { cn, findNextPossibleRedemption } from "@/lib/utils"
-import { Customer } from "@prisma/client"
+import { Customer, Redemptions } from "@prisma/client"
 import { format } from "date-fns"
 import { Cake, Phone } from "lucide-react"
 import { EditMemberButton } from "../features/transactions/edit-member-button"
 
 interface Props {
-  user: Customer
   type?: "member" | "transaction"
+  user: Customer
+  redemptions: Redemptions[]
 }
 
-export async function UserSummaryCard({ user, type }: Props) {
-  const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints)
-  const pointsUntilNextRedemption = nextPossibleRedemption - user.currentPoints
-  const percentageOfNextRedemption = Math.min(
-    Math.floor((user.currentPoints / nextPossibleRedemption) * 100),
-    100
+export async function UserSummaryCard({ user, type, redemptions }: Props) {
+  const nextPossibleRedemption = findNextPossibleRedemption(
+    user.currentPoints,
+    redemptions
   )
+  const pointsUntilNextRedemption =
+    nextPossibleRedemption !== null
+      ? nextPossibleRedemption - user.currentPoints
+      : null
+
+  const percentageOfNextRedemption =
+    nextPossibleRedemption !== null
+      ? Math.min(
+          Math.floor((user.currentPoints / nextPossibleRedemption) * 100),
+          100
+        )
+      : null
 
   return (
     <Card
@@ -48,11 +59,13 @@ export async function UserSummaryCard({ user, type }: Props) {
           <p className="font-semibold">Points</p>
           <p className="text-2xl font-semibold">{user.currentPoints}</p>
           <Progress value={percentageOfNextRedemption} />
-          {percentageOfNextRedemption === 100 ? (
-            <p>Points Redeemable</p>
-          ) : (
-            <p>{pointsUntilNextRedemption} Points before Redemption</p>
-          )}
+          {nextPossibleRedemption !== null ? (
+            percentageOfNextRedemption === 100 ? (
+              <p>Points Redeemable</p>
+            ) : (
+              <p>{pointsUntilNextRedemption} Points before Redemption</p>
+            )
+          ) : null}
         </div>
         <div className="flex flex-col gap-2">
           <p className="font-semibold">Last Visit</p>
