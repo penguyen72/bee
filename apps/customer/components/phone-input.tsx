@@ -41,15 +41,15 @@ export function PhoneInput({ value, setValue, error }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full gap-4 w-96 mx-auto">
-      <p className="flex text-3xl h-16 bg-amber-100 border-none text-black font-semibold rounded-2xl text-center items-center justify-center">
+    <div className="flex flex-col h-full gap-4 w-full sm:w-80 xl:w-96 mx-auto">
+      <p className="flex text-2xl xl:text-3xl h-12 xl:h-16 bg-amber-100 border-none text-black font-semibold rounded-2xl text-center items-center justify-center">
         {formatPhoneNumber(value)}
       </p>
       <div className="grid grid-cols-3 gap-y-6 gap-x-4 h-fit">
         {operations.map((operation, index) => {
           const content =
             operation.value === "delete" ? (
-              <Delete color="black" size={48} />
+              <Delete className="size-10 xl:size-12" color="black" />
             ) : (
               operation.value
             )
@@ -57,7 +57,7 @@ export function PhoneInput({ value, setValue, error }: Props) {
           return (
             <Button
               key={index}
-              className="text-3xl font-semibold hover:bg-amber-100 h-16 rounded-lg"
+              className="text-2xl xl:text-3xl font-semibold hover:bg-amber-100 h-12 xl:h-16 rounded-lg px-6 xl:px-8"
               variant="ghost"
               size="lg"
               type="button"
