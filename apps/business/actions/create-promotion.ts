@@ -5,10 +5,11 @@ import { AddPromotionSchema } from "@/schemas"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { getOrganization } from "./get-organization"
+import { sendSMS } from "@/lib/twilio"
+import { subYears } from "date-fns"
 
-export const addPromotion = async (
-  values: z.infer<typeof AddPromotionSchema>,
-  deliveredMessages: number
+export const createPromotion = async (
+  values: z.infer<typeof AddPromotionSchema>
 ) => {
   try {
     const organizationResponse = await getOrganization()
@@ -19,7 +20,7 @@ export const addPromotion = async (
 
     if (!organization) return { error: "Invalid Organization!" }
 
-    const { title, unit, value, type, expiration } = values
+    const { title, unit, value, type, expiration, message } = values
 
     if (!title) {
       return { error: "Title is Required!" }
@@ -41,7 +42,38 @@ export const addPromotion = async (
       return { error: "Expiration is Required!" }
     }
 
-    await prisma.promotion.create({
+    if (!message) {
+      return { error: "Message is Required!" }
+    }
+
+    const customers = await prisma.customer.findMany({
+      select: {
+        phoneNumber: true,
+        updatedAt: true
+      },
+      where: {
+        updatedAt: {
+          gte: subYears(new Date(), 2)
+        },
+        organizationId: organization.id
+      }
+    })
+
+    const customerNumbers = [
+      ...new Set(
+        customers.map((item) => "+1" + item.phoneNumber.replaceAll("-", ""))
+      )
+    ]
+
+    const response = await Promise.allSettled(
+      customerNumbers.map((number) => sendSMS(number, message))
+    )
+
+    const deliveredMessages = response.filter(
+      (item) => item.status === "fulfilled"
+    ).length
+
+    const promotion = await prisma.promotion.create({
       data: {
         title,
         unit,
@@ -54,7 +86,7 @@ export const addPromotion = async (
     })
 
     revalidatePath("/", "layout")
-    return { success: "Promotion Added!" }
+    return { data: promotion.id }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

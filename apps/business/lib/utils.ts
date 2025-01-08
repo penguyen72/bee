@@ -56,7 +56,7 @@ export function findNextPossibleRedemption(
     }
   }
 
-  return redemptions[left].pointsRequired
+  return redemptions[left]
 }
 
 export function convertToUSD(value: number | undefined | null) {

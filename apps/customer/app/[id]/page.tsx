@@ -90,10 +90,10 @@ export default async function Home(props: Props) {
       </div>
       {nextPossibleRedemption !== null ? (
         <div className="flex flex-col bg-amber-200 p-8 text-center text-2xl">
-          {user.currentPoints < nextPossibleRedemption ? (
+          {user.currentPoints < nextPossibleRedemption.pointsRequired ? (
             <p>
-              Earn {nextPossibleRedemption - user.currentPoints} more Points for
-              your next reward!
+              Earn {nextPossibleRedemption.pointsRequired - user.currentPoints}{" "}
+              more Points for your next reward!
             </p>
           ) : (
             <p>

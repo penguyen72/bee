@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { getOrganization } from "./get-organization"
+import { sendSMS } from "@/lib/twilio"
+import { findNextPossibleRedemption } from "@/lib/utils"
 
 export const checkOutUser = async (
   transactionId: string,
@@ -22,9 +24,17 @@ export const checkOutUser = async (
       return { error: "No Charges Applied!" }
     }
 
-    const redemption = await prisma.redemptions.findUnique({
+    const redemption = redepemtionId
+      ? await prisma.redemptions.findUnique({
+          where: {
+            id: redepemtionId,
+            organizationId: organization.id
+          }
+        })
+      : null
+
+    const redemptions = await prisma.redemptions.findMany({
       where: {
-        id: redepemtionId,
         organizationId: organization.id
       }
     })
@@ -65,8 +75,8 @@ export const checkOutUser = async (
     const currentPoints =
       existingUser.currentPoints + pointsEarned - (pointsRedeemed ?? 0)
 
-    await prisma.$transaction([
-      prisma.transactions.update({
+    const customer = await prisma.$transaction(async (tx) => {
+      await tx.transactions.update({
         where: {
           id: transaction.id,
           organizationId: organization.id
@@ -79,8 +89,9 @@ export const checkOutUser = async (
           profit: totalCharge,
           checkOutTime: new Date()
         }
-      }),
-      prisma.customer.update({
+      })
+
+      const customer = await tx.customer.update({
         where: {
           id: existingUser.id,
           organizationId: organization.id
@@ -90,10 +101,29 @@ export const checkOutUser = async (
           lifetimePoints: existingUser.currentPoints + pointsEarned
         }
       })
-    ])
+      return customer
+    })
+
+    const phoneNumber = "+1" + customer.phoneNumber.replaceAll("-", "")
+
+    const nextPossibleRedemption = findNextPossibleRedemption(
+      customer.currentPoints,
+      redemptions
+    )
+
+    const nextRedemptionMessage =
+      nextPossibleRedemption !== null &&
+      customer.currentPoints < nextPossibleRedemption.pointsRequired
+        ? `You need ${nextPossibleRedemption.pointsRequired - customer.currentPoints} more points for $${nextPossibleRedemption.value} off any purchase (Point reward based on Point). `
+        : ""
+
+    await sendSMS(
+      phoneNumber,
+      `You are checked out of ${organization.businessName}! Your current balance is ${customer.currentPoints} Points. ${nextRedemptionMessage}Give us a call when you are ready to schedule your next appointment! ${organization.phoneNumber}`
+    )
 
     revalidatePath("/", "layout")
-    return { success: "User Checked Out!" }
+    return { data: customer.id }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }
