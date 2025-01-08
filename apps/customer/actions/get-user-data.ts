@@ -1,12 +1,14 @@
 import { prisma } from "@/lib/prisma"
 import { getOrganization } from "./get-organization"
 
-export const getUser = async (id: string) => {
+export const getUserData = async (id: string) => {
   try {
     const organizationResponse = await getOrganization()
+
     if (organizationResponse.error) return { error: organizationResponse.error }
 
     const organization = organizationResponse.data
+
     if (!organization) return { error: "Invalid Organization!" }
 
     const user = await prisma.customer.findUnique({
@@ -16,8 +18,16 @@ export const getUser = async (id: string) => {
       }
     })
 
-    if (!user) return { error: "User Does Not Exist!" }
-    return { data: user }
+    const redemptions = await prisma.redemptions.findMany({
+      where: {
+        organizationId: organization.id
+      },
+      orderBy: {
+        pointsRequired: "asc"
+      }
+    })
+
+    return { data: { user, redemptions } }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

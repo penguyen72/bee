@@ -1,4 +1,4 @@
-import { getUser } from "@/actions/get-user"
+import { getUserData } from "@/actions/get-user-data"
 import { HomeButton } from "@/components/home-button"
 import { Redirect } from "@/components/redirect"
 import { ProjectError } from "@/lib/errors"
@@ -13,7 +13,7 @@ interface Props {
 
 export default async function Home(props: Props) {
   const params = await props.params
-  const response = await getUser(params.id)
+  const response = await getUserData(params.id)
 
   if (response.error) {
     throw new ProjectError({
@@ -22,15 +22,29 @@ export default async function Home(props: Props) {
     })
   }
 
-  const user = response.data
+  if (response.error) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: response.error
+    })
+  }
+
+  const user = response.data?.user
+  const redemptions = response.data?.redemptions
 
   if (!user) {
     throw new ProjectError({
       name: "INTERNAL_SERVER_ERROR",
-      message: "Invalid User!"
+      message: "Unable to get User!"
     })
   }
 
+  if (!redemptions) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Unable to get Redemptions!"
+    })
+  }
   if (user.visitCount === 1 && user.currentPoints === 0) {
     return (
       <main className="flex flex-col min-h-screen bg-amber-50 h-full">
@@ -52,7 +66,10 @@ export default async function Home(props: Props) {
     )
   }
 
-  const nextPossibleRedemption = findNextPossibleRedemption(user.currentPoints)
+  const nextPossibleRedemption = findNextPossibleRedemption(
+    user.currentPoints,
+    redemptions
+  )
 
   return (
     <main className="flex flex-col min-h-screen bg-amber-50 h-full">
@@ -69,21 +86,24 @@ export default async function Home(props: Props) {
             Points
           </p>
         </div>
+        {nextPossibleRedemption === null ? <HomeButton /> : null}
       </div>
-      <div className="flex flex-col bg-amber-200 p-8 text-center text-2xl">
-        {user.currentPoints < nextPossibleRedemption ? (
-          <p>
-            Earn {nextPossibleRedemption - user.currentPoints} more Points for
-            your next reward!
-          </p>
-        ) : (
-          <p>
-            Please let us know at checkout if you&apos;d like to redeem your
-            points!
-          </p>
-        )}
-        <HomeButton />
-      </div>
+      {nextPossibleRedemption !== null ? (
+        <div className="flex flex-col bg-amber-200 p-8 text-center text-2xl">
+          {user.currentPoints < nextPossibleRedemption ? (
+            <p>
+              Earn {nextPossibleRedemption - user.currentPoints} more Points for
+              your next reward!
+            </p>
+          ) : (
+            <p>
+              Please let us know at checkout if you&apos;d like to redeem your
+              points!
+            </p>
+          )}
+          <HomeButton />
+        </div>
+      ) : null}
       <Redirect />
     </main>
   )
