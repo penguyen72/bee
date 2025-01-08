@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { getOrganization } from "./get-organization"
 import { sendSMS } from "@/lib/twilio"
-import { subYears } from "date-fns"
+import { isSameMonth, subDays, subYears } from "date-fns"
 
 export const createPromotion = async (
   values: z.infer<typeof AddPromotionSchema>
@@ -44,6 +44,16 @@ export const createPromotion = async (
 
     if (!message) {
       return { error: "Message is Required!" }
+    }
+
+    const today = new Date()
+    const promotions = await prisma.promotion.findMany()
+    const currentMonthPromotions = promotions.filter((item) =>
+      isSameMonth(item.createdAt, today)
+    )
+
+    if (currentMonthPromotions.length >= 2) {
+      return { error: "Only 2 Promotions Allowed This Month!" }
     }
 
     const customers = await prisma.customer.findMany({
