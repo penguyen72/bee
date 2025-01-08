@@ -1,6 +1,6 @@
+import { Redemptions } from "@prisma/client"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { REDEPEMTIONS } from "./constants"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -35,19 +35,22 @@ export function formatDateOfBirth(parsedValue: string) {
   }
 }
 
-export function findNextPossibleRedemption(currentPoints: number) {
+export function findNextPossibleRedemption(
+  currentPoints: number,
+  redemptions: Redemptions[]
+) {
   let left = 0
-  let right = REDEPEMTIONS.length - 1
+  let right = redemptions.length - 1
 
   while (left < right) {
     const mid = Math.floor((left + right) / 2)
 
-    if (currentPoints > REDEPEMTIONS[mid].pointsRequired) {
+    if (currentPoints > redemptions[mid].pointsRequired) {
       left = mid + 1
     } else {
       right = mid
     }
   }
 
-  return REDEPEMTIONS[left].pointsRequired
+  return redemptions[left].pointsRequired
 }

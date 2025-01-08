@@ -1,5 +1,6 @@
-import { getMember } from "@/actions/get-member"
+import { getMemberData } from "@/actions/get-member-data"
 import { UserSummaryCard } from "@/components/user-summary-card"
+import { ProjectError } from "@/lib/errors"
 
 export const dynamic = "force-dynamic"
 
@@ -9,13 +10,39 @@ interface Props {
 
 export default async function Home(props: Props) {
   const params = await props.params
-  const data = await getMember(params.userId)
+  const response = await getMemberData(params.userId)
 
-  if (data.error || !data?.customer) return null
+  if (response.error) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: response.error
+    })
+  }
+
+  const customer = response.data?.customer
+  const redemptions = response.data?.redemptions
+
+  if (!customer) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Unable to get Customer!"
+    })
+  }
+
+  if (!redemptions) {
+    throw new ProjectError({
+      name: "INTERNAL_SERVER_ERROR",
+      message: "Unable to get Redemptions!"
+    })
+  }
 
   return (
     <div className="flex flex-col gap-6 w-full h-full">
-      <UserSummaryCard user={data.customer} type="member" />
+      <UserSummaryCard
+        type="member"
+        user={customer}
+        redemptions={redemptions}
+      />
     </div>
   )
 }

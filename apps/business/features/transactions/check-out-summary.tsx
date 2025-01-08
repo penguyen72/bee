@@ -2,20 +2,18 @@
 
 import { checkOutUser } from "@/actions/check-out-user"
 import { FormError } from "@/components/form-error"
+import { FormSuccess } from "@/components/form-success"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-
-import { REDEPEMTIONS } from "@/lib/constants"
-import { Redepemtion, TransactionsWithCustomer } from "@/lib/types"
+import { TransactionsWithCustomer } from "@/lib/types"
 import { cn, convertToUSD } from "@/lib/utils"
-
+import { Redemptions } from "@prisma/client"
 import { Fragment, TransitionStartFunction, useState } from "react"
-
-import { FormSuccess } from "@/components/form-success"
 import { CheckOutSummaryItem } from "./check-out-summary-item"
 
 interface Props {
   transaction: TransactionsWithCustomer
+  redemptions: Redemptions[]
   addedCharges: number[]
   setAddedCharges: React.Dispatch<React.SetStateAction<number[]>>
   isPending: boolean
@@ -24,12 +22,13 @@ interface Props {
 
 export function CheckOutSummary({
   transaction,
+  redemptions,
   addedCharges,
   setAddedCharges,
   isPending,
   startTransition
 }: Props) {
-  const [selected, setSelected] = useState<Redepemtion | null>(null)
+  const [selected, setSelected] = useState<Redemptions | null>(null)
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
 
@@ -43,12 +42,12 @@ export function CheckOutSummary({
   }
 
   function handleSelected(id: string) {
-    setSelected(REDEPEMTIONS.find((item) => item.id === id) ?? null)
+    setSelected(redemptions.find((item) => item.id === id) ?? null)
   }
 
   function handleCheckOut() {
     startTransition(async () => {
-      checkOutUser(transaction.id, addedCharges, selected).then((data) => {
+      checkOutUser(transaction.id, addedCharges, selected?.id).then((data) => {
         if (data.success) {
           setSelected(null)
           setAddedCharges([])
@@ -78,7 +77,7 @@ export function CheckOutSummary({
         })}
         {selected ? (
           <CheckOutSummaryItem
-            label={selected.listLabel}
+            label={`${selected.pointsRequired} Point Redemption`}
             value={selected.value}
             handleDelete={() => setSelected(null)}
           />
@@ -90,23 +89,23 @@ export function CheckOutSummary({
           <div className="flex flex-col gap-2">
             <p className="font-semibold">Redemption:</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-              {REDEPEMTIONS.map((redepemtion) => {
+              {redemptions.map((item) => {
                 return (
                   <Button
-                    key={redepemtion.id}
+                    key={item.id}
                     className={cn(
                       "rounded-2xl font-normal shadow-md",
-                      selected?.id === redepemtion.id &&
+                      selected?.id === item.id &&
                         "bg-purple-300 border-purple-300 hover:bg-purple-400 hover:border-purple-400 transition-all"
                     )}
                     disabled={
                       transaction.customer.currentPoints <
-                        redepemtion.pointsRequired || isPending
+                        item.pointsRequired || isPending
                     }
                     variant="outline"
-                    onClick={() => handleSelected(redepemtion.id)}
+                    onClick={() => handleSelected(item.id)}
                   >
-                    {redepemtion.buttonLabel}
+                    {item.pointsRequired} Points - ${item.value} Off
                   </Button>
                 )
               })}
