@@ -114,7 +114,7 @@ export const checkOutUser = async (
     const nextRedemptionMessage =
       nextPossibleRedemption !== null &&
       customer.currentPoints < nextPossibleRedemption.pointsRequired
-        ? `You need ${nextPossibleRedemption.pointsRequired - customer.currentPoints} more points for $${nextPossibleRedemption.value} off any purchase (Point reward based on Point). `
+        ? `You need ${nextPossibleRedemption.pointsRequired - customer.currentPoints} more points for $${nextPossibleRedemption.value} off any purchase. `
         : ""
 
     await sendSMS(
