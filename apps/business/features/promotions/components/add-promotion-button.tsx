@@ -1,6 +1,6 @@
 "use client"
 
-import { addPromotion } from "@/actions/add-promotion"
+import { createPromotion } from "@/actions/create-promotion"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Form } from "@/components/ui/form"
@@ -10,7 +10,6 @@ import { PromotionPreview } from "@/features/promotions/components/promotion-pre
 import { PromotionProgress } from "@/features/promotions/lib/types"
 import { AddPromotionSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import { Plus } from "lucide-react"
 import { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
@@ -37,33 +36,11 @@ export function AddPromotionButton() {
 
   async function onSubmit(values: z.infer<typeof AddPromotionSchema>) {
     startTransition(async () => {
-      const formData = new FormData()
-      formData.append("message", values.message)
-
-      try {
-        const { data, status } = await axios.post(
-          "/api/send-message",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" }
-          }
-        )
-
-        if (status !== 200) {
-          setError("Unable to Send Messages!")
-        } else {
-          addPromotion(values, data.deliveredMessages).then((response) => {
-            if (response.success) {
-              form.setValue("deliveredMessages", data.deliveredMessages)
-              setState("Confirmed")
-            } else {
-              setError(response.error)
-            }
-          })
-        }
-      } catch {
-        setError("Unknown Error Occurred!")
+      const response = await createPromotion(values)
+      if (response.data !== undefined) {
+        setState("Confirmed")
       }
+      setError(response.error)
     })
   }
 

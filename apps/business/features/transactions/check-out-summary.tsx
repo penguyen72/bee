@@ -47,14 +47,17 @@ export function CheckOutSummary({
 
   function handleCheckOut() {
     startTransition(async () => {
-      checkOutUser(transaction.id, addedCharges, selected?.id).then((data) => {
-        if (data.success) {
-          setSelected(null)
-          setAddedCharges([])
-        }
-        setSuccess(data.success)
-        setError(data.error)
-      })
+      const response = await checkOutUser(
+        transaction.id,
+        addedCharges,
+        selected?.id
+      )
+      if (response.data !== undefined) {
+        setSuccess("User Checked Out!")
+        setSelected(null)
+        setAddedCharges([])
+      }
+      setError(response.error)
     })
   }
 

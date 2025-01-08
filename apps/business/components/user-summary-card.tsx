@@ -17,15 +17,13 @@ export async function UserSummaryCard({ user, type, redemptions }: Props) {
     user.currentPoints,
     redemptions
   )
-  const pointsUntilNextRedemption =
-    nextPossibleRedemption !== null
-      ? nextPossibleRedemption - user.currentPoints
-      : null
 
   const percentageOfNextRedemption =
     nextPossibleRedemption !== null
       ? Math.min(
-          Math.floor((user.currentPoints / nextPossibleRedemption) * 100),
+          Math.floor(
+            (user.currentPoints / nextPossibleRedemption.pointsRequired) * 100
+          ),
           100
         )
       : null
@@ -63,7 +61,10 @@ export async function UserSummaryCard({ user, type, redemptions }: Props) {
             percentageOfNextRedemption === 100 ? (
               <p>Points Redeemable</p>
             ) : (
-              <p>{pointsUntilNextRedemption} Points before Redemption</p>
+              <p>
+                {nextPossibleRedemption.pointsRequired - user.currentPoints}{" "}
+                Points before Redemption
+              </p>
             )
           ) : null}
         </div>

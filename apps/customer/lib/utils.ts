@@ -52,5 +52,5 @@ export function findNextPossibleRedemption(
     }
   }
 
-  return redemptions[left].pointsRequired
+  return redemptions[left]
 }
