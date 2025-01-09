@@ -37,7 +37,7 @@ const columns = [
     header: "PHONE NUMBER",
     cell: (info) => {
       const phoneNumber = info.row.original.customer.phoneNumber
-      return <p>{phoneNumber}</p>
+      return <p>***-***-{phoneNumber.slice(-4)}</p>
     }
   }),
   columnHelper.display({
