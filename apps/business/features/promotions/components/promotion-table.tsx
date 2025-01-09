@@ -35,7 +35,7 @@ const columns = [
               {unit} Off {type}
             </p>
             <p className="text-xs text-slate-500">
-              Joined {format(createdAt, "MMMM yyyy")}
+              Added {format(createdAt, "MMMM yyyy")}
             </p>
           </div>
           <div className="flex flex-col gap-1">

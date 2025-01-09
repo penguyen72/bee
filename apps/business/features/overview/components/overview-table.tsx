@@ -28,9 +28,9 @@ const columns = [
       return (
         <div className="flex flex-col gap-2">
           <p>{name}</p>
-          <p className="text-xs text-slate-500">
+          {/* <p className="text-xs text-slate-500">
             Joined {format(createdAt, "MMMM yyyy")}
-          </p>
+          </p> */}
         </div>
       )
     }
