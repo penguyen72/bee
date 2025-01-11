@@ -164,7 +164,7 @@ export function PromotionInput({ form, error, setState, isPending }: Props) {
             name="expiration"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Date of birth</FormLabel>
+                <FormLabel>Expiration</FormLabel>
                 <Popover modal>
                   <PopoverTrigger asChild>
                     <FormControl>
