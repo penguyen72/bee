@@ -24,7 +24,7 @@ export default async function Home() {
               <p className="font-semibold">Members Redeemed</p>
             </CardHeader>
             <CardContent className="px-4 pt-0 pb-4">
-              <p className="text-2xl font-semibold">15</p>
+              <p className="text-2xl font-semibold">0</p>
             </CardContent>
           </Card>
         </CardContent>
