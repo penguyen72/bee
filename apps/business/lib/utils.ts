@@ -119,7 +119,7 @@ export function getStartAndEndDate(today: Date, timezone: string) {
 }
 
 export const Member = {
-  VIP: "Vip",
+  VIP: "VIP",
   REGULAR: "Regular",
   RISK: "At Risk",
   NEW: "New"
@@ -127,14 +127,14 @@ export const Member = {
 
 type ObjectType<T> = T[keyof T]
 
-type MemberType = ObjectType<typeof Member>
+export type MemberType = ObjectType<typeof Member>
 
 export function determineMemberType(user: Customer): MemberType {
   const today = new Date()
   if (user.visitCount === 1) {
     return "New"
   } else if (isAfter(user.updatedAt, subWeeks(today, 2))) {
-    return "Vip"
+    return "VIP"
   } else if (isAfter(user.updatedAt, subWeeks(today, 4))) {
     return "Regular"
   } else {
