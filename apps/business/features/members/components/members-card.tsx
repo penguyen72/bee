@@ -13,7 +13,7 @@ export function MembersCard({ data }: Props) {
   const items = useMemo(() => {
     const totalMembers = data.length
     const vipMembers = data.filter(
-      (user) => determineMemberType(user) === "Vip"
+      (user) => determineMemberType(user) === "VIP"
     ).length
     const regularMembers = data.filter(
       (user) => determineMemberType(user) === "Regular"
