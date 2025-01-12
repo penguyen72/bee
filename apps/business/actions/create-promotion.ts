@@ -47,7 +47,11 @@ export const createPromotion = async (
     }
 
     const today = new Date()
-    const promotions = await prisma.promotion.findMany()
+    const promotions = await prisma.promotion.findMany({
+      where: {
+        organizationId: organization.id
+      }
+    })
     const currentMonthPromotions = promotions.filter((item) =>
       isSameMonth(item.createdAt, today)
     )
@@ -96,7 +100,7 @@ export const createPromotion = async (
     })
 
     revalidatePath("/", "layout")
-    return { data: promotion.id }
+    return { data: promotion.deliveredMessages }
   } catch (error) {
     console.error(error)
     return { error: "Internal Server Error!" }

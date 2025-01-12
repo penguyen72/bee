@@ -16,6 +16,9 @@ export const getPromotions = async () => {
     const promotions = await prisma.promotion.findMany({
       where: {
         organizationId: organization.id
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
 
