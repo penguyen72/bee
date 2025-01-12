@@ -38,6 +38,7 @@ export function AddPromotionButton() {
     startTransition(async () => {
       const response = await createPromotion(values)
       if (response.data !== undefined) {
+        form.setValue("deliveredMessages", response.data)
         setState("Confirmed")
       }
       setError(response.error)

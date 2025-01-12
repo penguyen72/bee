@@ -1,9 +1,6 @@
 import { getPromotions } from "@/actions/get-promotions"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { AddPromotionButton } from "@/features/promotions/components/add-promotion-button"
-import { PromotionTable } from "@/features/promotions/components/promotion-table"
+import { PromotionContent } from "@/features/promotions/components/pomotion-content"
 
 export const dynamic = "force-dynamic"
 
@@ -29,15 +26,7 @@ export default async function Home() {
           </Card>
         </CardContent>
       </Card>
-      <div className="flex flex-col">
-        <div className="relative flex items-center justify-center">
-          <AddPromotionButton />
-          <Button variant="link">Active</Button>
-          <Separator className="bg-black" orientation="vertical" />
-          <Button variant="link">Expired</Button>
-        </div>
-        <PromotionTable data={data.promotions ?? []} />
-      </div>
+      <PromotionContent promotions={data.promotions ?? []} />
     </div>
   )
 }
