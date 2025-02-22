@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🐝 Mighty Bee POS Check-In Service
 
-## Getting Started
+Mighty Bee is a powerful and scalable Point of Sale (POS) check-in service built specifically for nail salons. Designed to enhance customer experience and streamline business operations, Mighty Bee offers an intuitive interface for both salon owners and customers.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Customer Check-In System**: Fast and easy check-in experience with Twilio-powered SMS notifications.
+- **Loyalty Rewards Program**: Integrated points and rewards system to encourage repeat visits and boost customer retention.
+- **Admin Dashboard**: Comprehensive business management for salon owners, including customer checkouts and loyalty tracking.
+- **Multi-App Architecture**: Built using Turborepo for scalable and efficient monorepo management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Architecture Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Mighty Bee is structured as a monorepo using **Turborepo**, consisting of three distinct applications:
 
-## Learn More
+### 1. **Marketing App** (`/apps/marketing`)
 
-To learn more about Next.js, take a look at the following resources:
+- **Purpose**: User-facing website for the Bee business, showcasing services and engaging potential customers.
+- **Tech Stack**:
+  - **Framework**: Next.js
+  - **Styling**: Tailwind CSS
+  - **Deployment**: Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. **Admin App** (`/apps/admin`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Purpose**: Internal dashboard for managing and monitoring the entire Mighty Bee platform.
+- **Tech Stack**:
+  - **Framework**: Next.js
+  - **Deployment**: Vercel
 
-## Deploy on Vercel
+### 3. **Business App** (`/apps/business`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Purpose**: Admin dashboard for nail salon owners to manage check-ins, process customer checkouts, and track loyalty points.
+- **Tech Stack**:
+  - **Framework**: Next.js
+  - **Database**: MongoDB with Prisma
+  - **Notifications**: Twilio for SMS alerts
+  - **Deployment**: Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 4. **Customer App** (`/apps/customer`)
+
+- **Purpose**: Customer-facing app for checking into the salon, viewing loyalty points, and receiving notifications.
+- **Tech Stack**:
+  - **Framework**: Next.js
+  - **Database**: MongoDB with Prisma
+  - **Notifications**: Twilio for SMS alerts
+  - **Deployment**: Vercel
+
+---
+
+## 📦 Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/peynguyen72/bee.git
+   cd bee
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   yarn install
+   ```
+
+3. **Set Up Environment Variables**:
+
+   - Create `.env` for each app (`marketing`, `business`, and `customer`)
+   - Required variables:
+
+   ```
+    NEXT_PUBLIC_API_URL=
+    DATABASE_URL=
+    AUTH_SECRET=
+    AUTH_GOOGLE_ID=
+    AUTH_GOOGLE_SECRET=
+    TWILIO_ACCOUNT_SID=
+    TWILIO_AUTH_TOKEN=
+    TWILIO_PHONE_NUMBER=
+   ```
+
+4. **Run Development Servers**:
+
+   ```bash
+   yarn dev
+   ```
+
+5. Visit the following local URLs:
+
+- Marketing App: `http://localhost:3000`
+- Admin App: `http://localhost:3001`
+- Business App: `http://localhost:3002`
+- Customer App: `http://localhost:3003`
+
+## 📜 Scripts
+
+Mighty Bee is powered by Turborepo for monorepo management, and the following scripts are available:
+
+### General Commands
+
+- **`yarn dev`** - Start development server for all apps
+- **`yarn build`** - Build all applications for production
+- **`yarn lint`** - Lint and fix code
+- **`yarn format`** - Format code using Prettier
+- **`yarn prisma:generate`** - Generate Prisma client for `business` and `customer` apps
+
+### App-Specific Commands
+
+- **Admin App**
+
+  - `yarn dev:admin` - Start development server for Admin App
+  - `yarn build:admin` - Build Admin App for production
+
+- **Marketing App**
+
+  - `yarn dev:marketing` - Start development server for Marketing App
+  - `yarn build:marketing` - Build Marketing App for production
+
+- **Business App**
+
+  - `yarn dev:business` - Start development server for Business App
+  - `yarn build:business` - Build Business App for production
+
+- **Customer App**
+  - `yarn dev:customer` - Start development server for Customer App
+  - `yarn build:customer` - Build Customer App for production
+
+---
+
+## 🚀 Deployment
+
+Mighty Bee is optimized for deployment on **Vercel**.
+
+- **Vercel**: Ideal for quick and scalable deployments.
+
+---
+
+## 📜 License
+
+This project is licensed under the **Proprietary License**.  
+Unauthorized copying, distribution, modification, or commercial use of this software is strictly prohibited without prior written permission from the author.  
+[View the License](./LICENSE)
+
+---
+
+**Star ⭐ the repo if you find it helpful!**
+
+Happy Coding! 🚀
